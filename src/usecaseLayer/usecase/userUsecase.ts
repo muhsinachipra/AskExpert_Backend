@@ -4,6 +4,7 @@ import IHashPassword from '../interface/services/IHashPassword'
 import IJwt from '../interface/services/IJwt'
 import INodemailer from '../interface/services/INodemailer'
 import { createUser } from "./user/createUser"
+import { loginUser } from './user/loginUser'
 
 
 export class UserUsecase {
@@ -27,25 +28,39 @@ export class UserUsecase {
         this.requestValidator = requestValidator
     }
 
-    async createUser({
-        name,
-        mobile,
-        email,
-        password
-    }: {
-        name: string,
-        mobile: string,
-        email: string,
-        password: string
+    async createUser({ name, mobile, email, password }: {
+        name: string, mobile: string, email: string, password: string
     }) {
-        return createUser(
-            this.requestValidator,
-            this.userRepository,
-            this.bcrypt,
-            name,
-            mobile,
-            email,
-            password
-        )
+        try {
+            return await createUser(
+                this.requestValidator,
+                this.userRepository,
+                this.bcrypt,
+                name,
+                mobile,
+                email,
+                password
+            );
+        } catch (error) {
+            console.error('Error creating user:', error);
+            throw error;
+        }
+    }
+
+    async loginUser({ email, password }: { email: string; password: string }) {
+        try {
+            return await loginUser(
+                this.requestValidator,
+                this.userRepository,
+                this.bcrypt,
+                this.jwt,
+                email,
+                password
+            );
+        } catch (error) {
+            console.error('Error Login user:', error);
+            throw error;
+        }
+
     }
 }

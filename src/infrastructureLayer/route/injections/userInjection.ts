@@ -1,7 +1,7 @@
 import { UserAdapter } from '../../../controllerLayer/userAdapter'
 import { UserUsecase } from '../../../usecaseLayer/usecase/userUsecase'
 import UserModel from '../../database/model/userModel'
-import { UserRepository } from '../../database/reposittory/userRepository'
+import { UserRepository } from '../../database/repository/userRepository'
 import Encrypt from '../../services/bcrypt'
 import JwtPassword from '../../services/jwt'
 import RequestValidator from '../../services/validateRepository'
@@ -17,4 +17,4 @@ const userUsecase = new UserUsecase(
     requestValidator
 )
 const userAdapter = new UserAdapter(userUsecase)
-export default userAdapter
+export { userAdapter }
