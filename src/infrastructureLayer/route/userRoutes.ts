@@ -15,4 +15,10 @@ router.post(
         userAdapter.loginUser(req, res, next)
 )
 
+router.post(
+    "/sendEmail",
+    (req: Request, res: Response, next: NextFunction) =>
+        userAdapter.sendEmail(req, res, next)
+)
+
 export default router

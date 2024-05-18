@@ -55,4 +55,39 @@ export class UserAdapter {
         }
     }
 
+
+    //@desc     send otp to new user email
+    //route     POST api/user/sendEmail
+    //@access   Public
+    async sendEmail(req: Req, res: Res, next: Next) {
+        console.log('--> userAdapter/sendEmail');
+
+        try {
+            const user = await this.userUsecase.verifyEmail(req.body);
+            res.status(user.status).json({
+                success: user.success,
+                message: user.message,
+            });
+        } catch (err) {
+            next(err);
+        }
+    }
+
+    //@desc     Checking the otp valid or not
+    //route     POST api/user/emailVerification
+    //@access   Public
+    async emailVerification(req: Req, res: Res, next: Next) {
+        try {
+            const user = await this.userUsecase.emailVerification(req.body);
+            user &&
+                res.status(user.status).json({
+                    success: user.success,
+                    // data: user.data,
+                    message: user.message,
+                });
+        } catch (err) {
+            next(err);
+        }
+    }
+
 }
