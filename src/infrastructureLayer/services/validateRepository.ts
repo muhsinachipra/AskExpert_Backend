@@ -15,7 +15,7 @@ export default class RequestValidator implements IRequestValidator {
     }
 
     validateRequiredFields(data: Record<string, any>, requiredFields: string[]): ValidationResult {
-        console.log('came to infrastructureLayer/services/validateRepository')
+        console.log('--> infrastructureLayer/services/validateRepository')
         for (const field of requiredFields) {
             if (data[field] === undefined) {
                 return {

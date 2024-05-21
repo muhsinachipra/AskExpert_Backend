@@ -5,8 +5,9 @@ import IJwt from '../interface/services/IJwt'
 import INodemailer from '../interface/services/INodemailer'
 import { createUser } from "./user/createUser"
 import { emailVerification } from './user/emailVerification'
+import { googleAuth } from './user/googleAuth'
 import { loginUser } from './user/loginUser'
-import { verifyEmail } from './user/sentEmail'
+import { verifyEmail } from './user/sendEmail'
 
 
 export class UserUsecase {
@@ -74,5 +75,18 @@ export class UserUsecase {
     //to check if the user entered OTP is correct or not
     async emailVerification({ otp, email }: { otp: string; email: string }) {
         return emailVerification(this.requestValidator, this.nodemailer, otp, email);
+    }
+
+    //to create user
+    async googleAuth({ name, email, password, }: { name: string; email: string; password: string; }) {
+        return googleAuth(
+            this.requestValidator,
+            this.userRepository,
+            this.bcrypt,
+            this.jwt,
+            name,
+            email,
+            password
+        );
     }
 }
