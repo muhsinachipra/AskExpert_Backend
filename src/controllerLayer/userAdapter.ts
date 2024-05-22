@@ -42,6 +42,7 @@ export class UserAdapter {
                     maxAge: 30 * 24 * 60 * 60 * 1000,
                     secure: process.env.NODE_ENV === "production",
                 });
+                console.log(user)
 
                 return res.status(user.status).json({
                     success: user.success,

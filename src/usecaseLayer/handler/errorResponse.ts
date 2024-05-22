@@ -1,5 +1,6 @@
 // backend\src\usecaseLayer\handler\errorResponse.ts
 
+
 export default class ErrorResponse extends Error {
     status: number
     message: string;
