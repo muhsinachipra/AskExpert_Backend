@@ -5,9 +5,11 @@ import IJwt from '../interface/services/IJwt'
 import INodemailer from '../interface/services/INodemailer'
 import { createUser } from "./user/createUser"
 import { emailVerification } from './user/emailVerification'
+import { forgotPassword } from './user/forgotPassword'
 import { googleAuth } from './user/googleAuth'
 import { loginUser } from './user/loginUser'
 import { verifyEmail } from './user/sendEmail'
+import { sendOtpForgotPassword } from './user/sentOtpForgotPassword'
 
 
 export class UserUsecase {
@@ -89,4 +91,22 @@ export class UserUsecase {
             password
         );
     }
+
+    //to send OTP to verify the user's detail
+    async sendOtpForgotPassword({ email, name }: { email: string; name: string }) {
+        return sendOtpForgotPassword(this.requestValidator, this.userRepository, this.nodemailer, email, name);
+    }
+
+    //to save forgot password user
+    async forgotPassword({ email, password, }: { email: string; password: string; }) {
+        return forgotPassword(
+            this.requestValidator,
+            this.userRepository,
+            this.bcrypt,
+            this.jwt,
+            email,
+            password
+        );
+    }
+
 }

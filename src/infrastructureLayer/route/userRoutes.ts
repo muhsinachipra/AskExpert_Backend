@@ -34,4 +34,19 @@ router.post(
         userAdapter.googleAuth(req, res, next)
 );
 
+//routes for forgot password otp verification
+router.post(
+    "/sendOTPforgotPassword",
+    (req: Request, res: Response, next: NextFunction) =>
+        userAdapter.sendOtpForgotPassword(req, res, next)
+);
+
+//routes for forgot password save
+router.post(
+    "/forgotPassword",
+    (req: Request, res: Response, next: NextFunction) =>
+        userAdapter.forgotPassword(req, res, next)
+);
+
+
 export default router

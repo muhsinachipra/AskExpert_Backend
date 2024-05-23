@@ -1,0 +1,49 @@
+
+import ErrorResponse from "../../handler/errorResponse";
+import { IUserRepository } from "../../interface/repository/IUserRepository";
+import { IRequestValidator } from "../../interface/repository/IValidateRepository";
+import IHashpassword from "../../interface/services/IHashPassword";
+import Ijwt from "../../interface/services/IJwt";
+import { IUserResponse } from "../../interface/services/IResponse";
+
+
+export const forgotPassword = async (
+    requestValidator: IRequestValidator,
+    userRepository: IUserRepository,
+    bcrypt: IHashpassword,
+    jwt: Ijwt,
+    email: string,
+    password: string
+): Promise<IUserResponse> => {
+    try {
+        // Validate required parameters
+        const validation = requestValidator.validateRequiredFields(
+            { email, password },
+            ["email", "password"]
+        );
+
+        if (!validation.success) {
+            throw ErrorResponse.badRequest(validation.message as string);
+        }
+
+        const hashedPassword = await bcrypt.createHash(password);
+        const newPassword = {
+            email,
+            password: hashedPassword,
+        };
+        
+        const forgotUser = await userRepository.forgotPassword(newPassword);
+
+        const token = jwt.createJWT(forgotUser._id as string, forgotUser.email, "user", forgotUser.name);
+        return {
+            status: 200,
+            success: true,
+            message: `Successfully Forgot Password Welcome ${forgotUser.name}`,
+            token: token,
+            data: forgotUser
+        };
+
+    } catch (err) {
+        throw err;
+    }
+};

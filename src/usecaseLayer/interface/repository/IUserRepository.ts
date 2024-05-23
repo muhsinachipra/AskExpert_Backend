@@ -4,6 +4,6 @@ import { IForgetPassword } from '../services/IResponse'
 export interface IUserRepository {
     createUser(newUser: IUser): Promise<IUser>
     findUser(email: string): Promise<IUser | null>
+    forgotPassword(newPassword: IForgetPassword): Promise<IUser>
     // blockUser(_id: string): Promise<string | null>
-    // forgetPassword(newPassword: IForgetPassword): Promise<IUser>
 }

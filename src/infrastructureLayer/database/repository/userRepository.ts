@@ -1,8 +1,10 @@
 import { IUser } from "../../../domainLayer/user";
 import { IUserRepository } from "../../../usecaseLayer/interface/repository/IUserRepository";
+import { IForgotPassword } from "../../../usecaseLayer/interface/services/IResponse";
 import UserModel from "../model/userModel";
 import { createUser } from "./user/createUser";
 import { findUser } from "./user/findUser";
+import { forgotPassword } from "./user/forgotPassword";
 
 export class UserRepository implements IUserRepository {
 
@@ -14,5 +16,10 @@ export class UserRepository implements IUserRepository {
 
     async findUser(email: string): Promise<IUser | null> {
         return findUser(email, this.userModel)
+    }
+
+    // Create new user
+    async forgotPassword(newPassword: IForgotPassword): Promise<IUser> {
+        return forgotPassword(newPassword, this.userModel);
     }
 }

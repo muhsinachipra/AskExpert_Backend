@@ -114,4 +114,42 @@ export class UserAdapter {
         }
     }
 
+    //@desc     send ottp to forget password
+    //route     POST api/user/sendOtpForgotPassword
+    //@access   Public
+    async sendOtpForgotPassword(req: Req, res: Res, next: Next) {
+        try {
+            const user = await this.userUsecase.sendOtpForgotPassword(req.body);
+            res.status(user.status).json({
+                success: user.success,
+                message: user.message,
+            });
+        } catch (err) {
+            next(err);
+        }
+    }
+
+    //@desc     Forgot password save
+    //route     POST api/user/forgotPassword
+    //@access   Public
+    async forgotPassword(req: Req, res: Res, next: Next) {
+        try {
+            const newUser = await this.userUsecase.forgotPassword(req.body);
+            newUser &&
+                res.cookie("userjwt", newUser.token, {
+                    httpOnly: true,
+                    sameSite: "strict", // Prevent CSRF attacks
+                    maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
+                });
+
+            res.status(newUser.status).json({
+                success: newUser.success,
+                message: newUser.message,
+                user: newUser.data,
+            });
+        } catch (err) {
+            next(err);
+        }
+    }
+
 }

@@ -9,7 +9,7 @@ export interface IResponse<T = IUser | IUser[] | string> {
 }
 
 
-export interface IForgetPassword {
+export interface IForgotPassword {
     email: string
     password: string
 }
