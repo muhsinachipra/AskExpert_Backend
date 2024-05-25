@@ -8,8 +8,9 @@ import { emailVerification } from './user/emailVerification'
 import { forgotPassword } from './user/forgotPassword'
 import { googleAuth } from './user/googleAuth'
 import { loginUser } from './user/loginUser'
-import { verifyEmail } from './user/sendEmail'
-import { sendOtpForgotPassword } from './user/sentOtpForgotPassword'
+import { resetPassword } from './user/resetPassword'
+import { verifyOTP } from './user/sendEmail'
+import { validateAccessToken } from './user/validateAccessToken'
 
 
 export class UserUsecase {
@@ -70,8 +71,8 @@ export class UserUsecase {
     }
 
     //to send OTP to verify the user's detail
-    async verifyEmail({ email, name }: { email: string; name: string }) {
-        return verifyEmail(this.requestValidator, this.userRepository, this.nodemailer, email, name);
+    async verifyOTP({ email, name }: { email: string; name: string }) {
+        return verifyOTP(this.requestValidator, this.userRepository, this.nodemailer, email, name);
     }
 
     //to check if the user entered OTP is correct or not
@@ -92,21 +93,34 @@ export class UserUsecase {
         );
     }
 
-    //to send OTP to verify the user's detail
-    async sendOtpForgotPassword({ email, name }: { email: string; name: string }) {
-        return sendOtpForgotPassword(this.requestValidator, this.userRepository, this.nodemailer, email, name);
-    }
-
-    //to save forgot password user
-    async forgotPassword({ email, password, }: { email: string; password: string; }) {
+    async forgotPassword({ email, name, token }: { email: string, name: string, token: string; }) {
         return forgotPassword(
             this.requestValidator,
             this.userRepository,
-            this.bcrypt,
             this.jwt,
+            this.nodemailer,
             email,
-            password
+            name,
+            token
+
         );
+    }
+
+    async validateAccessToken({ token }: { token: string }) {
+        return validateAccessToken(
+            this.userRepository,
+            token
+        )
+    }
+
+    async resetPassword({ id, password }: { id: string, password: string }) {
+        return resetPassword(
+            this.userRepository,
+            this.requestValidator,
+            this.bcrypt,
+            id,
+            password
+        )
     }
 
 }

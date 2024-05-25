@@ -1,10 +1,10 @@
 import { IUser } from "../../../domainLayer/user";
 import { IUserRepository } from "../../../usecaseLayer/interface/repository/IUserRepository";
-import { IForgotPassword } from "../../../usecaseLayer/interface/services/IResponse";
+import { IResetPassword } from "../../../usecaseLayer/interface/services/IResponse";
 import UserModel from "../model/userModel";
 import { createUser } from "./user/createUser";
 import { findUser } from "./user/findUser";
-import { forgotPassword } from "./user/forgotPassword";
+import { resetPassword } from "./user/resetPassword";
 
 export class UserRepository implements IUserRepository {
 
@@ -18,8 +18,7 @@ export class UserRepository implements IUserRepository {
         return findUser(email, this.userModel)
     }
 
-    // Create new user
-    async forgotPassword(newPassword: IForgotPassword): Promise<IUser> {
-        return forgotPassword(newPassword, this.userModel);
+    async resetPassword(newPassword: IResetPassword): Promise<IUser> {
+        return resetPassword(newPassword, this.userModel);
     }
 }

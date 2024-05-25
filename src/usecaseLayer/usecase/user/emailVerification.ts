@@ -19,7 +19,7 @@ export const emailVerification = async (
             throw ErrorResponse.badRequest(validation.message as string);
         }
 
-        const verify = await nodemailer.verifyEmail(otp, email);
+        const verify = await nodemailer.verifyOTP(otp, email);
         if (verify) {
             return {
                 status: 200,

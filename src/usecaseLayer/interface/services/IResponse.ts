@@ -9,10 +9,11 @@ export interface IResponse<T = IUser | IUser[] | string> {
 }
 
 
-export interface IForgotPassword {
-    email: string
-    password: string
+export interface IResetPassword {
+    id: string
+    password: string;
 }
+
 
 export interface IUserResponse<T = IUser | IUser[] | string> {
     status: number;

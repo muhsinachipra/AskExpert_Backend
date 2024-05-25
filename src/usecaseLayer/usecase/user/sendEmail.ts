@@ -6,7 +6,7 @@ import INodemailer from "../../interface/services/INodemailer";
 import { IResponse } from "../../interface/services/IResponse";
 
 
-export const verifyEmail = async (
+export const verifyOTP = async (
     requestValidator: IRequestValidator,
     userRepository: IUserRepository,
     nodemailer: INodemailer,

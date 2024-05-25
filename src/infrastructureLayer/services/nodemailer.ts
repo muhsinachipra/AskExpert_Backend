@@ -35,7 +35,7 @@ class Nodemailer implements INodemailer {
             console.log('this.otps ', this.otps);
 
             const mailOptions = {
-                from: "",
+                from: "muhsinachipra@gmail.com",
                 to: email,
                 subject: "Email Verification",
                 html: `
@@ -65,8 +65,8 @@ class Nodemailer implements INodemailer {
         }
     }
 
-    //to verfiy the email to check if it is crct or not
-    async verifyEmail(enteredOTP: string, email: string): Promise<boolean> {
+    //to verfiy the otp for the email verification
+    async verifyOTP(enteredOTP: string, email: string): Promise<boolean> {
         try {
             const expectedOTP = this.otps.get(email);
             if (expectedOTP === enteredOTP) {
@@ -78,6 +78,48 @@ class Nodemailer implements INodemailer {
         } catch (error) {
             throw new Error("Wrong otp");
         }
+    }
+
+    async sendForgotPasswordEmail(email: string, username: string, token: string): Promise<string> {
+        console.log("--> infrastructureLayer\services\nodemailer.ts", email, username);
+
+        const transporter = nodemailer.createTransport({
+            host: "smtp.gmail.com",
+            port: 587,
+            secure: false,
+            requireTLS: true,
+            auth: {
+                user: process.env.SMTP_USER,
+                pass: process.env.SMTP_PASS
+            }
+        });
+        const mailOptions = {
+            from: "muhsinachipra@gmail.com",
+            to: email,
+            subject: "AskExpert Password Assistance",
+            html: `
+            <body style="font-family: Arial, sans-serif; background-color: #ffffff; padding: 20px;">
+            <div style="max-width: 600px; margin: 0 auto; background-color: #f4f4f4; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
+                <div style="text-align: center; margin-bottom: 20px;">
+                    <h2 style="color: #333;">Hello ${username}<br> We received a request to reset your password for your <strong>AskExpert</strong> account.</h2>
+                    <p style="color: #555;">Please click on the link below to reset your password:</p>
+                </div>
+                <div style="width: 75%; margin: 0 auto; background-color: #00255F; color: white; padding: 20px; font-size: 24px; text-align: center; border-radius: 5px;">
+                    <strong><a href="http://localhost:5000/resetpassword/${email}/${token}" style="color: #007bff; text-decoration: none;">Reset Password</a></strong>
+                </div>
+                <div style="text-align: center; margin-top: 20px;">
+                    <p style="color: #555;">If you did not request this change, please ignore this email.</p>
+                    <p style="color: #555;">Thank you,<br><strong>AskExpert Team</strong></p>
+                </div>
+            </div>
+            </body>
+            `
+        }
+
+        await transporter.sendMail(mailOptions);
+        return "success";
+        // return "Hey please check your email";
+
     }
 }
 

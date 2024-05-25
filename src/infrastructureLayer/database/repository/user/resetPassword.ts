@@ -1,14 +1,14 @@
 import { IUser } from "../../../../domainLayer/user";
-import { IForgotPassword } from "../../../../usecaseLayer/interface/services/IResponse";
+import { IResetPassword } from "../../../../usecaseLayer/interface/services/IResponse";
 import UserModel from "../../model/userModel";
 
 // Correct the parameter type for _id
-export const forgotPassword = async (
-    newPassword: IForgotPassword,
+export const resetPassword = async (
+    newPassword: IResetPassword,
     userModels: typeof UserModel
 ): Promise<IUser | never> => {
     try {
-        const user = await userModels.findOne({ email: newPassword.email });
+        const user = await userModels.findOne({ _id: newPassword.id });
         if (user) {
             user.password = newPassword.password;
             await user.save();

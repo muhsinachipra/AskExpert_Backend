@@ -1,9 +1,9 @@
 import { IUser } from "../../../domainLayer/user"
-import { IForgetPassword } from '../services/IResponse'
+import { IResetPassword } from '../services/IResponse'
 
 export interface IUserRepository {
     createUser(newUser: IUser): Promise<IUser>
     findUser(email: string): Promise<IUser | null>
-    forgotPassword(newPassword: IForgetPassword): Promise<IUser>
+    resetPassword(newPassword: IResetPassword): Promise<IUser>
     // blockUser(_id: string): Promise<string | null>
 }

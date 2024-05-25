@@ -22,7 +22,7 @@ router.post(
 )
 
 router.post(
-    "/verifyEmail",
+    "/verifyOTP",
     (req: Request, res: Response, next: NextFunction) =>
         userAdapter.emailVerification(req, res, next)
 );
@@ -34,18 +34,30 @@ router.post(
         userAdapter.googleAuth(req, res, next)
 );
 
-//routes for forgot password otp verification
-router.post(
-    "/sendOTPforgotPassword",
-    (req: Request, res: Response, next: NextFunction) =>
-        userAdapter.sendOtpForgotPassword(req, res, next)
-);
+// //routes for forgot password otp verification
+// router.post(
+//     "/sendOTPforgotPassword",
+//     (req: Request, res: Response, next: NextFunction) =>
+//         userAdapter.sendOtpForgotPassword(req, res, next)
+// );
 
 //routes for forgot password save
 router.post(
     "/forgotPassword",
     (req: Request, res: Response, next: NextFunction) =>
         userAdapter.forgotPassword(req, res, next)
+);
+
+router.post(
+    "/validateAccessToken",
+    (req: Request, res: Response, next: NextFunction) =>
+        userAdapter.validateAccessToken(req, res, next)
+);
+
+router.post(
+    "/resetPassword",
+    (req: Request, res: Response, next: NextFunction) =>
+        userAdapter.resetPassword(req, res, next)
 );
 
 
