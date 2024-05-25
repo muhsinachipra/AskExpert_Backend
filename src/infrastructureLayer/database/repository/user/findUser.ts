@@ -9,7 +9,7 @@ export const findUser = async (
     try {
         console.log('email in findUserByEmail in userRepository --->>>> ', email)
         const existingUser = await userModel.findOne({ email });
-        console.log(existingUser);
+        console.log('existingUser',existingUser);
         return existingUser;
     } catch (error) {
         throw error
