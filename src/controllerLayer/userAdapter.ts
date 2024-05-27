@@ -174,7 +174,6 @@ export class UserAdapter {
         }
     }
 
-
     async resetPassword(req: Req, res: Res, next: Next) {
         try {
             const newUser = await this.userUsecase.resetPassword(req.body);
@@ -193,4 +192,19 @@ export class UserAdapter {
             next(err);
         }
     }
+
+    async logoutUser(req: Req, res: Res, next: Next) {
+        try {
+            res.cookie("jwt", "", {
+                httpOnly: true,
+                secure: process.env.NODE_ENV === 'production', // Only send over HTTPS in production
+                sameSite: 'strict', // Strictly same site for CSRF protection
+                expires: new Date(0),
+            });
+            res.status(200).json({ message: "Logged out successfully" });
+        } catch (err) {
+            next(err);
+        }
+    }
+
 }

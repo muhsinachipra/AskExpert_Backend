@@ -1,3 +1,5 @@
+// backend\src\usecaseLayer\usecase\user\forgotPassword.ts
+
 import ErrorResponse from "../../handler/errorResponse";
 import { IUserRepository } from "../../interface/repository/IUserRepository";
 import { IRequestValidator } from "../../interface/repository/IValidateRepository";

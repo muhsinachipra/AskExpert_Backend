@@ -1,3 +1,5 @@
+// backend\src\usecaseLayer\usecase\userUsecase.ts
+
 import { IUserRepository } from '../interface/repository/IUserRepository'
 import { IRequestValidator } from '../interface/repository/IValidateRepository'
 import IHashPassword from '../interface/services/IHashPassword'
@@ -109,7 +111,8 @@ export class UserUsecase {
     async validateAccessToken({ token }: { token: string }) {
         return validateAccessToken(
             this.userRepository,
-            token
+            token,
+            this.jwt,
         )
     }
 
