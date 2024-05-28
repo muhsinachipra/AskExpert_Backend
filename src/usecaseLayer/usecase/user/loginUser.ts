@@ -1,3 +1,5 @@
+// backend\src\usecaseLayer\usecase\user\loginUser.ts
+
 import { IUser } from "../../../domainLayer/user";
 import ErrorResponse from "../../handler/errorResponse";
 import { IUserRepository } from "../../interface/repository/IUserRepository";
@@ -26,6 +28,7 @@ export const loginUser = async (
 
         const user: IUser | null = await userRepository.findUser(email);
 
+
         if (user && user._id) {
             if (user.isBlocked) {
                 throw ErrorResponse.badRequest("Your account is blocked");
@@ -33,13 +36,19 @@ export const loginUser = async (
             const match: boolean = await bcrypt.compare(password, user.password);
             if (match) {
                 const token = jwt.createJWT(user._id, user.email, "user", user.name);
-                const userResponse = { ...user, password: "" };
+                console.log(user, "userrrrrrrrrrrrrrrrrrr");
+
+                // const userResponse = { ...user };
+                // userResponse.password = ''
+                // console.log(userResponse,"userrress");
+                user.password = ""
+
                 return {
                     status: 200,
                     success: true,
                     token: token,
-                    data: userResponse,
-                    message: `Login successful. Welcome ${user.name}`,
+                    data: user,
+                    message: `Welcome ${user.name}`,
                 };
             }
             throw ErrorResponse.badRequest("Invalid credentials");

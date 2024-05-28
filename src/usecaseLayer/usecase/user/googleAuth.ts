@@ -1,3 +1,5 @@
+// backend\src\usecaseLayer\usecase\user\googleAuth.ts
+
 import ErrorResponse from "../../handler/errorResponse";
 import { IUserRepository } from "../../interface/repository/IUserRepository";
 import { IRequestValidator } from "../../interface/repository/IValidateRepository";
@@ -41,7 +43,7 @@ export const googleAuth = async (
             return {
                 status: 200,
                 success: true,
-                message: `Successfully Registerd Welcome ${createnewUser.name}`,
+                message: `Register Successful, Welcome ${createnewUser.name}`,
                 token: token,
                 data: createnewUser
             };
@@ -60,7 +62,7 @@ export const googleAuth = async (
                 success: true,
                 token: token,
                 data: user,
-                message: `Login successful. Welcome ${user.name}`,
+                message: `Welcome ${user.name}`,
             };
         }
         throw ErrorResponse.internalServerError("Unexpected error occurred");
