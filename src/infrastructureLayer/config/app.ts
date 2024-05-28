@@ -4,6 +4,7 @@ import cookieParser from "cookie-parser"
 import cors from "cors"
 import morgan from "morgan"
 import userRouter from "../route/userRoutes"
+import adminRouter from "../route/adminRoutes"
 import errorHandler from "../../usecaseLayer/handler/errorHandler";
 
 export const app = express()
@@ -15,4 +16,5 @@ app.use(express.urlencoded({ limit: '50mb', extended: true, parameterLimit: 5000
 app.use(morgan("dev"))
 
 app.use('/api/user', userRouter)
+app.use('/api/admin', adminRouter)
 app.use(errorHandler)

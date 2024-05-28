@@ -1,7 +1,7 @@
 import bcrypt from 'bcryptjs'
-import IHashPassword from '../../usecaseLayer/interface/services/IHashPassword'
+import IBcrypt from '../../usecaseLayer/interface/services/IBcrypt'
 
-export default class Encrypt implements IHashPassword {
+export default class Encrypt implements IBcrypt {
     async createHash(password: string): Promise<string> {
         const saltRounds = 10
         const salt = await bcrypt.genSalt(saltRounds)

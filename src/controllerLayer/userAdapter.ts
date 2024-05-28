@@ -1,6 +1,5 @@
 // backend\src\controllerLayer\userAdapter.ts
 
-import { userAdapter } from '../infrastructureLayer/route/injections/userInjection';
 import { Next, Req, Res } from '../infrastructureLayer/types/expressTypes'
 import ErrorResponse from '../usecaseLayer/handler/errorResponse';
 import { UserUsecase } from '../usecaseLayer/usecase/userUsecase'

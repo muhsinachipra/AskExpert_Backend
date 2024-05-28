@@ -1,3 +1,5 @@
+// backend\src\usecaseLayer\interface\repository\IUserRepository.ts
+
 import { IUser } from "../../../domainLayer/user"
 import { IResetPassword } from '../services/IResponse'
 

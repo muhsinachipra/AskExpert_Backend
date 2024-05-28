@@ -2,7 +2,7 @@
 
 import { IUserRepository } from '../interface/repository/IUserRepository'
 import { IRequestValidator } from '../interface/repository/IValidateRepository'
-import IHashPassword from '../interface/services/IHashPassword'
+import IBcrypt from '../interface/services/IBcrypt'
 import IJwt from '../interface/services/IJwt'
 import INodemailer from '../interface/services/INodemailer'
 import { createUser } from "./user/createUser"
@@ -17,14 +17,14 @@ import { validateAccessToken } from './user/validateAccessToken'
 
 export class UserUsecase {
     private readonly userRepository: IUserRepository
-    private readonly bcrypt: IHashPassword
+    private readonly bcrypt: IBcrypt
     private readonly jwt: IJwt
     private readonly nodemailer: INodemailer
     private readonly requestValidator: IRequestValidator
 
     constructor(
         userRepository: IUserRepository,
-        bcrypt: IHashPassword,
+        bcrypt: IBcrypt,
         jwt: IJwt,
         nodemailer: INodemailer,
         requestValidator: IRequestValidator
