@@ -5,6 +5,7 @@ import cors from "cors"
 import morgan from "morgan"
 import userRouter from "../route/userRoutes"
 import adminRouter from "../route/adminRoutes"
+import expertRouter from "../route/expertRoutes"
 import errorHandler from "../../usecaseLayer/handler/errorHandler";
 
 export const app = express()
@@ -17,4 +18,5 @@ app.use(morgan("dev"))
 
 app.use('/api/user', userRouter)
 app.use('/api/admin', adminRouter)
+app.use('/api/expert', expertRouter)
 app.use(errorHandler)
