@@ -9,7 +9,8 @@ const expertSchema: Schema = new Schema<IExpert & Document>(
         email: { type: String, required: true, unique: true },
         password: { type: String, required: true },
         category: {
-            type: Schema.Types.ObjectId,
+            // type: Schema.Types.ObjectId,
+            type: String,
             ref: 'Category',
             required: true
         },

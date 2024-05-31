@@ -7,7 +7,7 @@ export const findUser = async (
     userModel: typeof UserModel
 ) => {
     try {
-        console.log('email in findUserByEmail in userRepository --->>>> ', email)
+        // console.log('email in findUserByEmail in userRepository --->>>> ', email)
         const existingUser = await userModel.findOne({ email });
    
         return existingUser;

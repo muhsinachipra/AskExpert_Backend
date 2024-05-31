@@ -18,6 +18,7 @@ export class ExpertAdapter {
     async createExpert(req: Req, res: Res, next: Next) {
         try {
             const newExpert = await this.expertUsecase.createExpert(req.body);
+            console.log('newExpert in the expertAdapter: ', newExpert)
             if (newExpert) {
                 return res.status(newExpert.status).json({
                     success: newExpert.success,

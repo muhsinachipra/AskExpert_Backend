@@ -1,6 +1,6 @@
 // backend\src\usecaseLayer\usecase\expert\createExpert.ts
 
-import { Types } from 'mongoose'
+// import { Types } from 'mongoose'
 import ErrorResponse from '../../handler/errorResponse'
 import { IExpertRepository } from "../../interface/repository/IExpertRepository"
 import { IRequestValidator } from '../../interface/repository/IValidateRepository'
@@ -14,17 +14,18 @@ export const createExpert = async (
     name: string,
     email: string,
     password: string,
-    category: Types.ObjectId,
+    // category: Types.ObjectId,
+    category: string,
     experience: number,
     rate: number,
     profilePic: string,
     resume: string
 ): Promise<IResponse> => {
     try {
-        
+
         const validation = requestValidator.validateRequiredFields(
-            { name, email, password, category, experience, rate },
-            ['name', 'email', 'password', 'category', 'experience', 'rate']
+            { name, email, password, category, experience, rate, profilePic, resume },
+            ['name', 'email', 'password', 'category', 'experience', 'rate', 'profilePic', 'resume']
         );
 
         if (!validation.success) {
@@ -32,6 +33,8 @@ export const createExpert = async (
         }
 
         const expert = await expertRepository.findExpert(email);
+        // console.log('expert in createExpert', expert)
+
         if (!expert) {
             const hashedPassword = await bcrypt.createHash(password);
 
@@ -45,6 +48,8 @@ export const createExpert = async (
                 profilePic,
                 resume
             };
+
+            // console.log('newExpert in createExpert', newExpert)
 
             await expertRepository.createExpert(newExpert);
 

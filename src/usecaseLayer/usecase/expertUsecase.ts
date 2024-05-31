@@ -1,6 +1,6 @@
 // backend\src\usecaseLayer\usecase\expertUsecase.ts
 
-import { Types } from 'mongoose'
+// import { Types } from 'mongoose'
 import { IExpertRepository } from '../interface/repository/IExpertRepository'
 import { IRequestValidator } from '../interface/repository/IValidateRepository'
 import IBcrypt from '../interface/services/IBcrypt'
@@ -40,8 +40,9 @@ export class ExpertUsecase {
     }
 
     async createExpert({ name, email, password, category, experience, rate, profilePic, resume }: {
-        name: string, email: string, password: string, category: Types.ObjectId, experience: number, rate: number, profilePic: string, resume: string
+        name: string, email: string, password: string, category: string, experience: number, rate: number, profilePic: string, resume: string
     }) {
+        // console.log(' data in expertUsecase createExpert: ', name, email, password, category, experience, rate, profilePic, resume )
         try {
             return await createExpert(
                 this.requestValidator,

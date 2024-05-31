@@ -18,7 +18,7 @@ class Nodemailer implements INodemailer {
 
     async sendEmailVerification(email: string, name: string): Promise<string> {
         try {
-            console.log('email and name in sendEmailVerification method', email, name);
+            // console.log('email and name in sendEmailVerification method', email, name);
             const transporter = nodemailer.createTransport({
                 host: "smtp.gmail.com",
                 port: 587,
@@ -30,14 +30,14 @@ class Nodemailer implements INodemailer {
                 },
             });
 
-            console.log('before clearing this.otps in the sendEmailVerification method', this.otps);
+            // console.log('before clearing this.otps in the sendEmailVerification method', this.otps);
             if (this.otps) {
                 this.otps.clear();
             }
             const otp = this.generateOTP();
             const timestamp = Date.now();
             this.otps.set(email, { otp, timestamp });
-            console.log('after setting this.otps in the sendEmailVerification method', this.otps);
+            // console.log('after setting this.otps in the sendEmailVerification method', this.otps);
 
             const mailOptions = {
                 from: "muhsinachipra@gmail.com",
@@ -85,7 +85,7 @@ class Nodemailer implements INodemailer {
                 return false; // OTP expired
             }
 
-            console.log("expectedOTP, enteredOTP ", otp, enteredOTP);
+            // console.log("expectedOTP, enteredOTP ", otp, enteredOTP);
             if (otp === enteredOTP) {
                 this.otps.delete(email);
                 return true;

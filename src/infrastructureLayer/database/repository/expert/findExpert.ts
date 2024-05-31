@@ -7,7 +7,7 @@ export const findExpert = async (
     expertModel: typeof ExpertModel
 ) => {
     try {
-        console.log('email in findExpertByEmail in expertRepository --->>>> ', email)
+        // console.log('email in findExpertByEmail in expertRepository --->>>> ', email)
         const existingExpert = await expertModel.findOne({ email });
    
         return existingExpert;
