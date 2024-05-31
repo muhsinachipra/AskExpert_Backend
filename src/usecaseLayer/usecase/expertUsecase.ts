@@ -7,14 +7,10 @@ import IBcrypt from '../interface/services/IBcrypt'
 import IJwt from '../interface/services/IJwt'
 import INodemailer from '../interface/services/INodemailer'
 import { createExpert } from "./expert/createExpert"
-// import { sendOTP } from './expert/sendOTP'
-// import { emailVerification } from './user/emailVerification'
-// import { emailVerification } from './expert/emailVerification'
+import { loginExpert } from './expert/loginExpert'
 // import { forgotPassword } from './expert/forgotPassword'
 // import { googleAuth } from './expert/googleAuth'
-// import { loginExpert } from './expert/loginExpert'
 // import { resetPassword } from './expert/resetPassword'
-// import { sendOTP } from './expert/sendOTP'
 // import { validateAccessToken } from './expert/validateAccessToken'
 
 
@@ -63,32 +59,21 @@ export class ExpertUsecase {
         }
     }
 
-    // //to send OTP to verify the expert's detail
-    // async sendOTP({ email, name }: { email: string; name: string }) {
-    //     return sendOTP(this.requestValidator, this.expertRepository, this.nodemailer, email, name);
-    // }
-
-    // //to check if the expert entered OTP is correct or not
-    // async emailVerification({ otp, email }: { otp: string; email: string }) {
-    //     return emailVerification(this.requestValidator, this.nodemailer, otp, email);
-    // }
-
-    // async loginExpert({ email, password }: { email: string; password: string }) {
-    //     try {
-    //         return await loginExpert(
-    //             this.requestValidator,
-    //             this.expertRepository,
-    //             this.bcrypt,
-    //             this.jwt,
-    //             email,
-    //             password
-    //         );
-    //     } catch (error) {
-    //         console.error('Error Login expert:', error);
-    //         throw error;
-    //     }
-
-    // }
+    async loginExpert({ email, password }: { email: string; password: string }) {
+        try {
+            return await loginExpert(
+                this.requestValidator,
+                this.expertRepository,
+                this.bcrypt,
+                this.jwt,
+                email,
+                password
+            );
+        } catch (error) {
+            console.error('Error Login expert:', error);
+            throw error;
+        }
+    }
     
 
     // //to create expert

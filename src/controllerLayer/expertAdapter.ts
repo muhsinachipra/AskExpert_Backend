@@ -31,32 +31,32 @@ export class ExpertAdapter {
         }
     }
 
-    // // @desc      Login expert
-    // // route      POST api/expert/login
-    // // @access    Public
-    // async loginExpert(req: Req, res: Res, next: Next) {
-    //     try {
-    //         const expert = await this.expertUsecase.loginExpert(req.body);
-    //         if (expert) {
-    //             res.cookie("expertjwt", expert.token, {
-    //                 httpOnly: true,
-    //                 sameSite: "strict",
-    //                 maxAge: 30 * 24 * 60 * 60 * 1000,
-    //                 secure: process.env.NODE_ENV === "production",
-    //             });
-    //             console.log(expert.data)
+    // @desc      Login expert
+    // route      POST api/expert/login
+    // @access    Public
+    async loginExpert(req: Req, res: Res, next: Next) {
+        try {
+            const expert = await this.expertUsecase.loginExpert(req.body);
+            if (expert) {
+                res.cookie("expertjwt", expert.token, {
+                    httpOnly: true,
+                    sameSite: "strict",
+                    maxAge: 30 * 24 * 60 * 60 * 1000,
+                    secure: process.env.NODE_ENV === "production",
+                });
+                console.log(expert.data)
 
-    //             return res.status(expert.status).json({
-    //                 success: expert.success,
-    //                 data: expert.data,
-    //                 message: expert.message,
-    //             });
-    //         }
-    //         throw ErrorResponse.unauthorized("Login failed");
-    //     } catch (err) {
-    //         next(err);
-    //     }
-    // }
+                return res.status(expert.status).json({
+                    success: expert.success,
+                    data: expert.data,
+                    message: expert.message,
+                });
+            }
+            throw ErrorResponse.unauthorized("Login failed");
+        } catch (err) {
+            next(err);
+        }
+    }
 
     // // @desc    Signin or SignUp using google auth
     // //route     POST api/expert/googleAuth
@@ -150,18 +150,18 @@ export class ExpertAdapter {
     //     }
     // }
 
-    // async logoutExpert(req: Req, res: Res, next: Next) {
-    //     try {
-    //         res.cookie("jwt", "", {
-    //             httpOnly: true,
-    //             secure: process.env.NODE_ENV === 'production', // Only send over HTTPS in production
-    //             sameSite: 'strict', // Strictly same site for CSRF protection
-    //             expires: new Date(0),
-    //         });
-    //         res.status(200).json({ message: "Logged out successfully" });
-    //     } catch (err) {
-    //         next(err);
-    //     }
-    // }
+    async logoutExpert(req: Req, res: Res, next: Next) {
+        try {
+            res.cookie("jwt", "", {
+                httpOnly: true,
+                secure: process.env.NODE_ENV === 'production', // Only send over HTTPS in production
+                sameSite: 'strict', // Strictly same site for CSRF protection
+                expires: new Date(0),
+            });
+            res.status(200).json({ message: "Logged out successfully" });
+        } catch (err) {
+            next(err);
+        }
+    }
 
 }
