@@ -85,13 +85,13 @@ export class UserAdapter {
     }
 
     //@desc     send otp to new user email
-    //route     POST api/user/sendEmail
+    //route     POST api/user/sendOTP
     //@access   Public
-    async sendEmail(req: Req, res: Res, next: Next) {
-        console.log('--> userAdapter/sendEmail');
+    async sendOTP(req: Req, res: Res, next: Next) {
+        console.log('--> userAdapter/sendOTP');
 
         try {
-            const user = await this.userUsecase.verifyOTP(req.body);
+            const user = await this.userUsecase.sendOTP(req.body);
             res.status(user.status).json({
                 success: user.success,
                 message: user.message,

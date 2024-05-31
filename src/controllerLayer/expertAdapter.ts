@@ -30,68 +30,14 @@ export class ExpertAdapter {
         }
     }
 
-
-    // @desc      Login expert
-    // route      POST api/expert/login
-    // @access    Public
-    async loginExpert(req: Req, res: Res, next: Next) {
-        try {
-            const expert = await this.expertUsecase.loginExpert(req.body);
-            if (expert) {
-                res.cookie("expertjwt", expert.token, {
-                    httpOnly: true,
-                    sameSite: "strict",
-                    maxAge: 30 * 24 * 60 * 60 * 1000,
-                    secure: process.env.NODE_ENV === "production",
-                });
-                console.log(expert.data)
-
-                return res.status(expert.status).json({
-                    success: expert.success,
-                    data: expert.data,
-                    message: expert.message,
-                });
-            }
-            throw ErrorResponse.unauthorized("Login failed");
-        } catch (err) {
-            next(err);
-        }
-    }
-
-    // @desc    Signin or SignUp using google auth
-    //route     POST api/expert/googleAuth
-    //@access   Public
-    async googleAuth(req: Req, res: Res, next: Next) {
-        try {
-            const expert = await this.expertUsecase.googleAuth(req.body);
-            if (expert) {
-                res.cookie("expertjwt", expert.token, {
-                    httpOnly: true,
-                    sameSite: "strict", // Prevent CSRF attacks
-                    maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
-                    secure: process.env.NODE_ENV === "production",
-                });
-
-                res.status(expert.status).json({
-                    success: expert.success,
-                    data: expert.data,
-                    message: expert.message,
-                });
-            }
-            throw ErrorResponse.unauthorized("Login failed");
-        } catch (err) {
-            next(err);
-        }
-    }
-
     //@desc     send otp to new expert email
-    //route     POST api/expert/sendEmail
+    //route     POST api/expert/sendOTP
     //@access   Public
-    async sendEmail(req: Req, res: Res, next: Next) {
-        console.log('--> expertAdapter/sendEmail');
+    async sendOTP(req: Req, res: Res, next: Next) {
+        console.log('--> expertAdapter/sendOTP');
 
         try {
-            const expert = await this.expertUsecase.verifyOTP(req.body);
+            const expert = await this.expertUsecase.sendOTP(req.body);
             res.status(expert.status).json({
                 success: expert.success,
                 message: expert.message,
@@ -118,81 +64,137 @@ export class ExpertAdapter {
         }
     }
 
-    //@desc     Forgot password save
-    //route     POST api/expert/forgotPassword
-    //@access   Public
-    async forgotPassword(req: Req, res: Res, next: Next) {
-        try {
-            const newExpert = await this.expertUsecase.forgotPassword(req.body);
-            console.log("expertAdapter,newExpert :", newExpert)
-            newExpert &&
-                res.cookie("expertjwt", newExpert.token, {
-                    httpOnly: true,
-                    sameSite: "strict", // Prevent CSRF attacks
-                    maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
-                });
+    // // @desc      Login expert
+    // // route      POST api/expert/login
+    // // @access    Public
+    // async loginExpert(req: Req, res: Res, next: Next) {
+    //     try {
+    //         const expert = await this.expertUsecase.loginExpert(req.body);
+    //         if (expert) {
+    //             res.cookie("expertjwt", expert.token, {
+    //                 httpOnly: true,
+    //                 sameSite: "strict",
+    //                 maxAge: 30 * 24 * 60 * 60 * 1000,
+    //                 secure: process.env.NODE_ENV === "production",
+    //             });
+    //             console.log(expert.data)
 
-            res.status(newExpert.status).json({
-                success: newExpert.success,
-                message: newExpert.message,
-                expert: newExpert.data,
-            });
-        } catch (err) {
-            next(err);
-        }
-    }
+    //             return res.status(expert.status).json({
+    //                 success: expert.success,
+    //                 data: expert.data,
+    //                 message: expert.message,
+    //             });
+    //         }
+    //         throw ErrorResponse.unauthorized("Login failed");
+    //     } catch (err) {
+    //         next(err);
+    //     }
+    // }
 
-    async validateAccessToken(req: Req, res: Res, next: Next) {
-        try {
-            console.log('--> expertAdapter/validateAccessToken');
-            const newExpert = await this.expertUsecase.validateAccessToken(req.body);
-            newExpert &&
-                res.cookie("expertjwt", newExpert.token, {
-                    httpOnly: true,
-                    sameSite: "strict", // Prevent CSRF attacks
-                    maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
-                });
-            res.status(newExpert.status).json({
-                success: newExpert.success,
-                message: newExpert.message,
-                expert: newExpert.data,
-            });
-        } catch (err) {
-            next(err);
-        }
-    }
+    // // @desc    Signin or SignUp using google auth
+    // //route     POST api/expert/googleAuth
+    // //@access   Public
+    // async googleAuth(req: Req, res: Res, next: Next) {
+    //     try {
+    //         const expert = await this.expertUsecase.googleAuth(req.body);
+    //         if (expert) {
+    //             res.cookie("expertjwt", expert.token, {
+    //                 httpOnly: true,
+    //                 sameSite: "strict", // Prevent CSRF attacks
+    //                 maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
+    //                 secure: process.env.NODE_ENV === "production",
+    //             });
 
-    async resetPassword(req: Req, res: Res, next: Next) {
-        try {
-            const newExpert = await this.expertUsecase.resetPassword(req.body);
-            newExpert &&
-                res.cookie("expertjwt", newExpert.token, {
-                    httpOnly: true,
-                    sameSite: "strict", // Prevent CSRF attacks
-                    maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
-                });
-            res.status(newExpert.status).json({
-                success: newExpert.success,
-                message: newExpert.message,
-                expert: newExpert.data,
-            });
-        } catch (err) {
-            next(err);
-        }
-    }
+    //             res.status(expert.status).json({
+    //                 success: expert.success,
+    //                 data: expert.data,
+    //                 message: expert.message,
+    //             });
+    //         }
+    //         throw ErrorResponse.unauthorized("Login failed");
+    //     } catch (err) {
+    //         next(err);
+    //     }
+    // }
 
-    async logoutExpert(req: Req, res: Res, next: Next) {
-        try {
-            res.cookie("jwt", "", {
-                httpOnly: true,
-                secure: process.env.NODE_ENV === 'production', // Only send over HTTPS in production
-                sameSite: 'strict', // Strictly same site for CSRF protection
-                expires: new Date(0),
-            });
-            res.status(200).json({ message: "Logged out successfully" });
-        } catch (err) {
-            next(err);
-        }
-    }
+
+    
+
+    // //@desc     Forgot password save
+    // //route     POST api/expert/forgotPassword
+    // //@access   Public
+    // async forgotPassword(req: Req, res: Res, next: Next) {
+    //     try {
+    //         const newExpert = await this.expertUsecase.forgotPassword(req.body);
+    //         console.log("expertAdapter,newExpert :", newExpert)
+    //         newExpert &&
+    //             res.cookie("expertjwt", newExpert.token, {
+    //                 httpOnly: true,
+    //                 sameSite: "strict", // Prevent CSRF attacks
+    //                 maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
+    //             });
+
+    //         res.status(newExpert.status).json({
+    //             success: newExpert.success,
+    //             message: newExpert.message,
+    //             expert: newExpert.data,
+    //         });
+    //     } catch (err) {
+    //         next(err);
+    //     }
+    // }
+
+    // async validateAccessToken(req: Req, res: Res, next: Next) {
+    //     try {
+    //         console.log('--> expertAdapter/validateAccessToken');
+    //         const newExpert = await this.expertUsecase.validateAccessToken(req.body);
+    //         newExpert &&
+    //             res.cookie("expertjwt", newExpert.token, {
+    //                 httpOnly: true,
+    //                 sameSite: "strict", // Prevent CSRF attacks
+    //                 maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
+    //             });
+    //         res.status(newExpert.status).json({
+    //             success: newExpert.success,
+    //             message: newExpert.message,
+    //             expert: newExpert.data,
+    //         });
+    //     } catch (err) {
+    //         next(err);
+    //     }
+    // }
+
+    // async resetPassword(req: Req, res: Res, next: Next) {
+    //     try {
+    //         const newExpert = await this.expertUsecase.resetPassword(req.body);
+    //         newExpert &&
+    //             res.cookie("expertjwt", newExpert.token, {
+    //                 httpOnly: true,
+    //                 sameSite: "strict", // Prevent CSRF attacks
+    //                 maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
+    //             });
+    //         res.status(newExpert.status).json({
+    //             success: newExpert.success,
+    //             message: newExpert.message,
+    //             expert: newExpert.data,
+    //         });
+    //     } catch (err) {
+    //         next(err);
+    //     }
+    // }
+
+    // async logoutExpert(req: Req, res: Res, next: Next) {
+    //     try {
+    //         res.cookie("jwt", "", {
+    //             httpOnly: true,
+    //             secure: process.env.NODE_ENV === 'production', // Only send over HTTPS in production
+    //             sameSite: 'strict', // Strictly same site for CSRF protection
+    //             expires: new Date(0),
+    //         });
+    //         res.status(200).json({ message: "Logged out successfully" });
+    //     } catch (err) {
+    //         next(err);
+    //     }
+    // }
 
 }

@@ -13,6 +13,9 @@ export const emailVerification = async (
     email: string
 ): Promise<IResponse> => {
     try {
+
+        console.log("user emailVerification", email, otp);
+
         const validation = requestValidator.validateRequiredFields({ email, otp }, ["email", "otp"]);
 
         if (!validation.success) {

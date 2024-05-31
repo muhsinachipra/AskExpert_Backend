@@ -1,3 +1,4 @@
+// backend\src\usecaseLayer\usecase\user\sendOTP.ts
 
 import ErrorResponse from "../../handler/errorResponse";
 import { IUserRepository } from "../../interface/repository/IUserRepository";
@@ -6,7 +7,7 @@ import INodemailer from "../../interface/services/INodemailer";
 import { IResponse } from "../../interface/services/IResponse";
 
 
-export const verifyOTP = async (
+export const sendOTP = async (
     requestValidator: IRequestValidator,
     userRepository: IUserRepository,
     nodemailer: INodemailer,

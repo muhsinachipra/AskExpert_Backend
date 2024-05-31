@@ -11,52 +11,53 @@ router.post(
         expertAdapter.createExpert(req, res, next)
 )
 
-router.post(
-    "/login",
-    (req: Request, res: Response, next: NextFunction) =>
-        expertAdapter.loginExpert(req, res, next)
-)
+// router.post(
+//     "/sendOTP",
+//     (req: Request, res: Response, next: NextFunction) =>
+//         expertAdapter.sendOTP(req, res, next)
+// )
 
-router.post(
-    "/sendEmail",
-    (req: Request, res: Response, next: NextFunction) =>
-        expertAdapter.sendEmail(req, res, next)
-)
+// router.post(
+//     "/verifyOTP",
+//     (req: Request, res: Response, next: NextFunction) =>
+//         expertAdapter.emailVerification(req, res, next)
+// );
 
-router.post(
-    "/verifyOTP",
-    (req: Request, res: Response, next: NextFunction) =>
-        expertAdapter.emailVerification(req, res, next)
-);
+// router.post(
+//     "/validateAccessToken",
+//     (req: Request, res: Response, next: NextFunction) =>
+//         expertAdapter.validateAccessToken(req, res, next)
+// );
 
-// route expert google auth
-router.post(
-    "/googleAuth",
-    (req: Request, res: Response, next: NextFunction) =>
-        expertAdapter.googleAuth(req, res, next)
-);
+// router.post(
+//     "/login",
+//     (req: Request, res: Response, next: NextFunction) =>
+//         expertAdapter.loginExpert(req, res, next)
+// )
 
-//routes for forgot password save
-router.post(
-    "/forgotPassword",
-    (req: Request, res: Response, next: NextFunction) =>
-        expertAdapter.forgotPassword(req, res, next)
-);
+// // route expert google auth
+// router.post(
+//     "/googleAuth",
+//     (req: Request, res: Response, next: NextFunction) =>
+//         expertAdapter.googleAuth(req, res, next)
+// );
 
-router.post(
-    "/validateAccessToken",
-    (req: Request, res: Response, next: NextFunction) =>
-        expertAdapter.validateAccessToken(req, res, next)
-);
+// //routes for forgot password save
+// router.post(
+//     "/forgotPassword",
+//     (req: Request, res: Response, next: NextFunction) =>
+//         expertAdapter.forgotPassword(req, res, next)
+// );
 
-router.post(
-    "/resetPassword",
-    (req: Request, res: Response, next: NextFunction) =>
-        expertAdapter.resetPassword(req, res, next)
-);
 
-router.post("/logout", (req: Request, res: Response, next: NextFunction) =>
-    expertAdapter.logoutExpert(req, res, next)
-)
+// router.post(
+//     "/resetPassword",
+//     (req: Request, res: Response, next: NextFunction) =>
+//         expertAdapter.resetPassword(req, res, next)
+// );
+
+// router.post("/logout", (req: Request, res: Response, next: NextFunction) =>
+//     expertAdapter.logoutExpert(req, res, next)
+// )
 
 export default router

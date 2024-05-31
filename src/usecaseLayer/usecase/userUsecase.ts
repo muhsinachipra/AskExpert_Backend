@@ -11,7 +11,7 @@ import { forgotPassword } from './user/forgotPassword'
 import { googleAuth } from './user/googleAuth'
 import { loginUser } from './user/loginUser'
 import { resetPassword } from './user/resetPassword'
-import { verifyOTP } from './user/sendEmail'
+import { sendOTP } from './user/sendOTP'
 import { validateAccessToken } from './user/validateAccessToken'
 
 
@@ -73,8 +73,8 @@ export class UserUsecase {
     }
 
     //to send OTP to verify the user's detail
-    async verifyOTP({ email, name }: { email: string; name: string }) {
-        return verifyOTP(this.requestValidator, this.userRepository, this.nodemailer, email, name);
+    async sendOTP({ email, name }: { email: string; name: string }) {
+        return sendOTP(this.requestValidator, this.userRepository, this.nodemailer, email, name);
     }
 
     //to check if the user entered OTP is correct or not

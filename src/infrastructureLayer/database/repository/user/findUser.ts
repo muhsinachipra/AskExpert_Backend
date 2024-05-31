@@ -1,4 +1,4 @@
-// backend\src\infrastructureLayer\database\reposittory\user\findUser.ts
+// backend\src\infrastructureLayer\database\repository\user\findUser.ts
 
 import UserModel from "../../model/userModel";
 

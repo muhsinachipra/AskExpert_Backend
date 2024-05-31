@@ -18,9 +18,9 @@ router.post(
 )
 
 router.post(
-    "/sendEmail",
+    "/sendOTP",
     (req: Request, res: Response, next: NextFunction) =>
-        userAdapter.sendEmail(req, res, next)
+        userAdapter.sendOTP(req, res, next)
 )
 
 router.post(
