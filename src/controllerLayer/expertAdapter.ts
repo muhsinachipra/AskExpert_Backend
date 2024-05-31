@@ -30,40 +30,6 @@ export class ExpertAdapter {
         }
     }
 
-    //@desc     send otp to new expert email
-    //route     POST api/expert/sendOTP
-    //@access   Public
-    async sendOTP(req: Req, res: Res, next: Next) {
-        console.log('--> expertAdapter/sendOTP');
-
-        try {
-            const expert = await this.expertUsecase.sendOTP(req.body);
-            res.status(expert.status).json({
-                success: expert.success,
-                message: expert.message,
-            });
-        } catch (err) {
-            next(err);
-        }
-    }
-
-    //@desc     Checking the otp valid or not
-    //route     POST api/expert/emailVerification
-    //@access   Public
-    async emailVerification(req: Req, res: Res, next: Next) {
-        try {
-            const expert = await this.expertUsecase.emailVerification(req.body);
-            expert &&
-                res.status(expert.status).json({
-                    success: expert.success,
-                    // data: expert.data,
-                    message: expert.message,
-                });
-        } catch (err) {
-            next(err);
-        }
-    }
-
     // // @desc      Login expert
     // // route      POST api/expert/login
     // // @access    Public
@@ -118,7 +84,7 @@ export class ExpertAdapter {
     // }
 
 
-    
+
 
     // //@desc     Forgot password save
     // //route     POST api/expert/forgotPassword
