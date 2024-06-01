@@ -1,3 +1,5 @@
+// backend\src\infrastructureLayer\database\model\adminModel.ts
+
 import mongoose, { Document, Model, Schema } from "mongoose"
 import { IAdmin } from "../../../domainLayer/admin"
 

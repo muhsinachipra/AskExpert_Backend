@@ -39,6 +39,22 @@ export class AdminAdapter {
         }
     }
 
+    // @desc      Get expert data
+    // route      GET api/admin/getExpertData
+    // @access    Private
+    async getExpertData(req: Req, res: Res, next: Next) {
+        try {
+            const expertData = await this.adminUsecase.getExpertData();
+            return res.status(200).json({
+                success: true,
+                data: expertData,
+                message: 'Expert data retrieved successfully',
+            });
+        } catch (err) {
+            next(err);
+        }
+    }
+
     async logoutAdmin(req: Req, res: Res, next: Next) {
         try {
             res.cookie("jwt", "", {

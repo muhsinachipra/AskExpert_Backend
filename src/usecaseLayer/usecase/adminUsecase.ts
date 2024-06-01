@@ -4,6 +4,7 @@ import { IAdminRepository } from '../interface/repository/IAdminRepository'
 import { IRequestValidator } from '../interface/repository/IValidateRepository'
 import IBcrypt from '../interface/services/IBcrypt'
 import IJwt from '../interface/services/IJwt'
+import { IResponse } from '../interface/services/IResponse'
 import { loginAdmin } from './admin/loginAdmin'
 
 export class AdminUsecase {
@@ -40,4 +41,22 @@ export class AdminUsecase {
         }
     }
 
+    async getExpertData(): Promise<IResponse> {
+        try {
+            const expertData = await this.adminRepository.getExpertData();
+            return {
+                success: true,
+                data: expertData,
+                message: 'Expert data retrieved successfully',
+                status: 200,
+            };
+        } catch (error) {
+            return {
+                success: false,
+                data: null,
+                message: 'Failed to retrieve expert data',
+                status: 500,
+            };
+        }
+    }
 }
