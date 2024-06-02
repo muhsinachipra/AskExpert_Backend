@@ -2,5 +2,5 @@ export default interface INodemailer {
     generateOTP(email: string): string;
     sendEmailVerification(email: string, username: string): Promise<string>
     verifyOTP(enteredOTP: string, email: string): Promise<boolean>
-    sendForgotPasswordEmail(email: string, username: string, token: string): Promise<string>;
+    sendForgotPasswordEmail(route: string, email: string, username: string, token: string): Promise<string>;
 }

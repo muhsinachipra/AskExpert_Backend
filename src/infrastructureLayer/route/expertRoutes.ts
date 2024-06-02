@@ -58,4 +58,22 @@ router.patch(
         expertAdapter.updateProfile(req, res, next)
 );
 
+router.post(
+    "/forgotPassword",
+    (req: Request, res: Response, next: NextFunction) =>
+        expertAdapter.forgotPassword(req, res, next)
+);
+
+router.post(
+    "/validateAccessToken",
+    (req: Request, res: Response, next: NextFunction) =>
+        expertAdapter.validateAccessToken(req, res, next)
+);
+
+router.post(
+    "/resetPassword",
+    (req: Request, res: Response, next: NextFunction) =>
+        expertAdapter.resetPassword(req, res, next)
+);
+
 export default router

@@ -1,3 +1,5 @@
+// backend\src\infrastructureLayer\database\repository\user\resetPassword.ts
+
 import { IUser } from "../../../../domainLayer/user";
 import { IResetPassword } from "../../../../usecaseLayer/interface/services/IResponse";
 import UserModel from "../../model/userModel";

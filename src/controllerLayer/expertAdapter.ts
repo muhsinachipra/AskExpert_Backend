@@ -181,4 +181,67 @@ export class ExpertAdapter {
         }
     }
 
+    //@desc     Forgot password save
+    //route     POST api/expert/forgotPassword
+    //@access   Public
+    async forgotPassword(req: Req, res: Res, next: Next) {
+        try {
+            const newExpert = await this.expertUsecase.forgotPassword(req.body);
+            console.log("expertAdapter,newExpert :", newExpert)
+            newExpert &&
+                res.cookie("expertjwt", newExpert.token, {
+                    httpOnly: true,
+                    sameSite: "strict", // Prevent CSRF attacks
+                    maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
+                });
+
+            res.status(newExpert.status).json({
+                success: newExpert.success,
+                message: newExpert.message,
+                expert: newExpert.data,
+            });
+        } catch (err) {
+            next(err);
+        }
+    }
+
+    async validateAccessToken(req: Req, res: Res, next: Next) {
+        try {
+            console.log('--> expertAdapter/validateAccessToken');
+            const newExpert = await this.expertUsecase.validateAccessToken(req.body);
+            newExpert &&
+                res.cookie("expertjwt", newExpert.token, {
+                    httpOnly: true,
+                    sameSite: "strict", // Prevent CSRF attacks
+                    maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
+                });
+            res.status(newExpert.status).json({
+                success: newExpert.success,
+                message: newExpert.message,
+                expert: newExpert.data,
+            });
+        } catch (err) {
+            next(err);
+        }
+    }
+
+    async resetPassword(req: Req, res: Res, next: Next) {
+        try {
+            const newExpert = await this.expertUsecase.resetPassword(req.body);
+            newExpert &&
+                res.cookie("expertjwt", newExpert.token, {
+                    httpOnly: true,
+                    sameSite: "strict", // Prevent CSRF attacks
+                    maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
+                });
+            res.status(newExpert.status).json({
+                success: newExpert.success,
+                message: newExpert.message,
+                expert: newExpert.data,
+            });
+        } catch (err) {
+            next(err);
+        }
+    }
+
 }

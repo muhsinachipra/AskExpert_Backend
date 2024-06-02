@@ -1,7 +1,7 @@
-// backend\src\usecaseLayer\usecase\user\forgotPassword.ts
+// backend\src\usecaseLayer\usecase\expert\forgotPassword.ts
 
 import ErrorResponse from "../../handler/errorResponse";
-import { IUserRepository } from "../../interface/repository/IUserRepository";
+import { IExpertRepository } from "../../interface/repository/IExpertRepository";
 import { IRequestValidator } from "../../interface/repository/IValidateRepository";
 import INodemailer from "../../interface/services/INodemailer";
 import IJwt from "../../interface/services/IJwt";
@@ -9,12 +9,12 @@ import { IResponse } from "../../interface/services/IResponse";
 
 
 export const forgotPassword = async (
-    requestValidator: IRequestValidator, userRepository: IUserRepository, jwt: IJwt, nodemailer: INodemailer, email: string, name: string, token: string,
+    requestValidator: IRequestValidator, expertRepository: IExpertRepository, jwt: IJwt, nodemailer: INodemailer, email: string, name: string, token: string,
 ): Promise<IResponse> => {
     try {
-        const user = await userRepository.findUser(email);
-        if (!user) {
-            throw ErrorResponse.notFound("User not found");
+        const expert = await expertRepository.findExpert(email);
+        if (!expert) {
+            throw ErrorResponse.notFound("Expert not found");
         }
 
         const validation = requestValidator.validateRequiredFields(
@@ -26,13 +26,13 @@ export const forgotPassword = async (
             throw ErrorResponse.badRequest(validation.message as string);
         }
 
-        const token = jwt.createJWT(user._id as string, user.email, "resetPassword", user.name)
+        const token = jwt.createJWT(expert._id as string, expert.email, "resetPassword", expert.name)
 
         console.log('forgot password token', token);
 
-        const userRoute = ''
+        const expertRoute = '/expert'
 
-        const sendForgotPasswordEmail = await nodemailer.sendForgotPasswordEmail(userRoute, user.email, user.name, token);
+        const sendForgotPasswordEmail = await nodemailer.sendForgotPasswordEmail(expertRoute, expert.email, expert.name, token);
         console.log('sendForgotPasswordEmail :', sendForgotPasswordEmail);
 
         return {

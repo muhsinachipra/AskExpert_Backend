@@ -97,7 +97,7 @@ class Nodemailer implements INodemailer {
         }
     }
 
-    async sendForgotPasswordEmail(email: string, username: string, token: string): Promise<string> {
+    async sendForgotPasswordEmail(route: string, email: string, username: string, token: string): Promise<string> {
         console.log("--> infrastructureLayer\services\nodemailer.ts", email, username);
 
         const transporter = nodemailer.createTransport({
@@ -122,7 +122,7 @@ class Nodemailer implements INodemailer {
                     <p style="color: #555;">Please click on the link below to reset your password:</p>
                 </div>
                 <div style="width: 75%; margin: 0 auto; background-color: #00255F; color: white; padding: 20px; font-size: 24px; text-align: center; border-radius: 5px;">
-                    <strong><a href="http://localhost:5000/resetpassword/${email}/${token}" style="color: #007bff; text-decoration: none;">Reset Password</a></strong>
+                    <strong><a href="http://localhost:5000${route}/resetpassword/${email}/${token}" style="color: #007bff; text-decoration: none;">Reset Password</a></strong>
                 </div>
                 <div style="text-align: center; margin-top: 20px;">
                     <p style="color: #555;">If you did not request this change, please ignore this email.</p>
