@@ -1,4 +1,4 @@
-// backend\src\infrastructureLayer\database\reposittory\user\findUser.ts
+// backend\src\infrastructureLayer\database\repository\user\findUser.ts
 
 import UserModel from "../../model/userModel";
 
@@ -7,9 +7,9 @@ export const findUser = async (
     userModel: typeof UserModel
 ) => {
     try {
-        console.log('email in findUserByEmail in userRepository --->>>> ', email)
+        // console.log('email in findUserByEmail in userRepository --->>>> ', email)
         const existingUser = await userModel.findOne({ email });
-        console.log('existingUser',existingUser);
+   
         return existingUser;
     } catch (error) {
         throw error

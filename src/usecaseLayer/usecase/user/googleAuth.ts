@@ -1,9 +1,11 @@
+// backend\src\usecaseLayer\usecase\user\googleAuth.ts
+
 import ErrorResponse from "../../handler/errorResponse";
 import { IUserRepository } from "../../interface/repository/IUserRepository";
 import { IRequestValidator } from "../../interface/repository/IValidateRepository";
-import IHashpassword from "../../interface/services/IHashPassword";
+import IHashpassword from "../../interface/services/IBcrypt";
 import Ijwt from "../../interface/services/IJwt";
-import { IUserResponse, } from "../../interface/services/IResponse";
+import { IResponse, } from "../../interface/services/IResponse";
 
 
 export const googleAuth = async (
@@ -14,7 +16,7 @@ export const googleAuth = async (
     name: string,
     email: string,
     password: string
-): Promise<IUserResponse> => {
+): Promise<IResponse> => {
     try {
         // Validate required parameters
         const validation = requestValidator.validateRequiredFields(
@@ -41,7 +43,7 @@ export const googleAuth = async (
             return {
                 status: 200,
                 success: true,
-                message: `Successfully Registerd Welcome ${createnewUser.name}`,
+                message: `Register Successful, Welcome ${createnewUser.name}`,
                 token: token,
                 data: createnewUser
             };
@@ -60,7 +62,7 @@ export const googleAuth = async (
                 success: true,
                 token: token,
                 data: user,
-                message: `Login successful. Welcome ${user.name}`,
+                message: `Welcome ${user.name}`,
             };
         }
         throw ErrorResponse.internalServerError("Unexpected error occurred");

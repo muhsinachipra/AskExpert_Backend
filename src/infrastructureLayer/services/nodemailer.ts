@@ -1,8 +1,11 @@
+// backend\src\infrastructureLayer\services\nodemailer.ts
+
 import nodemailer from "nodemailer";
 import INodemailer from "../../usecaseLayer/interface/services/INodemailer";
 
 class Nodemailer implements INodemailer {
-    private otps: Map<string, string> = new Map();
+    private otps: Map<string, { otp: string, timestamp: number }> = new Map();
+    private OTP_EXPIRATION_TIME = 1 * 60 * 1000; // 5 minutes
 
     generateOTP(): string {
         const digits = "0123456789";
@@ -15,7 +18,7 @@ class Nodemailer implements INodemailer {
 
     async sendEmailVerification(email: string, name: string): Promise<string> {
         try {
-            console.log('email, name ', email, name);
+            // console.log('email and name in sendEmailVerification method', email, name);
             const transporter = nodemailer.createTransport({
                 host: "smtp.gmail.com",
                 port: 587,
@@ -27,12 +30,14 @@ class Nodemailer implements INodemailer {
                 },
             });
 
+            // console.log('before clearing this.otps in the sendEmailVerification method', this.otps);
             if (this.otps) {
                 this.otps.clear();
             }
             const otp = this.generateOTP();
-            this.otps.set(email, otp);
-            console.log('this.otps ', this.otps);
+            const timestamp = Date.now();
+            this.otps.set(email, { otp, timestamp });
+            // console.log('after setting this.otps in the sendEmailVerification method', this.otps);
 
             const mailOptions = {
                 from: "muhsinachipra@gmail.com",
@@ -65,11 +70,23 @@ class Nodemailer implements INodemailer {
         }
     }
 
-    //to verfiy the otp for the email verification
     async verifyOTP(enteredOTP: string, email: string): Promise<boolean> {
         try {
-            const expectedOTP = this.otps.get(email);
-            if (expectedOTP === enteredOTP) {
+            console.log('this.otps in the verifyOTP method', this.otps);
+            const otpData = this.otps.get(email);
+            if (!otpData) {
+                return false;
+            }
+            const { otp, timestamp } = otpData;
+            const currentTime = Date.now();
+
+            if (currentTime - timestamp > this.OTP_EXPIRATION_TIME) {
+                this.otps.delete(email);
+                return false; // OTP expired
+            }
+
+            // console.log("expectedOTP, enteredOTP ", otp, enteredOTP);
+            if (otp === enteredOTP) {
                 this.otps.delete(email);
                 return true;
             } else {
@@ -119,7 +136,6 @@ class Nodemailer implements INodemailer {
         await transporter.sendMail(mailOptions);
         return "success";
         // return "Hey please check your email";
-
     }
 }
 

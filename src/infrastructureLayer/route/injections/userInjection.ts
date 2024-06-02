@@ -1,3 +1,5 @@
+// backend\src\infrastructureLayer\route\injections\userInjection.ts
+
 import { UserAdapter } from '../../../controllerLayer/userAdapter'
 import { UserUsecase } from '../../../usecaseLayer/usecase/userUsecase'
 import UserModel from '../../database/model/userModel'

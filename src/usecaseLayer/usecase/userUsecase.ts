@@ -1,6 +1,8 @@
+// backend\src\usecaseLayer\usecase\userUsecase.ts
+
 import { IUserRepository } from '../interface/repository/IUserRepository'
 import { IRequestValidator } from '../interface/repository/IValidateRepository'
-import IHashPassword from '../interface/services/IHashPassword'
+import IBcrypt from '../interface/services/IBcrypt'
 import IJwt from '../interface/services/IJwt'
 import INodemailer from '../interface/services/INodemailer'
 import { createUser } from "./user/createUser"
@@ -9,20 +11,21 @@ import { forgotPassword } from './user/forgotPassword'
 import { googleAuth } from './user/googleAuth'
 import { loginUser } from './user/loginUser'
 import { resetPassword } from './user/resetPassword'
-import { verifyOTP } from './user/sendEmail'
+import { sendOTP } from './user/sendOTP'
 import { validateAccessToken } from './user/validateAccessToken'
+import { updateProfile } from './user/updateProfile'
 
 
 export class UserUsecase {
     private readonly userRepository: IUserRepository
-    private readonly bcrypt: IHashPassword
+    private readonly bcrypt: IBcrypt
     private readonly jwt: IJwt
     private readonly nodemailer: INodemailer
     private readonly requestValidator: IRequestValidator
 
     constructor(
         userRepository: IUserRepository,
-        bcrypt: IHashPassword,
+        bcrypt: IBcrypt,
         jwt: IJwt,
         nodemailer: INodemailer,
         requestValidator: IRequestValidator
@@ -71,8 +74,8 @@ export class UserUsecase {
     }
 
     //to send OTP to verify the user's detail
-    async verifyOTP({ email, name }: { email: string; name: string }) {
-        return verifyOTP(this.requestValidator, this.userRepository, this.nodemailer, email, name);
+    async sendOTP({ email, name }: { email: string; name: string }) {
+        return sendOTP(this.requestValidator, this.userRepository, this.nodemailer, email, name);
     }
 
     //to check if the user entered OTP is correct or not
@@ -109,7 +112,8 @@ export class UserUsecase {
     async validateAccessToken({ token }: { token: string }) {
         return validateAccessToken(
             this.userRepository,
-            token
+            token,
+            this.jwt,
         )
     }
 
@@ -121,6 +125,21 @@ export class UserUsecase {
             id,
             password
         )
+    }
+
+    async updateProfile({ _id, name, mobile }: { _id: string, name: string, mobile: string }) {
+        try {
+            return await updateProfile(
+                this.requestValidator,
+                this.userRepository,
+                _id,
+                name,
+                mobile
+            );
+        } catch (error) {
+            console.error('Error updating user profile:', error);
+            throw error;
+        }
     }
 
 }

@@ -1,16 +1,16 @@
-// backend\src\usecaseLayer\usecase\user\loginUser.ts
+// backend\src\usecaseLayer\usecase\admin\loginAdmin.ts
 
-import { IUser } from "../../../domainLayer/user";
+import { IAdmin } from "../../../domainLayer/admin";
 import ErrorResponse from "../../handler/errorResponse";
-import { IUserRepository } from "../../interface/repository/IUserRepository";
+import { IAdminRepository } from "../../interface/repository/IAdminRepository";
 import { IRequestValidator } from "../../interface/repository/IValidateRepository";
 import IBcrypt from "../../interface/services/IBcrypt";
 import IJwt from "../../interface/services/IJwt";
 import { IResponse } from "../../interface/services/IResponse";
 
-export const loginUser = async (
+export const loginAdmin = async (
     requestValidator: IRequestValidator,
-    userRepository: IUserRepository,
+    adminRepository: IAdminRepository,
     bcrypt: IBcrypt,
     jwt: IJwt,
     email: string,
@@ -26,29 +26,21 @@ export const loginUser = async (
             throw ErrorResponse.badRequest(validation.message as string);
         }
 
-        const user: IUser | null = await userRepository.findUser(email);
+        const admin: IAdmin | null = await adminRepository.findAdmin(email);
 
 
-        if (user && user._id) {
-            if (user.isBlocked) {
-                throw ErrorResponse.badRequest("Your account is blocked");
-            }
-            const match: boolean = await bcrypt.compare(password, user.password);
+        if (admin && admin._id) {
+            const match: boolean = await bcrypt.compare(password, admin.password);
             if (match) {
-                const token = jwt.createJWT(user._id, user.email, "user", user.name);
-                console.log(user, "userrrrrrrrrrrrrrrrrrr");
-
-                // const userResponse = { ...user };
-                // userResponse.password = ''
-                // console.log(userResponse,"userrress");
-                user.password = ""
+                const token = jwt.createJWT(admin._id, admin.email, "admin", admin.name);
+                admin.password = ""
 
                 return {
                     status: 200,
                     success: true,
                     token: token,
-                    data: user,
-                    message: `Welcome ${user.name}`,
+                    data: admin,
+                    message: `Welcome ${admin.name}`,
                 };
             }
             throw ErrorResponse.badRequest("Invalid credentials");

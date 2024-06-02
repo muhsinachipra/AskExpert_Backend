@@ -1,7 +1,7 @@
 import ErrorResponse from '../../handler/errorResponse'
 import { IUserRepository } from "../../interface/repository/IUserRepository"
 import { IRequestValidator } from '../../interface/repository/IValidateRepository'
-import IHashpassword from '../../interface/services/IHashPassword'
+import IHashpassword from '../../interface/services/IBcrypt'
 import { IResponse } from "../../interface/services/IResponse"
 
 export const createUser = async (

@@ -1,14 +1,14 @@
 import ErrorResponse from "../../handler/errorResponse";
 import { IUserRepository } from "../../interface/repository/IUserRepository";
 import { IRequestValidator } from "../../interface/repository/IValidateRepository";
-import IHashPassword from "../../interface/services/IHashPassword";
+import IBcrypt from "../../interface/services/IBcrypt";
 import { IResponse } from "../../interface/services/IResponse";
 
 
 export const resetPassword = async (
     userRepository: IUserRepository,
     requestValidator: IRequestValidator,
-    bcrypt: IHashPassword,
+    bcrypt: IBcrypt,
     id: string,
     password: string
 ): Promise<IResponse> => {

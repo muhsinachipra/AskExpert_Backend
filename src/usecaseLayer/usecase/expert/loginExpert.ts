@@ -1,16 +1,16 @@
-// backend\src\usecaseLayer\usecase\user\loginUser.ts
+// backend\src\usecaseLayer\usecase\expert\loginExpert.ts
 
-import { IUser } from "../../../domainLayer/user";
+import { IExpert } from "../../../domainLayer/expert";
 import ErrorResponse from "../../handler/errorResponse";
-import { IUserRepository } from "../../interface/repository/IUserRepository";
+import { IExpertRepository } from "../../interface/repository/IExpertRepository";
 import { IRequestValidator } from "../../interface/repository/IValidateRepository";
 import IBcrypt from "../../interface/services/IBcrypt";
 import IJwt from "../../interface/services/IJwt";
 import { IResponse } from "../../interface/services/IResponse";
 
-export const loginUser = async (
+export const loginExpert = async (
     requestValidator: IRequestValidator,
-    userRepository: IUserRepository,
+    expertRepository: IExpertRepository,
     bcrypt: IBcrypt,
     jwt: IJwt,
     email: string,
@@ -26,29 +26,23 @@ export const loginUser = async (
             throw ErrorResponse.badRequest(validation.message as string);
         }
 
-        const user: IUser | null = await userRepository.findUser(email);
+        const expert: IExpert | null = await expertRepository.findExpert(email);
 
-
-        if (user && user._id) {
-            if (user.isBlocked) {
-                throw ErrorResponse.badRequest("Your account is blocked");
+        if (expert && expert._id) {
+            if (expert.isBlocked) {
+                throw ErrorResponse.badRequest("Your account is blocked, Please contact Admin");
             }
-            const match: boolean = await bcrypt.compare(password, user.password);
+            const match: boolean = await bcrypt.compare(password, expert.password);
             if (match) {
-                const token = jwt.createJWT(user._id, user.email, "user", user.name);
-                console.log(user, "userrrrrrrrrrrrrrrrrrr");
-
-                // const userResponse = { ...user };
-                // userResponse.password = ''
-                // console.log(userResponse,"userrress");
-                user.password = ""
+                const token = jwt.createJWT(expert._id, expert.email, "expert", expert.name);
+                expert.password = ""
 
                 return {
                     status: 200,
                     success: true,
                     token: token,
-                    data: user,
-                    message: `Welcome ${user.name}`,
+                    data: expert,
+                    message: `Welcome ${expert.name}`,
                 };
             }
             throw ErrorResponse.badRequest("Invalid credentials");

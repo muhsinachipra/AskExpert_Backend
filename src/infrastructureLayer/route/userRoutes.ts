@@ -1,5 +1,8 @@
+// backend\src\infrastructureLayer\route\userRoutes.ts
+
 import express, { NextFunction, Request, Response } from 'express';
 import { userAdapter } from './injections/userInjection';
+import AuthMiddleware from '../middleware/AuthMiddleware'
 
 const router = express.Router()
 
@@ -16,9 +19,9 @@ router.post(
 )
 
 router.post(
-    "/sendEmail",
+    "/sendOTP",
     (req: Request, res: Response, next: NextFunction) =>
-        userAdapter.sendEmail(req, res, next)
+        userAdapter.sendOTP(req, res, next)
 )
 
 router.post(
@@ -33,13 +36,6 @@ router.post(
     (req: Request, res: Response, next: NextFunction) =>
         userAdapter.googleAuth(req, res, next)
 );
-
-// //routes for forgot password otp verification
-// router.post(
-//     "/sendOTPforgotPassword",
-//     (req: Request, res: Response, next: NextFunction) =>
-//         userAdapter.sendOtpForgotPassword(req, res, next)
-// );
 
 //routes for forgot password save
 router.post(
@@ -60,5 +56,17 @@ router.post(
         userAdapter.resetPassword(req, res, next)
 );
 
+router.post(
+    "/logout",
+    (req: Request, res: Response, next: NextFunction) =>
+        userAdapter.logoutUser(req, res, next)
+)
+
+router.patch(
+    "/updateProfile",
+    AuthMiddleware.protectUser,
+    (req: Request, res: Response, next: NextFunction) =>
+        userAdapter.updateProfile(req, res, next)
+);
 
 export default router
