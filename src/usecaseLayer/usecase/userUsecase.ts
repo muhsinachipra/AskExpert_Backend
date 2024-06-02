@@ -13,6 +13,7 @@ import { loginUser } from './user/loginUser'
 import { resetPassword } from './user/resetPassword'
 import { sendOTP } from './user/sendOTP'
 import { validateAccessToken } from './user/validateAccessToken'
+import { updateProfile } from './user/updateProfile'
 
 
 export class UserUsecase {
@@ -124,6 +125,21 @@ export class UserUsecase {
             id,
             password
         )
+    }
+
+    async updateProfile({ _id, name, mobile }: { _id: string, name: string, mobile: string }) {
+        try {
+            return await updateProfile(
+                this.requestValidator,
+                this.userRepository,
+                _id,
+                name,
+                mobile
+            );
+        } catch (error) {
+            console.error('Error updating user profile:', error);
+            throw error;
+        }
     }
 
 }

@@ -26,4 +26,10 @@ router.post(
         adminAdapter.logoutAdmin(req, res, next)
 )
 
+router.patch(
+    '/verifyExpert/:id',
+    (req: Request, res: Response, next: NextFunction) =>
+        adminAdapter.updateExpertVerification(req, res, next)
+)
+
 export default router

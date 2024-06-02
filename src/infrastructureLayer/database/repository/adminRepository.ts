@@ -6,6 +6,7 @@ import { IAdminRepository } from "../../../usecaseLayer/interface/repository/IAd
 import AdminModel from "../model/adminModel";
 import { findAdmin } from "./admin/findAdmin";
 import { getExpertData } from "./admin/getExpertData";
+import { toggleExpertVerification } from './admin/toggleExpertVerification'
 
 export class AdminRepository implements IAdminRepository {
 
@@ -17,5 +18,9 @@ export class AdminRepository implements IAdminRepository {
 
     async getExpertData(): Promise<IExpert[]> {
         return getExpertData();
+    }
+
+    async toggleExpertVerification(expertId: string): Promise<IExpert | null> {
+        return toggleExpertVerification(expertId);
     }
 }

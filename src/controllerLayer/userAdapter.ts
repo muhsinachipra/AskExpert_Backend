@@ -215,4 +215,20 @@ export class UserAdapter {
         }
     }
 
+    // @desc    Update user profile
+    // route    PUT api/user/profile
+    // @access  Private
+    async updateProfile(req: Req, res: Res, next: Next) {
+        try {
+            const user = await this.userUsecase.updateProfile(req.body);
+            user &&
+                res.status(user.status).json({
+                    success: user.success,
+                    message: user.message,
+                    user: user.data,
+                });
+        } catch (error) {
+            next(error)
+        }
+    }
 }

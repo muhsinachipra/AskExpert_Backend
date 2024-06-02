@@ -59,4 +59,31 @@ export class AdminUsecase {
             };
         }
     }
+
+    async toggleExpertVerification(expertId: string): Promise<IResponse> {
+        try {
+            const updatedExpert = await this.adminRepository.toggleExpertVerification(expertId);
+            if (updatedExpert) {
+                return {
+                    success: true,
+                    data: updatedExpert,
+                    message: 'Expert verification status updated successfully',
+                    status: 200,
+                };
+            }
+            return {
+                success: false,
+                data: null,
+                message: 'Expert not found',
+                status: 404,
+            };
+        } catch (error) {
+            return {
+                success: false,
+                data: null,
+                message: 'Failed to update expert verification status',
+                status: 500,
+            };
+        }
+    }
 }

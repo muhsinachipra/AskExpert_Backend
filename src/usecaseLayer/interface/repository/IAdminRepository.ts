@@ -6,4 +6,5 @@ import { IExpert } from "../../../domainLayer/expert";
 export interface IAdminRepository {
     findAdmin(email: string): Promise<IAdmin | null>
     getExpertData(): Promise<IExpert[]>;
+    toggleExpertVerification(expertId: string): Promise<IExpert | null>;
 }

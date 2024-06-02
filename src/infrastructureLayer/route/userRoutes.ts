@@ -2,6 +2,7 @@
 
 import express, { NextFunction, Request, Response } from 'express';
 import { userAdapter } from './injections/userInjection';
+import AuthMiddleware from '../middleware/AuthMiddleware'
 
 const router = express.Router()
 
@@ -55,8 +56,17 @@ router.post(
         userAdapter.resetPassword(req, res, next)
 );
 
-router.post("/logout", (req: Request, res: Response, next: NextFunction) =>
-    userAdapter.logoutUser(req, res, next)
+router.post(
+    "/logout",
+    (req: Request, res: Response, next: NextFunction) =>
+        userAdapter.logoutUser(req, res, next)
 )
+
+router.patch(
+    "/updateProfile",
+    AuthMiddleware.protectUser,
+    (req: Request, res: Response, next: NextFunction) =>
+        userAdapter.updateProfile(req, res, next)
+);
 
 export default router

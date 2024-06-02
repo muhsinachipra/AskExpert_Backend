@@ -55,6 +55,19 @@ export class AdminAdapter {
         }
     }
 
+    // @desc      Toggle expert isVerified
+    // route      PATCH api/admin/verifyExpert/:id
+    // @access    Private
+    async updateExpertVerification(req: Req, res: Res, next: Next) {
+        try {
+            const expertId = req.params.id;
+            const response = await this.adminUsecase.toggleExpertVerification(expertId);
+            return res.status(response.status).json(response);
+        } catch (err) {
+            next(err);
+        }
+    }
+
     async logoutAdmin(req: Req, res: Res, next: Next) {
         try {
             res.cookie("jwt", "", {
