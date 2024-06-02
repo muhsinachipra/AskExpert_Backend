@@ -8,6 +8,7 @@ import IJwt from '../interface/services/IJwt'
 import INodemailer from '../interface/services/INodemailer'
 import { createExpert } from "./expert/createExpert"
 import { loginExpert } from './expert/loginExpert'
+import { updateProfile } from './expert/updateProfile'
 // import { forgotPassword } from './expert/forgotPassword'
 // import { googleAuth } from './expert/googleAuth'
 // import { resetPassword } from './expert/resetPassword'
@@ -74,7 +75,21 @@ export class ExpertUsecase {
             throw error;
         }
     }
-    
+
+    async updateProfile({ _id, name, rate }: { _id: string, name: string, rate: number }) {
+        try {
+            return await updateProfile(
+                this.requestValidator,
+                this.expertRepository,
+                _id,
+                name,
+                rate
+            );
+        } catch (error) {
+            console.error('Error updating expert profile:', error);
+            throw error;
+        }
+    }
 
     // //to create expert
     // async googleAuth({ name, email, password, }: { name: string; email: string; password: string; }) {

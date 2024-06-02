@@ -2,6 +2,7 @@
 
 import express, { NextFunction, Request, Response } from 'express';
 import { expertAdapter } from './injections/expertInjection';
+import AuthMiddleware from '../middleware/AuthMiddleware';
 
 const router = express.Router()
 
@@ -44,8 +45,17 @@ router.post(
 //         expertAdapter.resetPassword(req, res, next)
 // );
 
-router.post("/logout", (req: Request, res: Response, next: NextFunction) =>
-    expertAdapter.logoutExpert(req, res, next)
+router.post(
+    "/logout",
+    (req: Request, res: Response, next: NextFunction) =>
+        expertAdapter.logoutExpert(req, res, next)
 )
+
+router.patch(
+    "/updateProfile",
+    AuthMiddleware.protectExpert,
+    (req: Request, res: Response, next: NextFunction) =>
+        expertAdapter.updateProfile(req, res, next)
+);
 
 export default router

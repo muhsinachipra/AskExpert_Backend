@@ -164,4 +164,21 @@ export class ExpertAdapter {
         }
     }
 
+    // @desc    Update expert profile
+    // route    PUT api/expert/profile
+    // @access  Private
+    async updateProfile(req: Req, res: Res, next: Next) {
+        try {
+            const expert = await this.expertUsecase.updateProfile(req.body);
+            expert &&
+                res.status(expert.status).json({
+                    success: expert.success,
+                    message: expert.message,
+                    expert: expert.data,
+                });
+        } catch (error) {
+            next(error)
+        }
+    }
+
 }

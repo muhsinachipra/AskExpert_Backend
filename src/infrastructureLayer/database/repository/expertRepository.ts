@@ -6,6 +6,7 @@ import { IExpertRepository } from "../../../usecaseLayer/interface/repository/IE
 import ExpertModel from "../model/expertModel";
 import { createExpert } from "./expert/createExpert";
 import { findExpert } from "./expert/findExpert";
+import { updateProfile } from "./expert/updateProfile";
 // import { resetPassword } from "./expert/resetPassword";
 
 export class ExpertRepository implements IExpertRepository {
@@ -18,6 +19,10 @@ export class ExpertRepository implements IExpertRepository {
 
     async findExpert(email: string): Promise<IExpert | null> {
         return findExpert(email, this.expertModel)
+    }
+
+    async updateProfile(data: { _id: string; name: string; rate: number }): Promise<IExpert | never> {
+        return updateProfile(data, this.expertModel)
     }
 
     // async resetPassword(newPassword: IResetPassword): Promise<IExpert> {
