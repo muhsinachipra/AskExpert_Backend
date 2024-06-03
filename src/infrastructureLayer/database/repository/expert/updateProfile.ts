@@ -4,14 +4,16 @@ import { IExpert } from "../../../../domainLayer/expert";
 import ExpertModel from "../../model/expertModel";
 
 export const updateProfile = async (
-    data: { _id: string; name: string; rate: number },
+    data: { _id: string; profilePic: string; name: string; rate: number; experience: number },
     expertModels: typeof ExpertModel
 ): Promise<IExpert | never> => {
     try {
         const expert = await expertModels.findOne({ _id: data._id }).select("-password");
         if (expert) {
+            expert.profilePic = data.profilePic
             expert.name = data.name
             expert.rate = data.rate
+            expert.experience = data.experience
             await expert.save();
             return expert;
         }

@@ -32,4 +32,16 @@ router.patch(
         adminAdapter.updateExpertVerification(req, res, next)
 )
 
+router.post(
+    "/logout",
+    (req: Request, res: Response, next: NextFunction) =>
+        adminAdapter.logoutAdmin(req, res, next)
+)
+
+router.post(
+    '/sendVerifiedEmail/:id',
+    (req: Request, res: Response, next: NextFunction) =>
+        adminAdapter.sendVerifiedEmail(req, res, next)
+)
+
 export default router

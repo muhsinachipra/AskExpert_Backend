@@ -79,14 +79,16 @@ export class ExpertUsecase {
         }
     }
 
-    async updateProfile({ _id, name, rate }: { _id: string, name: string, rate: number }) {
+    async updateProfile({ _id, profilePic, name, rate, experience }: { _id: string, profilePic: string, name: string, rate: number, experience: number }) {
         try {
             return await updateProfile(
                 this.requestValidator,
                 this.expertRepository,
                 _id,
+                profilePic,
                 name,
-                rate
+                rate,
+                experience
             );
         } catch (error) {
             console.error('Error updating expert profile:', error);
@@ -138,7 +140,7 @@ export class ExpertUsecase {
     //     )
     // }
 
-    
+
     async forgotPassword({ email, name, token }: { email: string, name: string, token: string; }) {
         return forgotPassword(
             this.requestValidator,

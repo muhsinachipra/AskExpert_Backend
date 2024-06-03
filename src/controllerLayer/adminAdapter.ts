@@ -82,4 +82,20 @@ export class AdminAdapter {
         }
     }
 
+    // @desc      send email to expert about verification
+    // route      POST api/admin/sendVerifiedEmail/:id
+    // @access    Private
+    async sendVerifiedEmail(req: Req, res: Res, next: Next) {
+        try {
+            const expertId = req.params.id;
+            const response = await this.adminUsecase.sendVerifiedEmail(expertId);
+            res.status(response.status).json({
+                success: response.success,
+                message: response.message,
+            });
+        } catch (err) {
+            next(err);
+        }
+    }
+
 }
