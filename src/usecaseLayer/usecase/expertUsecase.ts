@@ -7,8 +7,11 @@ import IBcrypt from '../interface/services/IBcrypt'
 import IJwt from '../interface/services/IJwt'
 import INodemailer from '../interface/services/INodemailer'
 import { createExpert } from "./expert/createExpert"
+import { forgotPassword } from './expert/forgotPassword'
 import { loginExpert } from './expert/loginExpert'
+import { resetPassword } from './expert/resetPassword'
 import { updateProfile } from './expert/updateProfile'
+import { validateAccessToken } from './expert/validateAccessToken'
 // import { forgotPassword } from './expert/forgotPassword'
 // import { googleAuth } from './expert/googleAuth'
 // import { resetPassword } from './expert/resetPassword'
@@ -76,14 +79,16 @@ export class ExpertUsecase {
         }
     }
 
-    async updateProfile({ _id, name, rate }: { _id: string, name: string, rate: number }) {
+    async updateProfile({ _id, profilePic, name, rate, experience }: { _id: string, profilePic: string, name: string, rate: number, experience: number }) {
         try {
             return await updateProfile(
                 this.requestValidator,
                 this.expertRepository,
                 _id,
+                profilePic,
                 name,
-                rate
+                rate,
+                experience
             );
         } catch (error) {
             console.error('Error updating expert profile:', error);
@@ -134,5 +139,37 @@ export class ExpertUsecase {
     //         password
     //     )
     // }
+
+
+    async forgotPassword({ email, name, token }: { email: string, name: string, token: string; }) {
+        return forgotPassword(
+            this.requestValidator,
+            this.expertRepository,
+            this.jwt,
+            this.nodemailer,
+            email,
+            name,
+            token
+
+        );
+    }
+
+    async validateAccessToken({ token }: { token: string }) {
+        return validateAccessToken(
+            this.expertRepository,
+            token,
+            this.jwt,
+        )
+    }
+
+    async resetPassword({ id, password }: { id: string, password: string }) {
+        return resetPassword(
+            this.expertRepository,
+            this.requestValidator,
+            this.bcrypt,
+            id,
+            password
+        )
+    }
 
 }

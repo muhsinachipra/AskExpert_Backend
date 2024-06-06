@@ -97,7 +97,7 @@ class Nodemailer implements INodemailer {
         }
     }
 
-    async sendForgotPasswordEmail(email: string, username: string, token: string): Promise<string> {
+    async sendForgotPasswordEmail(route: string, email: string, username: string, token: string): Promise<string> {
         console.log("--> infrastructureLayer\services\nodemailer.ts", email, username);
 
         const transporter = nodemailer.createTransport({
@@ -122,7 +122,7 @@ class Nodemailer implements INodemailer {
                     <p style="color: #555;">Please click on the link below to reset your password:</p>
                 </div>
                 <div style="width: 75%; margin: 0 auto; background-color: #00255F; color: white; padding: 20px; font-size: 24px; text-align: center; border-radius: 5px;">
-                    <strong><a href="http://localhost:5000/resetpassword/${email}/${token}" style="color: #007bff; text-decoration: none;">Reset Password</a></strong>
+                    <strong><a href="http://localhost:5000${route}/resetpassword/${email}/${token}" style="color: #007bff; text-decoration: none;">Reset Password</a></strong>
                 </div>
                 <div style="text-align: center; margin-top: 20px;">
                     <p style="color: #555;">If you did not request this change, please ignore this email.</p>
@@ -136,6 +136,50 @@ class Nodemailer implements INodemailer {
         await transporter.sendMail(mailOptions);
         return "success";
         // return "Hey please check your email";
+    }
+
+    async sendVerifiedEmail(email: string, name: string): Promise<string> {
+        try {
+            const transporter = nodemailer.createTransport({
+                host: "smtp.gmail.com",
+                port: 587,
+                secure: false,
+                requireTLS: false,
+                auth: {
+                    user: process.env.SMTP_USER,
+                    pass: process.env.SMTP_PASS,
+                },
+            });
+
+            const mailOptions = {
+                from: "muhsinachipra@gmail.com",
+                to: email,
+                subject: "Application for Becoming Expert Accepted",
+                html: `
+                <body style="font-family: Arial, sans-serif; background-color: #ffffff; padding: 20px;">
+                <div style="max-width: 600px; margin: 0 auto; background-color: #f4f4f4; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
+                    <div style="text-align: center; margin-bottom: 20px;">
+                        <h2 style="color: #333;">Hello ${name}, Welcome to <strong>AskExpert</strong>!</h2>
+                        <p style="color: #555;">We are thrilled to have you on board. Your application for becoming an expert has been accepted.</p>
+                    </div>
+                    <div style="width: 75%; margin: 0 auto; background-color: #00255F; color: white; padding: 20px; font-size: 24px; text-align: center; border-radius: 5px;">
+                        <strong><a href="http://localhost:5000/expert/home" style="color: #007bff; text-decoration: none;">Welcome Onboard</a></strong>
+                    </div>
+                    <div style="text-align: center; margin-top: 20px;">
+                        <p style="color: #555;">If you did not request this email, please ignore it.</p>
+                        <p style="color: #555;">Thank you,<br><strong>AskExpert Team</strong></p>
+                    </div>
+                </div>
+            </body>`,
+            };
+
+            await transporter.sendMail(mailOptions);
+            return "Hey please check your email";
+        } catch (error) {
+            throw new Error(
+                `Unable to send email verification email to ${email}: ${error}`
+            );
+        }
     }
 }
 

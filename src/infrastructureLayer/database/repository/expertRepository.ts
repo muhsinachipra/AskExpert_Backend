@@ -2,10 +2,13 @@
 
 import { IExpert } from "../../../domainLayer/expert";
 import { IExpertRepository } from "../../../usecaseLayer/interface/repository/IExpertRepository";
+import { IResetPassword } from "../../../usecaseLayer/interface/services/IResponse";
 // import { IResetPassword } from "../../../usecaseLayer/interface/services/IResponse";
 import ExpertModel from "../model/expertModel";
 import { createExpert } from "./expert/createExpert";
 import { findExpert } from "./expert/findExpert";
+import { findExpertById } from "./expert/findExpertById";
+import { resetPassword } from "./expert/resetPassword";
 import { updateProfile } from "./expert/updateProfile";
 // import { resetPassword } from "./expert/resetPassword";
 
@@ -21,8 +24,16 @@ export class ExpertRepository implements IExpertRepository {
         return findExpert(email, this.expertModel)
     }
 
-    async updateProfile(data: { _id: string; name: string; rate: number }): Promise<IExpert | never> {
+    async updateProfile(data: { _id: string; profilePic: string; name: string; rate: number; experience: number }): Promise<IExpert | never> {
         return updateProfile(data, this.expertModel)
+    }
+
+    async resetPassword(newPassword: IResetPassword): Promise<IExpert> {
+        return resetPassword(newPassword, this.expertModel);
+    }
+
+    async findExpertById(expertId: string): Promise<IExpert | null> {
+        return findExpertById(expertId, this.expertModel);
     }
 
     // async resetPassword(newPassword: IResetPassword): Promise<IExpert> {

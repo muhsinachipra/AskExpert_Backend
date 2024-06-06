@@ -1,27 +1,36 @@
 // backend\src\usecaseLayer\usecase\adminUsecase.ts
 
 import { IAdminRepository } from '../interface/repository/IAdminRepository'
+import { IExpertRepository } from '../interface/repository/IExpertRepository'
 import { IRequestValidator } from '../interface/repository/IValidateRepository'
 import IBcrypt from '../interface/services/IBcrypt'
 import IJwt from '../interface/services/IJwt'
+import INodemailer from '../interface/services/INodemailer'
 import { IResponse } from '../interface/services/IResponse'
 import { loginAdmin } from './admin/loginAdmin'
+import { sendVerifiedEmail } from './admin/sendVerifiedEmail'
 
 export class AdminUsecase {
     private readonly adminRepository: IAdminRepository
+    private readonly expertRepository: IExpertRepository
     private readonly bcrypt: IBcrypt
     private readonly jwt: IJwt
+    private readonly nodemailer: INodemailer
     private readonly requestValidator: IRequestValidator
 
     constructor(
         adminRepository: IAdminRepository,
+        expertRepository: IExpertRepository,
         bcrypt: IBcrypt,
         jwt: IJwt,
+        nodemailer: INodemailer,
         requestValidator: IRequestValidator
     ) {
         this.adminRepository = adminRepository
+        this.expertRepository = expertRepository
         this.bcrypt = bcrypt
         this.jwt = jwt
+        this.nodemailer = nodemailer
         this.requestValidator = requestValidator
     }
 
@@ -62,11 +71,11 @@ export class AdminUsecase {
 
     async toggleExpertVerification(expertId: string): Promise<IResponse> {
         try {
-            const updatedExpert = await this.adminRepository.toggleExpertVerification(expertId);
-            if (updatedExpert) {
+            const data = await this.adminRepository.toggleExpertVerification(expertId);
+            if (data) {
                 return {
                     success: true,
-                    data: updatedExpert,
+                    data,
                     message: 'Expert verification status updated successfully',
                     status: 200,
                 };
@@ -86,4 +95,9 @@ export class AdminUsecase {
             };
         }
     }
+
+    async sendVerifiedEmail(expertId: string) {
+        return sendVerifiedEmail(this.requestValidator, this.expertRepository, this.nodemailer, expertId);
+    }
+
 }

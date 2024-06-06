@@ -1,21 +1,21 @@
-// backend\src\usecaseLayer\usecase\user\resetPassword.ts
+// backend\src\usecaseLayer\usecase\expert\resetPassword.ts
 
 import ErrorResponse from "../../handler/errorResponse";
-import { IUserRepository } from "../../interface/repository/IUserRepository";
+import { IExpertRepository } from "../../interface/repository/IExpertRepository";
 import { IRequestValidator } from "../../interface/repository/IValidateRepository";
 import IBcrypt from "../../interface/services/IBcrypt";
 import { IResponse } from "../../interface/services/IResponse";
 
 
 export const resetPassword = async (
-    userRepository: IUserRepository,
+    expertRepository: IExpertRepository,
     requestValidator: IRequestValidator,
     bcrypt: IBcrypt,
     id: string,
     password: string
 ): Promise<IResponse> => {
     try {
-        console.log("--> usecaseLayer-usecase-user-resetPassword.ts")
+        console.log("--> usecaseLayer-usecase-expert-resetPassword.ts")
         console.log("creating reseting passsword  ...")
         const validation = requestValidator.validateRequiredFields(
             { password },
@@ -32,7 +32,7 @@ export const resetPassword = async (
             id: id,
             password: hashedPassword
         }
-        const newPassword = await userRepository.resetPassword(nPassword)
+        const newPassword = await expertRepository.resetPassword(nPassword)
 
         return {
             status: 200,

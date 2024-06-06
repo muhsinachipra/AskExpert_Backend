@@ -3,6 +3,7 @@
 import express, { NextFunction, Request, Response } from 'express';
 import { adminAdapter } from './injections/adminInjection';
 import loginRateLimiter from '../middleware/rateLimiter';
+import AuthMiddleware from '../middleware/AuthMiddleware'
 
 const router = express.Router()
 
@@ -14,6 +15,10 @@ router.post(
         adminAdapter.loginAdmin(req, res, next)
 )
 
+// Protect routes with admin authentication middleware
+router.use(AuthMiddleware.authenticateAdmin);
+
+// Routes accessible only to authenticated admins
 router.get(
     "/expertData",
     (req: Request, res: Response, next: NextFunction) =>
@@ -30,6 +35,12 @@ router.patch(
     '/verifyExpert/:id',
     (req: Request, res: Response, next: NextFunction) =>
         adminAdapter.updateExpertVerification(req, res, next)
+)
+
+router.post(
+    '/sendVerifiedEmail/:id',
+    (req: Request, res: Response, next: NextFunction) =>
+        adminAdapter.sendVerifiedEmail(req, res, next)
 )
 
 export default router

@@ -56,6 +56,9 @@ router.post(
         userAdapter.resetPassword(req, res, next)
 );
 
+// Use protectUser middleware for routes accessible only to authenticated users
+router.use(AuthMiddleware.authenticateUser);
+
 router.post(
     "/logout",
     (req: Request, res: Response, next: NextFunction) =>
@@ -64,7 +67,6 @@ router.post(
 
 router.patch(
     "/updateProfile",
-    AuthMiddleware.protectUser,
     (req: Request, res: Response, next: NextFunction) =>
         userAdapter.updateProfile(req, res, next)
 );
