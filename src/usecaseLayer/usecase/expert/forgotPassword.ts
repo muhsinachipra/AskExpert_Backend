@@ -33,7 +33,7 @@ export const forgotPassword = async (
         const expertRoute = '/expert'
 
         const sendForgotPasswordEmail = await nodemailer.sendForgotPasswordEmail(expertRoute, expert.email, expert.name, token);
-        console.log('sendForgotPasswordEmail :', sendForgotPasswordEmail);
+        console.log('FFFFFFFFFFFFFFFFFFFFFFsendForgotPasswordEmail :', sendForgotPasswordEmail);
 
         return {
             status: 200,

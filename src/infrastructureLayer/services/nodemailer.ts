@@ -134,8 +134,8 @@ class Nodemailer implements INodemailer {
         }
 
         await transporter.sendMail(mailOptions);
-        return "success";
-        // return "Hey please check your email";
+        // return "success";
+        return "Hey please check your email";
     }
 
     async sendVerifiedEmail(email: string, name: string): Promise<string> {
