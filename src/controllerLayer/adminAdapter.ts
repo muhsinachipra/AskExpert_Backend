@@ -45,15 +45,16 @@ export class AdminAdapter {
     async getExpertData(req: Req, res: Res, next: Next) {
         try {
             const expertData = await this.adminUsecase.getExpertData();
-            return res.status(200).json({
-                success: true,
-                data: expertData,
-                message: 'Expert data retrieved successfully',
+            return res.status(expertData.status).json({
+                success: expertData.success,
+                data: expertData.data,
+                message: expertData.message,
             });
         } catch (err) {
             next(err);
         }
     }
+
 
     // @desc      Toggle expert isVerified
     // route      PATCH api/admin/verifyExpert/:id
@@ -68,6 +69,9 @@ export class AdminAdapter {
         }
     }
 
+    // @desc      Logout admin
+    // route      POST api/admin/logout
+    // @access    Private
     async logoutAdmin(req: Req, res: Res, next: Next) {
         try {
             res.cookie("jwt", "", {

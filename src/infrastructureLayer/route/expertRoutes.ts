@@ -18,45 +18,11 @@ router.post(
         expertAdapter.loginExpert(req, res, next)
 )
 
-// router.post(
-//     "/validateAccessToken",
-//     (req: Request, res: Response, next: NextFunction) =>
-//         expertAdapter.validateAccessToken(req, res, next)
-// );
-
-// // route expert google auth
-// router.post(
-//     "/googleAuth",
-//     (req: Request, res: Response, next: NextFunction) =>
-//         expertAdapter.googleAuth(req, res, next)
-// );
-
-// //routes for forgot password save
-// router.post(
-//     "/forgotPassword",
-//     (req: Request, res: Response, next: NextFunction) =>
-//         expertAdapter.forgotPassword(req, res, next)
-// );
-
-
-// router.post(
-//     "/resetPassword",
-//     (req: Request, res: Response, next: NextFunction) =>
-//         expertAdapter.resetPassword(req, res, next)
-// );
-
 router.post(
     "/logout",
     (req: Request, res: Response, next: NextFunction) =>
         expertAdapter.logoutExpert(req, res, next)
 )
-
-router.patch(
-    "/updateProfile",
-    AuthMiddleware.protectExpert,
-    (req: Request, res: Response, next: NextFunction) =>
-        expertAdapter.updateProfile(req, res, next)
-);
 
 router.post(
     "/forgotPassword",
@@ -74,6 +40,14 @@ router.post(
     "/resetPassword",
     (req: Request, res: Response, next: NextFunction) =>
         expertAdapter.resetPassword(req, res, next)
+);
+
+router.use(AuthMiddleware.authenticateExpert);
+
+router.patch(
+    "/updateProfile",
+    (req: Request, res: Response, next: NextFunction) =>
+        expertAdapter.updateProfile(req, res, next)
 );
 
 export default router

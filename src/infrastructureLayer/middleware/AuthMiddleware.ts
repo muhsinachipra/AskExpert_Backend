@@ -23,7 +23,7 @@ declare global {
 class AuthMiddleware {
 
     // user authentication
-    static async protectUser(req: Request, res: Response, next: NextFunction): Promise<void> {
+    static async authenticateUser(req: Request, res: Response, next: NextFunction): Promise<void> {
         let token: string | undefined;
 
         console.log('User protect');
@@ -55,7 +55,7 @@ class AuthMiddleware {
 
 
     // admin authentication
-    static async protectAdmin(req: Request, res: Response, next: NextFunction): Promise<void> {
+    static async authenticateAdmin(req: Request, res: Response, next: NextFunction): Promise<void> {
         let token: string | undefined;
 
         console.log('Admin protect');
@@ -86,7 +86,7 @@ class AuthMiddleware {
     }
 
     // expert authentication
-    static async protectExpert(req: Request, res: Response, next: NextFunction): Promise<void> {
+    static async authenticateExpert(req: Request, res: Response, next: NextFunction): Promise<void> {
         let token: string | undefined;
 
         console.log('Expert protect');
