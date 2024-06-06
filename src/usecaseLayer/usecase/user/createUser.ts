@@ -39,9 +39,9 @@ export const createUser = async (
                 success: true,
                 message: "Successfully created"
             }
+        } else {
+            throw ErrorResponse.badRequest("User already exists")
         }
-        throw ErrorResponse.badRequest("User already exists")
-
     } catch (err) {
         throw err
     }

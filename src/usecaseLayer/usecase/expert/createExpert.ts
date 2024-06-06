@@ -23,6 +23,8 @@ export const createExpert = async (
 ): Promise<IResponse> => {
     try {
 
+        console.log(' name, email, password, category, experience, rate, profilePic, resume ', name, email, password, category, experience, rate, profilePic, resume )
+
         const validation = requestValidator.validateRequiredFields(
             { name, email, password, category, experience, rate, profilePic, resume },
             ['name', 'email', 'password', 'category', 'experience', 'rate', 'profilePic', 'resume']
