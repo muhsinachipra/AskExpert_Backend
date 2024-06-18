@@ -34,6 +34,9 @@ class AuthMiddleware {
         if (token) {
             try {
                 const decoded: any = jwt.verify(token, process.env.JWT_KEY as string);
+                if (decoded.role !== 'user') {
+                    res.status(401).send('Not authorized, no token, not User');
+                }
                 const user = await userRepository.findUser(decoded.email);
                 if (user) {
                     req.user = user;
@@ -66,6 +69,9 @@ class AuthMiddleware {
         if (token) {
             try {
                 const decoded: any = jwt.verify(token, process.env.JWT_KEY as string);
+                if (decoded.role !== 'admin') {
+                    res.status(401).send('Not authorized, no token, not admin');
+                }
                 const admin = await adminRepository.findAdmin(decoded.email);
                 if (admin) {
                     req.user = admin;
@@ -97,6 +103,9 @@ class AuthMiddleware {
         if (token) {
             try {
                 const decoded: any = jwt.verify(token, process.env.JWT_KEY as string);
+                if (decoded.role !== 'expert') {
+                    res.status(401).send('Not authorized, no token, not expert');
+                }
                 const expert = await expertRepository.findExpert(decoded.email);
                 if (expert) {
                     req.user = expert;

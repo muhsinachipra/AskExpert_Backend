@@ -43,6 +43,16 @@ router.post(
         adminAdapter.sendVerifiedEmail(req, res, next)
 )
 
-// hellow 
+router.post(
+    '/addCategory',
+    (req: Request, res: Response, next: NextFunction) =>
+        adminAdapter.addCategory(req, res, next)
+)
+
+router.get(
+    "/categories",
+    (req: Request, res: Response, next: NextFunction) =>
+        adminAdapter.getCategories(req, res, next)
+)
 
 export default router

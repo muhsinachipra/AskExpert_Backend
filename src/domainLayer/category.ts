@@ -2,7 +2,6 @@
 
 export interface ICategory {
     _id?: string
-    name: string
-    description: string;
-    isListed: boolean;
+    categoryName: string
+    categoryDescription: string;
 }

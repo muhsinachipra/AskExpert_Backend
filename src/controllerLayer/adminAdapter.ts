@@ -39,22 +39,24 @@ export class AdminAdapter {
         }
     }
 
-    // @desc      Get expert data
-    // route      GET api/admin/getExpertData
+    // @desc      Get expert data with pagination
+    // route      GET api/admin/expertData
     // @access    Private
     async getExpertData(req: Req, res: Res, next: Next) {
         try {
-            const expertData = await this.adminUsecase.getExpertData();
+            const page = parseInt(req.query.page as string) || 1;
+            const limit = parseInt(req.query.limit as string) || 6;
+            const expertData = await this.adminUsecase.getExpertData(page, limit);
             return res.status(expertData.status).json({
                 success: expertData.success,
                 data: expertData.data,
+                total: expertData.total,
                 message: expertData.message,
             });
         } catch (err) {
             next(err);
         }
     }
-
 
     // @desc      Toggle expert isVerified
     // route      PATCH api/admin/verifyExpert/:id
@@ -96,6 +98,42 @@ export class AdminAdapter {
             res.status(response.status).json({
                 success: response.success,
                 message: response.message,
+            });
+        } catch (err) {
+            next(err);
+        }
+    }
+
+    // @desc      add category of experts
+    // route      POST api/admin/addCategory
+    // @access    Private
+    async addCategory(req: Req, res: Res, next: Next) {
+        try {
+            console.log('addCategory req.body:', req.body);
+            const response = await this.adminUsecase.addCategory(req.body);
+            console.log('addCategory response:', response);
+            res.status(response.status).json({
+                success: response.success,
+                message: response.message,
+            });
+        } catch (err) {
+            next(err);
+        }
+    }
+
+    // @desc      Get Categories with pagination
+    // route      GET api/admin/expertData
+    // @access    Private
+    async getCategories(req: Req, res: Res, next: Next) {
+        try {
+            const page = parseInt(req.query.page as string) || 1;
+            const limit = parseInt(req.query.limit as string) || 6;
+            const categories = await this.adminUsecase.getCategories(page, limit);
+            return res.status(categories.status).json({
+                success: categories.success,
+                data: categories.data,
+                total: categories.total,
+                message: categories.message,
             });
         } catch (err) {
             next(err);

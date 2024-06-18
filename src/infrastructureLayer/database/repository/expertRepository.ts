@@ -8,7 +8,9 @@ import ExpertModel from "../model/expertModel";
 import { createExpert } from "./expert/createExpert";
 import { findExpert } from "./expert/findExpert";
 import { findExpertById } from "./expert/findExpertById";
+import { getExpertData } from "./expert/getExpertData";
 import { resetPassword } from "./expert/resetPassword";
+import { toggleExpertVerification } from "./expert/toggleExpertVerification";
 import { updateProfile } from "./expert/updateProfile";
 // import { resetPassword } from "./expert/resetPassword";
 
@@ -39,4 +41,12 @@ export class ExpertRepository implements IExpertRepository {
     // async resetPassword(newPassword: IResetPassword): Promise<IExpert> {
     //     return resetPassword(newPassword, this.expertModel);
     // }
+
+    async getExpertData(page: number, limit: number): Promise<{ data: IExpert[], total: number }> {
+        return getExpertData(page, limit, this.expertModel);
+    }
+
+    async toggleExpertVerification(expertId: string): Promise<IExpert | null> {
+        return toggleExpertVerification(expertId, this.expertModel);
+    }
 }

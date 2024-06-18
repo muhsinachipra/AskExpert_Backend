@@ -9,6 +9,8 @@ export interface IExpertRepository {
     updateProfile(data: { _id: string; profilePic: string; name: string; rate: number; experience: number }): Promise<IExpert>;
     resetPassword(newPassword: IResetPassword): Promise<IExpert>
     findExpertById(_id: string): Promise<IExpert | null>
+    getExpertData(page: number, limit: number): Promise<{ data: IExpert[], total: number }>
+    toggleExpertVerification(expertId: string): Promise<IExpert | null>;
 
     // resetPassword(newPassword: IResetPassword): Promise<IExpert>
     // blockExpert(_id: string): Promise<string | null>

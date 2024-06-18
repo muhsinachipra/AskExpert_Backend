@@ -1,18 +1,23 @@
 // backend\src\usecaseLayer\usecase\adminUsecase.ts
 
 import { IAdminRepository } from '../interface/repository/IAdminRepository'
+import { ICategoryRepository } from '../interface/repository/ICategoryRepository'
 import { IExpertRepository } from '../interface/repository/IExpertRepository'
 import { IRequestValidator } from '../interface/repository/IValidateRepository'
 import IBcrypt from '../interface/services/IBcrypt'
 import IJwt from '../interface/services/IJwt'
 import INodemailer from '../interface/services/INodemailer'
-import { IResponse } from '../interface/services/IResponse'
+import { addCategory } from './admin/addCategory'
+import { getCategories } from './admin/getCategories'
+import { getExpertData } from './admin/getExpertData'
 import { loginAdmin } from './admin/loginAdmin'
 import { sendVerifiedEmail } from './admin/sendVerifiedEmail'
+import { toggleExpertVerification } from './admin/toggleExpertVerification'
 
 export class AdminUsecase {
     private readonly adminRepository: IAdminRepository
     private readonly expertRepository: IExpertRepository
+    private readonly categoryRepository: ICategoryRepository
     private readonly bcrypt: IBcrypt
     private readonly jwt: IJwt
     private readonly nodemailer: INodemailer
@@ -21,6 +26,7 @@ export class AdminUsecase {
     constructor(
         adminRepository: IAdminRepository,
         expertRepository: IExpertRepository,
+        categoryRepository: ICategoryRepository,
         bcrypt: IBcrypt,
         jwt: IJwt,
         nodemailer: INodemailer,
@@ -28,6 +34,7 @@ export class AdminUsecase {
     ) {
         this.adminRepository = adminRepository
         this.expertRepository = expertRepository
+        this.categoryRepository = categoryRepository
         this.bcrypt = bcrypt
         this.jwt = jwt
         this.nodemailer = nodemailer
@@ -35,69 +42,46 @@ export class AdminUsecase {
     }
 
     async loginAdmin({ email, password }: { email: string; password: string }) {
-        try {
-            return await loginAdmin(
-                this.requestValidator,
-                this.adminRepository,
-                this.bcrypt,
-                this.jwt,
-                email,
-                password
-            );
-        } catch (error) {
-            console.error('Error Login admin:', error);
-            throw error;
-        }
+        return loginAdmin(
+            this.requestValidator,
+            this.adminRepository,
+            this.bcrypt,
+            this.jwt,
+            email,
+            password
+        );
     }
 
-    async getExpertData(): Promise<IResponse> {
-        try {
-            const expertData = await this.adminRepository.getExpertData();
-            return {
-                success: true,
-                data: expertData,
-                message: 'Expert data retrieved successfully',
-                status: 200,
-            };
-        } catch (error) {
-            return {
-                success: false,
-                data: null,
-                message: 'Failed to retrieve expert data',
-                status: 500,
-            };
-        }
+    async getExpertData(page: number, limit: number) {
+        return getExpertData(
+            page, limit, this.expertRepository
+        );
     }
 
-    async toggleExpertVerification(expertId: string): Promise<IResponse> {
-        try {
-            const data = await this.adminRepository.toggleExpertVerification(expertId);
-            if (data) {
-                return {
-                    success: true,
-                    data,
-                    message: 'Expert verification status updated successfully',
-                    status: 200,
-                };
-            }
-            return {
-                success: false,
-                data: null,
-                message: 'Expert not found',
-                status: 404,
-            };
-        } catch (error) {
-            return {
-                success: false,
-                data: null,
-                message: 'Failed to update expert verification status',
-                status: 500,
-            };
-        }
+    async toggleExpertVerification(expertId: string) {
+        return toggleExpertVerification(
+            expertId, this.expertRepository
+        )
     }
 
     async sendVerifiedEmail(expertId: string) {
         return sendVerifiedEmail(this.requestValidator, this.expertRepository, this.nodemailer, expertId);
     }
 
+    async addCategory({ categoryName, categoryDescription }: {
+        categoryName: string, categoryDescription: string
+    }) {
+        return addCategory(
+            categoryName,
+            categoryDescription,
+            this.requestValidator,
+            this.categoryRepository,
+        );
+    }
+
+    async getCategories(page: number, limit: number) {
+        return getCategories(
+            page, limit, this.categoryRepository
+        );
+    }
 }

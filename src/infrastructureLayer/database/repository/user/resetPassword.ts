@@ -4,20 +4,19 @@ import { IUser } from "../../../../domainLayer/user";
 import { IResetPassword } from "../../../../usecaseLayer/interface/services/IResponse";
 import UserModel from "../../model/userModel";
 
-// Correct the parameter type for _id
 export const resetPassword = async (
     newPassword: IResetPassword,
     userModels: typeof UserModel
 ): Promise<IUser | never> => {
     try {
-        const user = await userModels.findOne({ _id: newPassword.id });
-        if (user) {
-            user.password = newPassword.password;
-            await user.save();
-            user.password = ""
-            return user;
+        const user = await userModels.findById(newPassword.id);
+        if (!user) {
+            throw new Error("User not found");
         }
-        throw new Error("Internal Server Error")
+        user.password = newPassword.password;
+        await user.save();
+        user.password = ""
+        return user;
     } catch (error) {
         throw error;
     }

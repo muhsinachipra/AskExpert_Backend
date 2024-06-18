@@ -38,6 +38,7 @@ class Nodemailer implements INodemailer {
             const timestamp = Date.now();
             this.otps.set(email, { otp, timestamp });
             // console.log('after setting this.otps in the sendEmailVerification method', this.otps);
+            console.log('email :',email, 'otp :', otp);
 
             const mailOptions = {
                 from: "muhsinachipra@gmail.com",
@@ -72,7 +73,7 @@ class Nodemailer implements INodemailer {
 
     async verifyOTP(enteredOTP: string, email: string): Promise<boolean> {
         try {
-            console.log('this.otps in the verifyOTP method', this.otps);
+            // console.log('this.otps in the verifyOTP method', this.otps);
             const otpData = this.otps.get(email);
             if (!otpData) {
                 return false;
