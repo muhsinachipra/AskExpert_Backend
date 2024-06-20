@@ -231,4 +231,26 @@ export class UserAdapter {
             next(error)
         }
     }
+
+    // @desc      fetch user data
+    // route      POST api/user/getUserData
+    // @access    Private
+    async getUserData(req: Req, res: Res, next: Next) {
+        try {
+            const token = req.cookies.userjwt;
+            const user = await this.userUsecase.getUserData(token);
+            if (user) {
+                console.log(user.data)
+
+                return res.status(user.status).json({
+                    success: user.success,
+                    data: user.data,
+                    message: user.message,
+                });
+            }
+            throw ErrorResponse.unauthorized("Failed to fetch user data");
+        } catch (err) {
+            next(err);
+        }
+    }
 }

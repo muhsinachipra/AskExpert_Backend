@@ -14,6 +14,7 @@ import { resetPassword } from './user/resetPassword'
 import { sendOTP } from './user/sendOTP'
 import { validateAccessToken } from './user/validateAccessToken'
 import { updateProfile } from './user/updateProfile'
+import { getUserData } from './user/getUserData'
 
 
 export class UserUsecase {
@@ -138,6 +139,19 @@ export class UserUsecase {
             );
         } catch (error) {
             console.error('Error updating user profile:', error);
+            throw error;
+        }
+    }
+
+    async getUserData(token: string) {
+        try {
+            console.log('getUserData called...................................')
+            return await getUserData(
+                this.userRepository,
+                token
+            );
+        } catch (error) {
+            console.error('Error fetching user data: ', error);
             throw error;
         }
     }

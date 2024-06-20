@@ -71,4 +71,11 @@ router.patch(
         userAdapter.updateProfile(req, res, next)
 );
 
+router.get(
+    "/getUserData",
+    (req: Request, res: Response, next: NextFunction) =>
+        userAdapter.getUserData(req, res, next)
+)
+
+
 export default router
