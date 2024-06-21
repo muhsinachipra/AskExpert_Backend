@@ -26,10 +26,18 @@ export const addCategory = async (
 
         const existingCategory = await CategoryModel.findOne({ categoryName: newCategory.categoryName });
 
-        if (existingCategory) {
-            throw ErrorResponse.badRequest("Category already exists")
-        }
+        // if (existingCategory) {
+        //     throw ErrorResponse.badRequest("Category already exists")
+        // }
 
+        if (existingCategory) {
+            return {
+                status: 400,
+                success: false,
+                message: "Category already exists"
+            }
+        }
+        
         await categoryRepository.addCategory(newCategory)
 
         return {
