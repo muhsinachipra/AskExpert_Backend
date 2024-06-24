@@ -1,5 +1,6 @@
 // backend\src\usecaseLayer\usecase\adminUsecase.ts
 
+import { ICategory } from '../../domainLayer/category'
 import { IAdminRepository } from '../interface/repository/IAdminRepository'
 import { ICategoryRepository } from '../interface/repository/ICategoryRepository'
 import { IExpertRepository } from '../interface/repository/IExpertRepository'
@@ -8,6 +9,7 @@ import IBcrypt from '../interface/services/IBcrypt'
 import IJwt from '../interface/services/IJwt'
 import INodemailer from '../interface/services/INodemailer'
 import { addCategory } from './admin/addCategory'
+import { editCategory } from './admin/editCategory'
 import { getCategories } from './admin/getCategories'
 import { getExpertData } from './admin/getExpertData'
 import { loginAdmin } from './admin/loginAdmin'
@@ -74,6 +76,14 @@ export class AdminUsecase {
         return addCategory(
             categoryName,
             categoryDescription,
+            this.requestValidator,
+            this.categoryRepository,
+        );
+    }
+
+    async editCategory(updatedCategory: ICategory) {
+        return editCategory(
+            updatedCategory,
             this.requestValidator,
             this.categoryRepository,
         );

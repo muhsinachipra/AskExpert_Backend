@@ -3,8 +3,10 @@
 import { ICategory } from "../../../domainLayer/category";
 import { ICategoryRepository } from "../../../usecaseLayer/interface/repository/ICategoryRepository";
 import CategoryModel from "../model/categoryModel";
-import { addCategory } from "./admin/addCategory";
+import { addCategory } from "./category/addCategory";
 import { getCategories } from "./category/getCategories";
+import { getCategoryById } from "./category/getCategoryById";
+import { editCategory } from "./category/editCategory";
 
 export class CategoryRepository implements ICategoryRepository {
 
@@ -14,8 +16,16 @@ export class CategoryRepository implements ICategoryRepository {
         return addCategory(newCategory, this.categoryModel)
     }
 
+    async editCategory(updatedCategory: ICategory): Promise<ICategory> {
+        return editCategory(updatedCategory, this.categoryModel)
+    }
+
     async getCategories(page: number, limit: number): Promise<{ data: ICategory[], total: number }> {
         return getCategories(page, limit, this.categoryModel);
+    }
+
+    async getCategoryById(_id: string): Promise<ICategory | null> {
+        return getCategoryById(_id, this.categoryModel); // Use the new function
     }
 
 }

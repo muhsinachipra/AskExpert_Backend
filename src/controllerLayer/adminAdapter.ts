@@ -121,6 +121,23 @@ export class AdminAdapter {
         }
     }
 
+    // @desc      edit category of experts
+    // route      POST api/admin/editCategory
+    // @access    Private
+    async editCategory(req: Req, res: Res, next: Next) {
+        try {
+            console.log('editCategory req.body:', req.body);
+            const response = await this.adminUsecase.editCategory(req.body);
+            console.log('editCategory response:', response);
+            res.status(response.status).json({
+                success: response.success,
+                message: response.message,
+            });
+        } catch (err) {
+            next(err);
+        }
+    }
+
     // @desc      Get Categories with pagination
     // route      GET api/admin/expertData
     // @access    Private

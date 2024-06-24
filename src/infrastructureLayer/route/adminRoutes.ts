@@ -49,6 +49,12 @@ router.post(
         adminAdapter.addCategory(req, res, next)
 )
 
+router.patch(
+    '/editCategory',
+    (req: Request, res: Response, next: NextFunction) =>
+        adminAdapter.editCategory(req, res, next)
+)
+
 router.get(
     "/categories",
     (req: Request, res: Response, next: NextFunction) =>
