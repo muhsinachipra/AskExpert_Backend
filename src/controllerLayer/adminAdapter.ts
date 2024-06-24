@@ -157,4 +157,24 @@ export class AdminAdapter {
         }
     }
 
+    // @desc      Get user data with pagination
+    // route      GET api/admin/userData
+    // @access    Private
+    async getUserData(req: Req, res: Res, next: Next) {
+        try {
+            const page = parseInt(req.query.page as string) || 1;
+            const limit = parseInt(req.query.limit as string) || 6;
+            const userData = await this.adminUsecase.getUserData(page, limit);
+            return res.status(userData.status).json({
+                success: userData.success,
+                data: userData.data,
+                total: userData.total,
+                message: userData.message,
+            });
+        } catch (err) {
+            next(err);
+        }
+    }
+
+
 }

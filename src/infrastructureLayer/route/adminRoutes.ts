@@ -61,4 +61,11 @@ router.get(
         adminAdapter.getCategories(req, res, next)
 )
 
+router.get(
+    "/userData",
+    (req: Request, res: Response, next: NextFunction) =>
+        adminAdapter.getUserData(req, res, next)
+)
+
+
 export default router

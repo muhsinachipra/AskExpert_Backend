@@ -10,4 +10,5 @@ export interface IUserRepository {
     // blockUser(_id: string): Promise<string | null>
     updateProfile(data:Record<string,string>): Promise<IUser>;
     findUserById(userId: string): Promise<IUser | null>
+    getUserData(page: number, limit: number): Promise<{ data: IUser[], total: number }>
 }

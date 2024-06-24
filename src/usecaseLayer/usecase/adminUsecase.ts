@@ -4,6 +4,7 @@ import { ICategory } from '../../domainLayer/category'
 import { IAdminRepository } from '../interface/repository/IAdminRepository'
 import { ICategoryRepository } from '../interface/repository/ICategoryRepository'
 import { IExpertRepository } from '../interface/repository/IExpertRepository'
+import { IUserRepository } from '../interface/repository/IUserRepository'
 import { IRequestValidator } from '../interface/repository/IValidateRepository'
 import IBcrypt from '../interface/services/IBcrypt'
 import IJwt from '../interface/services/IJwt'
@@ -12,6 +13,7 @@ import { addCategory } from './admin/addCategory'
 import { editCategory } from './admin/editCategory'
 import { getCategories } from './admin/getCategories'
 import { getExpertData } from './admin/getExpertData'
+import { getUserData } from './admin/getUserData'
 import { loginAdmin } from './admin/loginAdmin'
 import { sendVerifiedEmail } from './admin/sendVerifiedEmail'
 import { toggleExpertVerification } from './admin/toggleExpertVerification'
@@ -19,6 +21,7 @@ import { toggleExpertVerification } from './admin/toggleExpertVerification'
 export class AdminUsecase {
     private readonly adminRepository: IAdminRepository
     private readonly expertRepository: IExpertRepository
+    private readonly userRepository: IUserRepository
     private readonly categoryRepository: ICategoryRepository
     private readonly bcrypt: IBcrypt
     private readonly jwt: IJwt
@@ -28,6 +31,7 @@ export class AdminUsecase {
     constructor(
         adminRepository: IAdminRepository,
         expertRepository: IExpertRepository,
+        userRepository: IUserRepository,
         categoryRepository: ICategoryRepository,
         bcrypt: IBcrypt,
         jwt: IJwt,
@@ -36,6 +40,7 @@ export class AdminUsecase {
     ) {
         this.adminRepository = adminRepository
         this.expertRepository = expertRepository
+        this.userRepository = userRepository
         this.categoryRepository = categoryRepository
         this.bcrypt = bcrypt
         this.jwt = jwt
@@ -92,6 +97,12 @@ export class AdminUsecase {
     async getCategories(page: number, limit: number) {
         return getCategories(
             page, limit, this.categoryRepository
+        );
+    }
+
+    async getUserData(page: number, limit: number) {
+        return getUserData(
+            page, limit, this.userRepository
         );
     }
 }
