@@ -23,11 +23,16 @@ export default class ErrorResponse extends Error {
         return new ErrorResponse(403, msg)
     }
 
-    static notFound(msg: string = "Not Found"): ErrorResponse {
+    static notFound(msg: string): ErrorResponse {
         return new ErrorResponse(404, msg)
+    }
+
+    static tooManyRequests(msg: string): ErrorResponse {
+        return new ErrorResponse(429, msg)
     }
 
     static internalServerError(msg: string): ErrorResponse {
         return new ErrorResponse(500, msg)
     }
+
 }
