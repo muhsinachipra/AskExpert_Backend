@@ -1,6 +1,5 @@
 // backend\src\usecaseLayer\usecase\admin\addCategory.ts
 
-import CategoryModel from "../../../infrastructureLayer/database/model/categoryModel";
 import ErrorResponse from "../../handler/errorResponse";
 import { ICategoryRepository } from "../../interface/repository/ICategoryRepository";
 import { IRequestValidator } from "../../interface/repository/IValidateRepository";
@@ -24,20 +23,20 @@ export const addCategory = async (
 
         const newCategory = { categoryName, categoryDescription }
 
-        const existingCategory = await CategoryModel.findOne({ categoryName: newCategory.categoryName });
-
-        // if (existingCategory) {
-        //     throw ErrorResponse.badRequest("Category already exists")
-        // }
+        const existingCategory = await categoryRepository.findCategoryByName(newCategory.categoryName);
 
         if (existingCategory) {
-            return {
-                status: 400,
-                success: false,
-                message: "Category already exists"
-            }
+            throw ErrorResponse.badRequest("Category already exists")
         }
-        
+
+        // if (existingCategory) {
+        //     return {
+        //         status: 400,
+        //         success: false,
+        //         message: "Category already exists"
+        //     }
+        // }
+
         await categoryRepository.addCategory(newCategory)
 
         return {

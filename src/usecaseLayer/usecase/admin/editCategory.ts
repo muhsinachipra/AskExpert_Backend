@@ -1,7 +1,6 @@
 // backend\src\usecaseLayer\usecase\admin\editCategory.ts
 
 import { ICategory } from "../../../domainLayer/category";
-import CategoryModel from "../../../infrastructureLayer/database/model/categoryModel";
 import ErrorResponse from "../../handler/errorResponse";
 import { ICategoryRepository } from "../../interface/repository/ICategoryRepository";
 import { IRequestValidator } from "../../interface/repository/IValidateRepository";
@@ -25,14 +24,8 @@ export const editCategory = async (
         const existingCategory = await categoryRepository.getCategoryById(_id);
 
         if (!existingCategory) {
-            return {
-                status: 404,
-                success: false,
-                message: "Category not found",
-            };
+            throw ErrorResponse.notFound("Category not found");
         }
-
-        console.log('updatedCategory in usecase admin editCategory : ',updatedCategory)
 
         await categoryRepository.editCategory(updatedCategory);
 
@@ -43,7 +36,7 @@ export const editCategory = async (
         };
 
     } catch (error) {
-        console.error('Error creating Category:', error);
+        console.error('Error editing Category:', error);
         throw error;
     }
 }

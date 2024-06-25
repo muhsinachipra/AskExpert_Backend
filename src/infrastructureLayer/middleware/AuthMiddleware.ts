@@ -10,12 +10,14 @@ import UserModel from '../database/model/userModel';
 import AdminModel from '../database/model/adminModel';
 import { ExpertRepository } from '../database/repository/expertRepository';
 import ExpertModel from '../database/model/expertModel';
+import { IExpert } from '../../domainLayer/expert';
+import ErrorResponse from '../../usecaseLayer/handler/errorResponse';
 
 // Augment the express Request type to include a user property
 declare global {
     namespace Express {
         interface Request {
-            user?: IUser | IAdmin; // Define user property
+            user?: IUser | IAdmin | IExpert;
         }
     }
 }
@@ -29,30 +31,32 @@ class AuthMiddleware {
         console.log('User protect');
         token = req.cookies.userjwt;
 
-        const userRepository = new UserRepository(UserModel);
-
         if (token) {
             try {
                 const decoded: any = jwt.verify(token, process.env.JWT_KEY as string);
                 if (decoded.role !== 'user') {
-                    res.status(401).send('Not authorized, no token, not User');
+                    return next(ErrorResponse.unauthorized('Not authorized, Invalid token'));
                 }
+                const userRepository = new UserRepository(UserModel);
                 const user = await userRepository.findUser(decoded.email);
+                if (user?.isBlocked) {
+                    return next(ErrorResponse.unauthorized('Not authorized, user is blocked'));
+                }
+                console.log('user data from AuthMiddleware : ', user)
                 if (user) {
                     req.user = user;
-                    console.log('before next');
                     next();
                 } else {
                     console.error('User not found');
-                    res.status(404).send('User not found');
+                    return next(ErrorResponse.notFound('User not found'));
                 }
             } catch (error) {
                 console.error(error);
-                res.status(401).send('Not authorized, no token');
+                return next(ErrorResponse.unauthorized('Not authorized, No token'));
             }
         } else {
             console.log('No token');
-            res.status(401).send('Not authorized, no token');
+            return next(ErrorResponse.unauthorized('Not authorized, No token'));
         }
     }
 
@@ -64,30 +68,29 @@ class AuthMiddleware {
         console.log('Admin protect');
         token = req.cookies.adminjwt;
 
-        const adminRepository = new AdminRepository(AdminModel);
 
         if (token) {
             try {
                 const decoded: any = jwt.verify(token, process.env.JWT_KEY as string);
                 if (decoded.role !== 'admin') {
-                    res.status(401).send('Not authorized, no token, not admin');
+                    return next(ErrorResponse.unauthorized('Not authorized, Invalid token'));
                 }
+                const adminRepository = new AdminRepository(AdminModel);
                 const admin = await adminRepository.findAdmin(decoded.email);
                 if (admin) {
                     req.user = admin;
-                    console.log('before next');
                     next();
                 } else {
                     console.error('Admin not found');
-                    res.status(404).send('Admin not found');
+                    return next(ErrorResponse.notFound('User not found'));
                 }
             } catch (error) {
                 console.error(error);
-                res.status(401).send('Not authorized, no token');
+                return next(ErrorResponse.unauthorized('Not authorized, No token'));
             }
         } else {
             console.log('No token');
-            res.status(401).send('Not authorized, no token');
+            return next(ErrorResponse.unauthorized('Not authorized, No token'));
         }
     }
 
@@ -98,30 +101,31 @@ class AuthMiddleware {
         console.log('Expert protect');
         token = req.cookies.expertjwt;
 
-        const expertRepository = new ExpertRepository(ExpertModel)
-
         if (token) {
             try {
                 const decoded: any = jwt.verify(token, process.env.JWT_KEY as string);
                 if (decoded.role !== 'expert') {
-                    res.status(401).send('Not authorized, no token, not expert');
+                    return next(ErrorResponse.unauthorized('Not authorized, Invalid token'));
                 }
+                const expertRepository = new ExpertRepository(ExpertModel)
                 const expert = await expertRepository.findExpert(decoded.email);
+                if (expert?.isBlocked) {
+                    return next(ErrorResponse.unauthorized('Not authorized, expert is blocked'));
+                }
                 if (expert) {
                     req.user = expert;
-                    console.log('before next');
                     next();
                 } else {
                     console.error('Expert not found');
-                    res.status(404).send('Expert not found');
+                    return next(ErrorResponse.notFound('User not found'));
                 }
             } catch (error) {
                 console.error(error);
-                res.status(401).send('Not authorized, no token');
+                return next(ErrorResponse.unauthorized('Not authorized, No token'));
             }
         } else {
             console.log('No token');
-            res.status(401).send('Not authorized, no token');
+            return next(ErrorResponse.unauthorized('Not authorized, No token'));
         }
     }
 

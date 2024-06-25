@@ -220,7 +220,10 @@ export class UserAdapter {
     // @access  Private
     async updateProfile(req: Req, res: Res, next: Next) {
         try {
+            // console.log('req from updateProfile userAdapter : ', req)
+            // console.log('res from updateProfile userAdapter : ', res)
             const user = await this.userUsecase.updateProfile(req.body);
+            console.log('user from updateProfile userAdapter............ : ', user)
             user &&
                 res.status(user.status).json({
                     success: user.success,

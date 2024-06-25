@@ -176,5 +176,18 @@ export class AdminAdapter {
         }
     }
 
+    // @desc      Toggle user block status
+    // route      PATCH api/admin/userBlockedStatus/:id
+    // @access    Private
+    async updateUserBlockedStatus(req: Req, res: Res, next: Next) {
+        try {
+            const userId = req.params.id;
+            const response = await this.adminUsecase.updateUserBlockedStatus(userId);
+            console.log('response from updateUserBlockedStatus in adminAdapter : ', response)
+            return res.status(response.status).json(response);
+        } catch (err) {
+            next(err);
+        }
+    }
 
 }

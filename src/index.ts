@@ -1,3 +1,5 @@
+// backend\src\index.ts
+
 import { app } from "./infrastructureLayer/config/app";
 import connectDB from "./infrastructureLayer/config/db";
 require('dotenv').config()

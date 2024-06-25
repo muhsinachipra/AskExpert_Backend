@@ -10,6 +10,7 @@ import { findUserById } from "./user/findUserById";
 import { getUserData } from "./user/getUserData";
 import { resetPassword } from "./user/resetPassword";
 import { updateProfile } from "./user/updateProfile";
+import { updateUserBlockedStatus } from "./user/updateUserBlockedStatus";
 
 export class UserRepository implements IUserRepository {
 
@@ -37,5 +38,9 @@ export class UserRepository implements IUserRepository {
 
     async getUserData(page: number, limit: number): Promise<{ data: IUser[], total: number }> {
         return getUserData(page, limit, this.userModel);
+    }
+
+    async updateUserBlockedStatus(userId: string): Promise<IUser | null> {
+        return updateUserBlockedStatus(userId, this.userModel);
     }
 }

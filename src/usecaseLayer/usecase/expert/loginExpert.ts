@@ -30,7 +30,7 @@ export const loginExpert = async (
 
         if (expert && expert._id) {
             if (expert.isBlocked) {
-                throw ErrorResponse.badRequest("Your account is blocked, Please contact Admin");
+                throw ErrorResponse.unauthorized("Your account is blocked, Please contact Admin");
             }
             const match: boolean = await bcrypt.compare(password, expert.password);
             if (match) {

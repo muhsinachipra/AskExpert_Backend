@@ -16,7 +16,7 @@ export const getUserData = async (
 
         if (user && user._id) {
             if (user.isBlocked) {
-                throw ErrorResponse.badRequest("Your account is blocked");
+                throw ErrorResponse.unauthorized("Your account is blocked");
             }
             user.password = ""
             const { name, email, mobile, isBlocked } = user

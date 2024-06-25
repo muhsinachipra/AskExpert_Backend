@@ -25,7 +25,11 @@ export class CategoryRepository implements ICategoryRepository {
     }
 
     async getCategoryById(_id: string): Promise<ICategory | null> {
-        return getCategoryById(_id, this.categoryModel); // Use the new function
+        return getCategoryById(_id, this.categoryModel);
+    }
+
+    async findCategoryByName(categoryName: string): Promise<ICategory | null> {
+        return this.categoryModel.findOne({ categoryName });
     }
 
 }

@@ -17,6 +17,7 @@ import { getUserData } from './admin/getUserData'
 import { loginAdmin } from './admin/loginAdmin'
 import { sendVerifiedEmail } from './admin/sendVerifiedEmail'
 import { toggleExpertVerification } from './admin/toggleExpertVerification'
+import { updateUserBlockedStatus } from './admin/updateUserBlockedStatus'
 
 export class AdminUsecase {
     private readonly adminRepository: IAdminRepository
@@ -105,4 +106,13 @@ export class AdminUsecase {
             page, limit, this.userRepository
         );
     }
+
+    async updateUserBlockedStatus(userId: string) {
+        return updateUserBlockedStatus(
+            userId,
+            this.requestValidator,
+            this.userRepository
+        )
+    }
+
 }
