@@ -1,3 +1,5 @@
+// backend\src\infrastructureLayer\database\model\userModel.ts
+
 import mongoose, { Document, Model, Schema } from "mongoose"
 import { IUser } from "../../../domainLayer/user"
 

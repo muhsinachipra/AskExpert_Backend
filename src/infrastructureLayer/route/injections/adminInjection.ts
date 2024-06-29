@@ -14,11 +14,14 @@ import JwtPassword from '../../services/jwt'
 import Nodemailer from '../../services/nodemailer'
 import RequestValidator from '../../services/validateRepository'
 import UserModel from '../../database/model/userModel'
+import AppointmentModel from '../../database/model/appointmentModel'
+import { AppointmentRepository } from '../../database/repository/appointmentRepository'
 
 const adminRepository = new AdminRepository(AdminModel)
 const expertRepository = new ExpertRepository(ExpertModel)
 const userRepository = new UserRepository(UserModel)
 const categoryRepository = new CategoryRepository(CategoryModel)
+const appointmentRepository = new AppointmentRepository(AppointmentModel)
 const bcrypt = new Encrypt()
 const jwt = new JwtPassword()
 const requestValidator = new RequestValidator()
@@ -28,6 +31,7 @@ const adminUsecase = new AdminUsecase(
     expertRepository,
     userRepository,
     categoryRepository,
+    appointmentRepository,
     bcrypt,
     jwt,
     nodemailer,

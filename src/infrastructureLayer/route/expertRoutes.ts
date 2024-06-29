@@ -3,6 +3,7 @@
 import express, { NextFunction, Request, Response } from 'express';
 import { expertAdapter } from './injections/expertInjection';
 import AuthMiddleware from '../middleware/AuthMiddleware';
+import { appointmentAdapter } from './injections/appointmentInjection';
 
 const router = express.Router()
 
@@ -48,6 +49,19 @@ router.patch(
     "/updateProfile",
     (req: Request, res: Response, next: NextFunction) =>
         expertAdapter.updateProfile(req, res, next)
+);
+
+
+router.post(
+    '/schedules',
+    (req: Request, res: Response, next: NextFunction) =>
+        appointmentAdapter.addSchedule(req, res, next)
+)
+
+router.get(
+    '/schedules',
+    (req: Request, res: Response, next: NextFunction) =>
+        appointmentAdapter.getSchedules(req, res, next)
 );
 
 export default router

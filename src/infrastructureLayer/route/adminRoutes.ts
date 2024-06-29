@@ -73,4 +73,5 @@ router.patch(
         adminAdapter.updateUserBlockedStatus(req, res, next)
 )
 
+
 export default router

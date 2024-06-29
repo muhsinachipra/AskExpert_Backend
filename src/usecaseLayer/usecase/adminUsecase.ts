@@ -2,6 +2,7 @@
 
 import { ICategory } from '../../domainLayer/category'
 import { IAdminRepository } from '../interface/repository/IAdminRepository'
+import { IAppointmentRepository } from '../interface/repository/IAppointmentRepository'
 import { ICategoryRepository } from '../interface/repository/ICategoryRepository'
 import { IExpertRepository } from '../interface/repository/IExpertRepository'
 import { IUserRepository } from '../interface/repository/IUserRepository'
@@ -24,6 +25,7 @@ export class AdminUsecase {
     private readonly expertRepository: IExpertRepository
     private readonly userRepository: IUserRepository
     private readonly categoryRepository: ICategoryRepository
+    private readonly appointmentRepository: IAppointmentRepository
     private readonly bcrypt: IBcrypt
     private readonly jwt: IJwt
     private readonly nodemailer: INodemailer
@@ -34,6 +36,7 @@ export class AdminUsecase {
         expertRepository: IExpertRepository,
         userRepository: IUserRepository,
         categoryRepository: ICategoryRepository,
+        appointmentRepository: IAppointmentRepository,
         bcrypt: IBcrypt,
         jwt: IJwt,
         nodemailer: INodemailer,
@@ -43,6 +46,7 @@ export class AdminUsecase {
         this.expertRepository = expertRepository
         this.userRepository = userRepository
         this.categoryRepository = categoryRepository
+        this.appointmentRepository = appointmentRepository
         this.bcrypt = bcrypt
         this.jwt = jwt
         this.nodemailer = nodemailer

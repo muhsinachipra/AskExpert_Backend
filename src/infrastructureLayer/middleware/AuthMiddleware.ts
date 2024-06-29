@@ -17,7 +17,7 @@ import ErrorResponse from '../../usecaseLayer/handler/errorResponse';
 declare global {
     namespace Express {
         interface Request {
-            user?: IUser | IAdmin | IExpert;
+            user: IUser | IAdmin | IExpert;
         }
     }
 }
