@@ -49,16 +49,49 @@ export class AppointmentAdapter {
             } else {
                 throw new Error('Expert not found');
             }
-            // return res.status(schedules.status).json({
-            //     success: schedules.success,
-            //     data: schedules.data,
-            //     total: schedules.total,
-            //     message: schedules.message,
-            // });
-
-            // res.status(200).json(schedules);
         } catch (err) {
             next(err);
         }
     }
+
+    // @desc      Cancel a schedule
+    // route      DELETE api/expert/schedules/:id
+    // @access    Private
+    async cancelSchedule(req: Req, res: Res, next: Next) {
+        try {
+            if (req.user && 'category' in req.user) {
+                const expertData = req.user as IExpert;
+                const scheduleId = req.params.id;
+                const response = await this.appointmentUsecase.cancelSchedule(scheduleId, expertData._id || '');
+                res.status(response.status).json({
+                    success: response.success,
+                    message: response.message,
+                });
+            } else {
+                throw new Error('Expert not found');
+            }
+        } catch (err) {
+            next(err);
+        }
+    }
+
+    // @desc      fetch slots of experts in Appointment
+    // route      POST api/user/getExpertSlots
+    // @access    Private
+    async getExpertSlots(req: Req, res: Res, next: Next) {
+        try {
+            const expertId = req.params.expertId;
+            const expertSlots = await this.appointmentUsecase.getExpertSlots(expertId);
+            if (expertSlots) {
+                return res.status(expertSlots.status).json({
+                    success: expertSlots.success,
+                    data: expertSlots.data,
+                    message: expertSlots.message,
+                });
+            }
+        } catch (err) {
+            next(err);
+        }
+    }
+
 }

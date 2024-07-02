@@ -11,10 +11,10 @@ export const editCategory = async (
     categoryRepository: ICategoryRepository,
 ) => {
     try {
-        const { _id, categoryName, categoryDescription } = updatedCategory
+        const { _id, categoryImage, categoryName, categoryDescription } = updatedCategory
         const validation = requestValidator.validateRequiredFields(
-            { _id, categoryName, categoryDescription },
-            ['_id', 'categoryName', 'categoryDescription']
+            { _id, categoryImage, categoryName, categoryDescription },
+            ['_id', 'categoryImage', 'categoryName', 'categoryDescription']
         )
 
         if (!validation.success) {

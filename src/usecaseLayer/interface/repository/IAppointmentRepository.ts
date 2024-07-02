@@ -8,5 +8,5 @@ export interface IAppointmentRepository {
     findAppointmentByTimeAndExpert(time: string, expertId: string): Promise<IAppointment | null>
     addSchedule(newAppointment: Partial<IAppointment>): Promise<IAppointment>
     getSchedules(expertId: string): Promise<IAppointment[]>
-    // editAppointment(updatedAppointment: IAppointment): Promise<IAppointment>;
+    deleteSchedule(scheduleId: string, expertId: string): Promise<boolean>
 }

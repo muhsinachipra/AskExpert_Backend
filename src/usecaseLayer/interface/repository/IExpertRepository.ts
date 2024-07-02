@@ -11,6 +11,7 @@ export interface IExpertRepository {
     findExpertById(_id: string): Promise<IExpert | null>
     getExpertData(page: number, limit: number): Promise<{ data: IExpert[], total: number }>
     toggleExpertVerification(expertId: string): Promise<IExpert | null>;
+    getExpertsByCategory(categoryName: string): Promise<{ data: IExpert[], total: number }>
 
     // resetPassword(newPassword: IResetPassword): Promise<IExpert>
     // blockExpert(_id: string): Promise<string | null>

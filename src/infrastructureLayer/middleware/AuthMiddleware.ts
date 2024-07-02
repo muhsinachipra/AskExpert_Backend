@@ -18,6 +18,7 @@ declare global {
     namespace Express {
         interface Request {
             user: IUser | IAdmin | IExpert;
+            // user?: IUser | IAdmin | IExpert;
         }
     }
 }
@@ -42,7 +43,6 @@ class AuthMiddleware {
                 if (user?.isBlocked) {
                     return next(ErrorResponse.unauthorized('Not authorized, user is blocked'));
                 }
-                console.log('user data from AuthMiddleware : ', user)
                 if (user) {
                     req.user = user;
                     next();

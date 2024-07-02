@@ -2,6 +2,7 @@
 
 export interface ICategory {
     _id?: string
+    categoryImage: string
     categoryName: string
     categoryDescription: string;
 }

@@ -64,4 +64,10 @@ router.get(
         appointmentAdapter.getSchedules(req, res, next)
 );
 
+router.delete(
+    '/schedules/:id',
+    (req: Request, res: Response, next: NextFunction) =>
+        appointmentAdapter.cancelSchedule(req, res, next)
+);
+
 export default router

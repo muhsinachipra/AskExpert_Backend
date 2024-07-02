@@ -15,10 +15,14 @@ import { sendOTP } from './user/sendOTP'
 import { validateAccessToken } from './user/validateAccessToken'
 import { updateProfile } from './user/updateProfile'
 import { getUserData } from './user/getUserData'
+import { IExpertRepository } from '../interface/repository/IExpertRepository'
+import { getExpertsByCategory } from './user/getExpertsByCategory'
+
 
 
 export class UserUsecase {
     private readonly userRepository: IUserRepository
+    private readonly expertRepository: IExpertRepository
     private readonly bcrypt: IBcrypt
     private readonly jwt: IJwt
     private readonly nodemailer: INodemailer
@@ -26,12 +30,14 @@ export class UserUsecase {
 
     constructor(
         userRepository: IUserRepository,
+        expertRepository: IExpertRepository,
         bcrypt: IBcrypt,
         jwt: IJwt,
         nodemailer: INodemailer,
         requestValidator: IRequestValidator
     ) {
         this.userRepository = userRepository
+        this.expertRepository = expertRepository
         this.bcrypt = bcrypt
         this.jwt = jwt
         this.nodemailer = nodemailer
@@ -155,5 +161,16 @@ export class UserUsecase {
             throw error;
         }
     }
+
+    async getExpertsByCategory(categoryName: string) {
+        return getExpertsByCategory(
+            categoryName,
+            this.requestValidator,
+            this.expertRepository,
+        );
+    }
+
+   
+
 
 }

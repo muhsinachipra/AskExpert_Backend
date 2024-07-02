@@ -4,6 +4,8 @@ import { IExpert } from '../../domainLayer/expert'
 import { IAppointmentRepository } from '../interface/repository/IAppointmentRepository'
 import { IRequestValidator } from '../interface/repository/IValidateRepository'
 import { addSchedule } from './appointment/addSchedule'
+import { cancelSchedule } from './appointment/cancelSchedule'
+import { getExpertSlots } from './appointment/getExpertSlots'
 import { getSchedules } from './appointment/getSchedules'
 
 export class AppointmentUsecase {
@@ -31,4 +33,15 @@ export class AppointmentUsecase {
         return getSchedules(expertId, this.appointmentRepository);
     }
 
+    async cancelSchedule(scheduleId: string, expertId: string) {
+        return cancelSchedule(scheduleId, expertId, this.appointmentRepository);
+    }
+
+    async getExpertSlots(expertId: string) {
+        return getExpertSlots(
+            expertId,
+            this.requestValidator,
+            this.appointmentRepository,
+        );
+    }
 }

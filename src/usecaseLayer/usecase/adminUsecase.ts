@@ -80,10 +80,11 @@ export class AdminUsecase {
         return sendVerifiedEmail(this.requestValidator, this.expertRepository, this.nodemailer, expertId);
     }
 
-    async addCategory({ categoryName, categoryDescription }: {
-        categoryName: string, categoryDescription: string
+    async addCategory({ categoryImage, categoryName, categoryDescription }: {
+        categoryImage: string, categoryName: string, categoryDescription: string
     }) {
         return addCategory(
+            categoryImage,
             categoryName,
             categoryDescription,
             this.requestValidator,

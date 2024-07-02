@@ -256,4 +256,27 @@ export class UserAdapter {
             next(err);
         }
     }
+
+    // @desc      fetch data of experts in same category
+    // route      POST api/user/getExpertsByCategory
+    // @access    Private
+    async getExpertsByCategory(req: Req, res: Res, next: Next) {
+        try {
+            // console.log('getExpertsByCategory called.........')
+            const categoryName = req.params.categoryName;
+            // console.log('categoryName in getExpertsByCategory : ', categoryName)
+            const experts = await this.userUsecase.getExpertsByCategory(categoryName);
+            // console.log('experts in getExpertsByCategory : ', experts)
+            if (experts) {
+                return res.status(experts.status).json({
+                    success: experts.success,
+                    data: experts.data,
+                    message: experts.message,
+                });
+            }
+        } catch (err) {
+            next(err);
+        }
+    }
+
 }

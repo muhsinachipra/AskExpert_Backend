@@ -5,6 +5,7 @@ import { ICategory } from "../../../domainLayer/category"
 
 const categorySchema: Schema = new Schema<ICategory & Document>(
     {
+        categoryImage: { type: String, required: true },
         categoryName: { type: String, required: true, unique: true },
         categoryDescription: { type: String, required: true },
     },

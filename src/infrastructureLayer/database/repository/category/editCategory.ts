@@ -11,6 +11,7 @@ export const editCategory = async (
         console.log('updatedCategory in db repos category editCategory : ',updatedCategory)
         const category = await categoryModel.findOne({ _id: updatedCategory._id});
         if (category) {
+            category.categoryImage = updatedCategory.categoryImage
             category.categoryName = updatedCategory.categoryName
             category.categoryDescription = updatedCategory.categoryDescription
             await category.save();

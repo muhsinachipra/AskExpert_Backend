@@ -2,6 +2,7 @@
 
 import express, { NextFunction, Request, Response } from 'express';
 import { userAdapter } from './injections/userInjection';
+import { appointmentAdapter } from './injections/appointmentInjection';
 import AuthMiddleware from '../middleware/AuthMiddleware'
 
 const router = express.Router()
@@ -75,6 +76,18 @@ router.get(
     "/getUserData",
     (req: Request, res: Response, next: NextFunction) =>
         userAdapter.getUserData(req, res, next)
+)
+
+router.get(
+    "/getExpertsByCategory/:categoryName",
+    (req: Request, res: Response, next: NextFunction) =>
+        userAdapter.getExpertsByCategory(req, res, next)
+)
+
+router.get(
+    "/getExpertSlots/:expertId",
+    (req: Request, res: Response, next: NextFunction) =>
+        appointmentAdapter.getExpertSlots(req, res, next)
 )
 
 
