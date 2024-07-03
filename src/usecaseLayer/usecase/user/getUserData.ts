@@ -19,8 +19,8 @@ export const getUserData = async (
                 throw ErrorResponse.unauthorized("Your account is blocked");
             }
             user.password = ""
-            const { name, email, mobile, isBlocked } = user
-            const data = { name, email, mobile, isBlocked }
+            const { _id, name, email, mobile, isBlocked } = user
+            const data = { _id, name, email, mobile, isBlocked }
             return {
                 status: 200,
                 success: true,

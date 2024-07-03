@@ -1,6 +1,7 @@
 // backend\src\controllerLayer\AppointmentAdapter.ts
 
 import { IExpert } from '../domainLayer/expert'
+import { IUser } from '../domainLayer/user'
 import { Next, Req, Res } from '../infrastructureLayer/types/expressTypes'
 import { AppointmentUsecase } from '../usecaseLayer/usecase/appointmentUsecase'
 
@@ -93,5 +94,59 @@ export class AppointmentAdapter {
             next(err);
         }
     }
+
+    // @desc    Pay for the service
+    // @route   POST /api/user/payment
+    // @access  Private
+    async payment(req: Req, res: Res, next: Next) {
+        try {
+            console.log('payment entered')
+            if (req.user && 'mobile' in req.user) {
+                const userData = req.user as IUser;
+                const { amount, appointmentId } = req.body
+                const payment = await this.appointmentUsecase.createPayment(amount, appointmentId, userData || '')
+                res.status(payment.status).json({
+                    data: payment.data,
+                })
+            } else {
+                throw new Error('Expert not found');
+            }
+
+        } catch (err) {
+            next(err)
+        }
+    }
+
+    // // @desc    webhook integration
+    // // @route   POST /api/user/webhook
+    // // @access  Private
+    // async webhook(req: Req, res: Res, next: Next) {
+    //     try {
+    //         const event = req.body;
+    //         switch (event.type) {
+    //             case "checkout.session.completed":
+    //                 // Handle charge succeeded event
+    //                 const session = event.data.object;
+    //                 const metadata = session.metadata;
+    //                 const appointmentId = metadata.appointmentId;
+    //                 const userId = metadata.userId;
+    //                 const amount = metadata.amount;
+    //                 const transactionId = event.data.object.payment_intent;
+    //                 await this.appointmentUsecase.paymentConfirmation({
+    //                     transactionId,
+    //                     appointmentId,
+    //                     userId,
+    //                     amount,
+    //                 });
+    //                 break;
+    //             default:
+    //                 console.log(`Unhandled event type: ${event.type}`);
+    //         }
+    //         // Respond with a success message
+    //         res.status(200).json({ received: true });
+    //     } catch (error) {
+    //         next(error);
+    //     }
+    // }
 
 }
