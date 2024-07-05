@@ -1,5 +1,6 @@
 // backend\src\controllerLayer\userAdapter.ts
 
+import { IUser } from '../domainLayer/user';
 import { Next, Req, Res } from '../infrastructureLayer/types/expressTypes'
 import ErrorResponse from '../usecaseLayer/handler/errorResponse';
 import { UserUsecase } from '../usecaseLayer/usecase/userUsecase'
@@ -240,18 +241,18 @@ export class UserAdapter {
     // @access    Private
     async getUserData(req: Req, res: Res, next: Next) {
         try {
-            const token = req.cookies.userjwt;
-            const user = await this.userUsecase.getUserData(token);
-            if (user) {
-                console.log(user.data)
-
-                return res.status(user.status).json({
-                    success: user.success,
-                    data: user.data,
-                    message: user.message,
+            if (req.user && 'mobile' in req.user) {
+                console.log('refetching user data userAdapter...')
+                const userData = req.user as IUser;
+                userData.password = '';
+                return res.status(200).json({
+                    success: true,
+                    data: userData,
+                    message: `Welcome ${userData.name}`,
                 });
+            } else {
+                throw ErrorResponse.notFound('User not found');
             }
-            throw ErrorResponse.unauthorized("Failed to fetch user data");
         } catch (err) {
             next(err);
         }

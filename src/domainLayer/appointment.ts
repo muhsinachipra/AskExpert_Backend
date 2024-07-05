@@ -6,6 +6,7 @@ export interface IAppointment {
     _id?: string
     userId?: Types.ObjectId | string;
     expertId: Types.ObjectId | string;
+    date: string;
     time: string;
     price: number;
     paymentStatus: string;

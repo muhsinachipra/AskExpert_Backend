@@ -1,5 +1,6 @@
 // backend\src\controllerLayer\expertAdapter.ts
 
+import { IExpert } from '../domainLayer/expert';
 import { Next, Req, Res } from '../infrastructureLayer/types/expressTypes'
 import ErrorResponse from '../usecaseLayer/handler/errorResponse';
 import { ExpertUsecase } from '../usecaseLayer/usecase/expertUsecase'
@@ -244,4 +245,24 @@ export class ExpertAdapter {
         }
     }
 
+    // @desc      fetch expert data
+    // route      POST api/expert/getExpertData
+    // @access    Private
+    async getExpertData(req: Req, res: Res, next: Next) {
+        try {
+            if (req.user && 'category' in req.user) {
+                const expertData = req.user as IExpert;
+                expertData.password = '';
+                return res.status(200).json({
+                    success: true,
+                    data: expertData,
+                    message: `Welcome ${expertData.name}`,
+                });
+            } else {
+                throw ErrorResponse.notFound('Expert not found');
+            }
+        } catch (err) {
+            next(err);
+        }
+    }
 }

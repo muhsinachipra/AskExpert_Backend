@@ -7,7 +7,7 @@ import { IAppointmentRepository } from "../../interface/repository/IAppointmentR
 import { IRequestValidator } from "../../interface/repository/IValidateRepository";
 
 export const addSchedule = async (
-    scheduleData: { time: string },
+    scheduleData: { date: string, time: string },
     expertData: IExpert,
     requestValidator: IRequestValidator,
     appointmentRepository: IAppointmentRepository,
@@ -21,7 +21,19 @@ export const addSchedule = async (
         if (!validation.success) {
             throw ErrorResponse.badRequest(validation.message as string)
         }
+
+        // Combine date and time into a single Date object
+        const appointmentDateTime = new Date(`${scheduleData.date}T${scheduleData.time}`);
+        const currentDateTime = new Date();
+
+        // Check if the appointment date and time is in the past
+        if (appointmentDateTime < currentDateTime) {
+            throw ErrorResponse.badRequest("Cannot schedule an appointment in the past");
+        }
+
+
         const existingAppointment = await appointmentRepository.findAppointmentByTimeAndExpert(
+            scheduleData.date,
             scheduleData.time,
             expertData._id || ""
         );
@@ -31,6 +43,7 @@ export const addSchedule = async (
         }
 
         const newAppointment = {
+            date: scheduleData.date,
             time: scheduleData.time,
             expertId: expertData._id || "",
             price: expertData.rate

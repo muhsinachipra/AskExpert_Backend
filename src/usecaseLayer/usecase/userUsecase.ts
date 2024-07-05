@@ -14,7 +14,6 @@ import { resetPassword } from './user/resetPassword'
 import { sendOTP } from './user/sendOTP'
 import { validateAccessToken } from './user/validateAccessToken'
 import { updateProfile } from './user/updateProfile'
-import { getUserData } from './user/getUserData'
 import { IExpertRepository } from '../interface/repository/IExpertRepository'
 import { getExpertsByCategory } from './user/getExpertsByCategory'
 
@@ -149,19 +148,6 @@ export class UserUsecase {
         }
     }
 
-    async getUserData(token: string) {
-        try {
-            console.log('getUserData called...................................')
-            return await getUserData(
-                this.userRepository,
-                token
-            );
-        } catch (error) {
-            console.error('Error fetching user data: ', error);
-            throw error;
-        }
-    }
-
     async getExpertsByCategory(categoryName: string) {
         return getExpertsByCategory(
             categoryName,
@@ -169,8 +155,5 @@ export class UserUsecase {
             this.expertRepository,
         );
     }
-
-   
-
 
 }

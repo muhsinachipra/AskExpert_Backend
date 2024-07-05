@@ -8,13 +8,14 @@ import { IExpert } from "../../../domainLayer/expert";
 import { findAppointmentByTimeAndExpert } from "./appointment/findAppointmentByTimeAndExpert";
 import { IResponse } from "../../../usecaseLayer/interface/services/IResponse";
 import { getSchedules } from "./appointment/getSchedules";
+import { payment } from "./appointment/payment";
 
 export class AppointmentRepository implements IAppointmentRepository {
 
     constructor(private readonly appointmentModel: typeof AppointmentModel) { }
 
-    async findAppointmentByTimeAndExpert(time: string, expertId: string): Promise<IAppointment | null> {
-        return findAppointmentByTimeAndExpert(time, expertId, this.appointmentModel)
+    async findAppointmentByTimeAndExpert(date: string, time: string, expertId: string): Promise<IAppointment | null> {
+        return findAppointmentByTimeAndExpert(date, time, expertId, this.appointmentModel)
     }
 
     async addSchedule(newAppointment: Partial<IAppointment>): Promise<IAppointment> {
@@ -36,6 +37,23 @@ export class AppointmentRepository implements IAppointmentRepository {
         } catch (error) {
             console.error('Error deleting schedule:', error);
             return false;
+        }
+    }
+
+    async payment(appointmentId: string, transactionId: string, userId: string): Promise<string> {
+        return payment(appointmentId, transactionId, userId, this.appointmentModel)
+    }
+
+    async getExpertId(appointmentId: string): Promise<string> {
+        try {
+            const appointment = await this.appointmentModel.findOne({ _id: appointmentId });
+            if (appointment) {
+                return appointment.expertId.toString();
+            }
+            return "";
+        } catch (error) {
+            console.error('Error getting expertId:', error);
+            return "";
         }
     }
 

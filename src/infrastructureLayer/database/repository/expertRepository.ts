@@ -54,4 +54,20 @@ export class ExpertRepository implements IExpertRepository {
     async getExpertsByCategory(categoryName: string): Promise<{ data: IExpert[], total: number }> {
         return getExpertsByCategory(categoryName, this.expertModel);
     }
+
+    async amountToWallet(expertId: string, amount: number): Promise<string | null> {
+        try {
+            const expert = await this.expertModel.findOne({ _id: expertId });
+            if (expert) {
+                expert.wallet = (expert.wallet || 0) + amount;
+                await expert.save();
+                return "Amount added to wallet successfully";
+            }
+            return null;
+        } catch (error) {
+            console.error('Error adding amount to wallet:', error);
+            return null;
+        }
+    }
+
 }

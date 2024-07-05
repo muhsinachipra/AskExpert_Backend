@@ -16,10 +16,9 @@ class StripeService implements IStripe {
     async createPaymentIntent(
         amount: number,
         appointmentId: string,
-        userId: string
     ): Promise<IResponse> {
 
-        console.log('inside createPaymentIntent stripe.ts', amount, appointmentId, userId)
+        console.log('inside createPaymentIntent stripe.ts', amount, appointmentId)
         const session = await stripe.checkout.sessions.create({
             payment_method_types: ['card'],
             line_items: [
@@ -41,7 +40,6 @@ class StripeService implements IStripe {
             metadata: {
                 amount,
                 appointmentId,
-                userId,
             },
         });
         return {

@@ -19,7 +19,7 @@ const expertSchema: Schema = new Schema<IExpert & Document>(
         resume: { type: String, required: true },
         rate: { type: Number, required: true },
         rating: { type: Number, default: 0 },
-        walllet: { type: Number, default: 0 },
+        wallet: { type: Number, default: 0 },
         isVerified: { type: Boolean, default: false },
         isBlocked: { type: Boolean, default: false },
     },

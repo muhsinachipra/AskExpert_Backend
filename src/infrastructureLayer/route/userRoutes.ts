@@ -96,10 +96,10 @@ router.post(
         appointmentAdapter.payment(req, res, next)
 )
 
-// router.post(
-//     "/webhook",
-//     (req: Request, res: Response, next: NextFunction) =>
-//         appointmentAdapter.webhook(req, res, next)
-// )
+router.post(
+    "/webhook",
+    (req: Request, res: Response, next: NextFunction) =>
+        appointmentAdapter.webhook(req, res, next)
+)
 
 export default router

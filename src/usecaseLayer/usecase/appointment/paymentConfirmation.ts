@@ -1,20 +1,21 @@
 // backend\src\usecaseLayer\usecase\appointment\paymentConfirmation.ts
 
+import { IUser } from "../../../domainLayer/user"
 import { IAppointmentRepository } from "../../interface/repository/IAppointmentRepository"
-import { IUserRepository } from "../../interface/repository/IUserRepository"
+import { IExpertRepository } from "../../interface/repository/IExpertRepository"
 
 export const paymentConfirmation = async (
     appointmentRepository: IAppointmentRepository,
-    userRepository: IUserRepository,
+    expertRepository: IExpertRepository,
     transactionId: string,
-    bookingId: string,
-    workerId: string,
+    appointmentId: string,
+    userData: IUser,
     amount: number,
 ) => {
     try {
-        await appointmentRepository.payment(bookingId, transactionId)
-        const workerAmount = amount
-        await userRepository.amountToWallet(workerId, workerAmount)
+        const expertId = await appointmentRepository.getExpertId(appointmentId)
+        await appointmentRepository.payment(appointmentId, transactionId, userData._id || '')
+        await expertRepository.amountToWallet(expertId, amount)
     } catch (err) {
         console.log(err)
         throw err

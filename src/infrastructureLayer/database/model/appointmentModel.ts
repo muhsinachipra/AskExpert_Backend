@@ -7,6 +7,7 @@ const appointmentSchema: Schema = new Schema<IAppointment & Document>(
     {
         userId: { type: Schema.Types.ObjectId, ref: 'User' },
         expertId: { type: Schema.Types.ObjectId, ref: 'Expert', required: true },
+        date: { type: String, required: true },
         time: { type: String, required: true },
         price: { type: Number, required: true },
         paymentStatus: { type: String, default: 'pending' },

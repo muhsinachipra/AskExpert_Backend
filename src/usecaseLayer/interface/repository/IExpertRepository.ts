@@ -12,7 +12,7 @@ export interface IExpertRepository {
     getExpertData(page: number, limit: number): Promise<{ data: IExpert[], total: number }>
     toggleExpertVerification(expertId: string): Promise<IExpert | null>;
     getExpertsByCategory(categoryName: string): Promise<{ data: IExpert[], total: number }>
-
+    amountToWallet(expertId: string, amount: number): Promise<string | null>
     // resetPassword(newPassword: IResetPassword): Promise<IExpert>
     // blockExpert(_id: string): Promise<string | null>
 }

@@ -1,5 +1,6 @@
 // backend\src\controllerLayer\adminAdapter.ts
 
+import { IAdmin } from '../domainLayer/admin';
 import { Next, Req, Res } from '../infrastructureLayer/types/expressTypes'
 import ErrorResponse from '../usecaseLayer/handler/errorResponse';
 import { AdminUsecase } from '../usecaseLayer/usecase/adminUsecase'
@@ -185,6 +186,27 @@ export class AdminAdapter {
             const response = await this.adminUsecase.updateUserBlockedStatus(userId);
             console.log('response from updateUserBlockedStatus in adminAdapter : ', response)
             return res.status(response.status).json(response);
+        } catch (err) {
+            next(err);
+        }
+    }
+
+    // @desc      fetch admin data
+    // route      POST api/admin/getAdminData
+    // @access    Private
+    async getAdminData(req: Req, res: Res, next: Next) {
+        try {
+            if (req.user) {
+                const adminData = req.user as IAdmin;
+                adminData.password = '';
+                return res.status(200).json({
+                    success: true,
+                    data: adminData,
+                    message: `Welcome ${adminData.name}`,
+                });
+            } else {
+                throw ErrorResponse.notFound('Admin not found');
+            }
         } catch (err) {
             next(err);
         }

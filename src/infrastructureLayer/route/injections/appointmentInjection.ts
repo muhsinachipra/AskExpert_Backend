@@ -6,12 +6,16 @@ import { AppointmentRepository } from '../../database/repository/appointmentRepo
 import { AppointmentUsecase } from '../../../usecaseLayer/usecase/appointmentUsecase'
 import { AppointmentAdapter } from '../../../controllerLayer/AppointmentAdapter'
 import StripeService from '../../services/stripe'
+import ExpertModel from '../../database/model/expertModel'
+import { ExpertRepository } from '../../database/repository/expertRepository'
 
 const appointmentRepository = new AppointmentRepository(AppointmentModel)
+const expertRepository = new ExpertRepository(ExpertModel)
 const requestValidator = new RequestValidator()
 const stripe = new StripeService()
 const appointmentUsecase = new AppointmentUsecase(
     appointmentRepository,
+    expertRepository,
     requestValidator,
     stripe
 )

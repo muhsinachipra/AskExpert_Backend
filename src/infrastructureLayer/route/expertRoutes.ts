@@ -51,7 +51,6 @@ router.patch(
         expertAdapter.updateProfile(req, res, next)
 );
 
-
 router.post(
     '/schedules',
     (req: Request, res: Response, next: NextFunction) =>
@@ -69,5 +68,12 @@ router.delete(
     (req: Request, res: Response, next: NextFunction) =>
         appointmentAdapter.cancelSchedule(req, res, next)
 );
+
+router.get(
+    "/getExpertData",
+    (req: Request, res: Response, next: NextFunction) =>
+        expertAdapter.getExpertData(req, res, next)
+)
+
 
 export default router

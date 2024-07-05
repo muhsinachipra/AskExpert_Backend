@@ -73,5 +73,10 @@ router.patch(
         adminAdapter.updateUserBlockedStatus(req, res, next)
 )
 
+router.get(
+    "/getAdminData",
+    (req: Request, res: Response, next: NextFunction) =>
+        adminAdapter.getAdminData(req, res, next)
+)
 
 export default router

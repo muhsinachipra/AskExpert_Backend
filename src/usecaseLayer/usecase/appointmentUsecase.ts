@@ -3,6 +3,7 @@
 import { IExpert } from '../../domainLayer/expert'
 import { IUser } from '../../domainLayer/user'
 import { IAppointmentRepository } from '../interface/repository/IAppointmentRepository'
+import { IExpertRepository } from '../interface/repository/IExpertRepository'
 import { IRequestValidator } from '../interface/repository/IValidateRepository'
 import IStripe from '../interface/services/IStripe'
 import { addSchedule } from './appointment/addSchedule'
@@ -14,19 +15,22 @@ import { paymentConfirmation } from './appointment/paymentConfirmation'
 
 export class AppointmentUsecase {
     private readonly appointmentRepository: IAppointmentRepository
+    private readonly expertRepository: IExpertRepository
     private readonly requestValidator: IRequestValidator
     private readonly stripe: IStripe
     constructor(
         appointmentRepository: IAppointmentRepository,
+        expertRepository: IExpertRepository,
         requestValidator: IRequestValidator,
         stripe: IStripe
     ) {
         this.appointmentRepository = appointmentRepository
+        this.expertRepository = expertRepository
         this.requestValidator = requestValidator
         this.stripe = stripe
     }
 
-    async addSchedule(scheduleData: { time: string }, expertData: IExpert) {
+    async addSchedule(scheduleData: { date: string, time: string }, expertData: IExpert) {
         return addSchedule(
             scheduleData,
             expertData,
@@ -55,10 +59,10 @@ export class AppointmentUsecase {
         return createPayment(this.stripe, amount, appointmentId, userData, this.requestValidator,)
     }
 
-    // async paymentConfirmation({ transactionId, appointmentId, userId, amount }: { transactionId: string, appointmentId: string, userId: string, amount: number }) {
-    //     return paymentConfirmation(
-    //         this.appointmentRepository, this.userRepository, transactionId, appointmentId, userId, amount
-    //     )
-    // }
+    async paymentConfirmation({ transactionId, appointmentId, userData, amount }: { transactionId: string, appointmentId: string, userData: IUser, amount: number }) {
+        return paymentConfirmation(
+            this.appointmentRepository, this.expertRepository, transactionId, appointmentId, userData, amount
+        )
+    }
 
 }

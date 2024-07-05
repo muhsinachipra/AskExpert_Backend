@@ -13,7 +13,7 @@ export interface IExpert {
     profilePic: string;
     resume: string;
     rate: number;
-    walllet?: string;
+    wallet?: number;
     rating?: number;
     isVerified?: boolean
     isBlocked?: boolean

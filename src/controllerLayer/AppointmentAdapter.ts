@@ -3,6 +3,7 @@
 import { IExpert } from '../domainLayer/expert'
 import { IUser } from '../domainLayer/user'
 import { Next, Req, Res } from '../infrastructureLayer/types/expressTypes'
+import ErrorResponse from '../usecaseLayer/handler/errorResponse'
 import { AppointmentUsecase } from '../usecaseLayer/usecase/appointmentUsecase'
 
 
@@ -30,7 +31,7 @@ export class AppointmentAdapter {
                     message: response.message,
                 });
             } else {
-                throw new Error('Expert not found');
+                throw ErrorResponse.notFound('Expert not found');
             }
         } catch (err) {
             next(err);
@@ -48,7 +49,7 @@ export class AppointmentAdapter {
                 const schedules = await this.appointmentUsecase.getSchedules(expertId || '');
                 return res.status(schedules.status).json(schedules)
             } else {
-                throw new Error('Expert not found');
+                throw ErrorResponse.notFound('Expert not found');
             }
         } catch (err) {
             next(err);
@@ -69,7 +70,7 @@ export class AppointmentAdapter {
                     message: response.message,
                 });
             } else {
-                throw new Error('Expert not found');
+                throw ErrorResponse.notFound('Expert not found');
             }
         } catch (err) {
             next(err);
@@ -109,7 +110,7 @@ export class AppointmentAdapter {
                     data: payment.data,
                 })
             } else {
-                throw new Error('Expert not found');
+                throw new Error('User not found');
             }
 
         } catch (err) {
@@ -117,36 +118,39 @@ export class AppointmentAdapter {
         }
     }
 
-    // // @desc    webhook integration
-    // // @route   POST /api/user/webhook
-    // // @access  Private
-    // async webhook(req: Req, res: Res, next: Next) {
-    //     try {
-    //         const event = req.body;
-    //         switch (event.type) {
-    //             case "checkout.session.completed":
-    //                 // Handle charge succeeded event
-    //                 const session = event.data.object;
-    //                 const metadata = session.metadata;
-    //                 const appointmentId = metadata.appointmentId;
-    //                 const userId = metadata.userId;
-    //                 const amount = metadata.amount;
-    //                 const transactionId = event.data.object.payment_intent;
-    //                 await this.appointmentUsecase.paymentConfirmation({
-    //                     transactionId,
-    //                     appointmentId,
-    //                     userId,
-    //                     amount,
-    //                 });
-    //                 break;
-    //             default:
-    //                 console.log(`Unhandled event type: ${event.type}`);
-    //         }
-    //         // Respond with a success message
-    //         res.status(200).json({ received: true });
-    //     } catch (error) {
-    //         next(error);
-    //     }
-    // }
+    // @desc    webhook integration
+    // @route   POST /api/user/webhook
+    // @access  Private
+    async webhook(req: Req, res: Res, next: Next) {
+        try {
+            if (req.user && 'mobile' in req.user) {
+                const userData = req.user as IUser;
+                const event = req.body;
+                switch (event.type) {
+                    case "checkout.session.completed":
+                        const session = event.data.object;
+                        const metadata = session.metadata;
+                        console.log('metadata in webhook : ', metadata)
+                        const appointmentId = metadata.appointmentId;
+                        const amount = metadata.amount;
+                        const transactionId = event.data.object.payment_intent;
+                        await this.appointmentUsecase.paymentConfirmation({
+                            transactionId,
+                            appointmentId,
+                            userData,
+                            amount,
+                        });
+                        break;
+                    default:
+                        console.log(`Unhandled event type: ${event.type}`);
+                }
+                res.status(200).json({ received: true });
+            } else {
+                throw new Error('User not found');
+            }
+        } catch (error) {
+            next(error);
+        }
+    }
 
 }
