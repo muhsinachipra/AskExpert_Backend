@@ -112,6 +112,9 @@ class AuthMiddleware {
                 if (expert?.isBlocked) {
                     return next(ErrorResponse.unauthorized('Not authorized, expert is blocked'));
                 }
+                if (!expert?.isVerified) {
+                    return next(ErrorResponse.unauthorized('Not authorized, You are not verified yet'));
+                }
                 if (expert) {
                     req.user = expert;
                     next();
