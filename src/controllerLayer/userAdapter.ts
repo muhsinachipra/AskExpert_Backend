@@ -280,4 +280,24 @@ export class UserAdapter {
         }
     }
 
+    // @desc      fetch data of expert for the user to show in the appointments page
+    // route      POST api/user/getExpertData
+    // @access    Private
+    async userGetExpertData(req: Req, res: Res, next: Next) {
+        try {
+            const expertId = req.params.expertId;
+            const expert = await this.userUsecase.userGetExpertData(expertId);
+            if (expert) {
+                return res.status(expert.status).json({
+                    success: expert.success,
+                    data: expert.data,
+                    message: expert.message,
+                });
+            }
+        } catch (err) {
+            next(err);
+        }
+    }
+
+
 }

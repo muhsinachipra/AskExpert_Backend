@@ -146,4 +146,27 @@ export class AppointmentAdapter {
         }
     }
 
+    // @desc      Get user appointments
+    // route      GET api/user/getUserAppointments
+    // @access    Private
+    async getUserAppointments(req: Req, res: Res, next: Next) {
+        try {
+            if (req.user && 'mobile' in req.user) {
+                const userData = req.user as IUser;
+                const userId = userData._id;
+                const appointments = await this.appointmentUsecase.getUserAppointments(userId || '');
+                return res.status(appointments.status).json({
+                    success: appointments.success,
+                    data: appointments.data,
+                    message: appointments.message,
+                });
+            } else {
+                throw ErrorResponse.notFound('User not found');
+            }
+        } catch (err) {
+            next(err);
+        }
+    }
+
+
 }

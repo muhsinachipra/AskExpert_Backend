@@ -57,4 +57,14 @@ export class AppointmentRepository implements IAppointmentRepository {
         }
     }
 
+    async getUserAppointments(userId: string): Promise<IAppointment[]> {
+        try {
+            const appointments = await this.appointmentModel.find({ userId, appointmentStatus: 'booked' });
+            return appointments;
+        } catch (error) {
+            console.error('Error getting user appointments:', error);
+            return [];
+        }
+    }
+
 }

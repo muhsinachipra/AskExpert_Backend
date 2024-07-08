@@ -66,4 +66,14 @@ export class AppointmentUsecase {
         )
     }
 
+    async getUserAppointments(userId: string) {
+        const data = await this.appointmentRepository.getUserAppointments(userId);
+        return {
+            success: true,
+            data,
+            message: 'User Appointment data retrieved successfully',
+            status: 200,
+        };
+    }
+
 }

@@ -102,5 +102,17 @@ router.post(
         appointmentAdapter.payment(req, res, next)
 )
 
+router.get(
+    "/getUserAppointments",
+    (req: Request, res: Response, next: NextFunction) =>
+        appointmentAdapter.getUserAppointments(req, res, next)
+)
+
+router.get(
+    "/getExpertData/:expertId",
+    (req: Request, res: Response, next: NextFunction) =>
+        userAdapter.userGetExpertData(req, res, next)
+)
+
 
 export default router

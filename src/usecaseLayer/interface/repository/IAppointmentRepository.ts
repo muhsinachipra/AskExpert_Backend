@@ -11,4 +11,5 @@ export interface IAppointmentRepository {
     deleteSchedule(scheduleId: string, expertId: string): Promise<boolean>
     payment(appointmentId: string, transactionId: string, userId: string): Promise<string>;
     getExpertId(appointmentId: string): Promise<string>;
+    getUserAppointments(userId: string): Promise<IAppointment[]>
 }
