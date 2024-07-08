@@ -102,9 +102,9 @@ export class AppointmentAdapter {
     async payment(req: Req, res: Res, next: Next) {
         try {
             console.log('payment entered')
-            const { amount, appointmentId, userId } = req.body
-            console.log('in payment amount : ', amount, 'appointmentId : ', appointmentId, 'userId : ', userId)
-            const payment = await this.appointmentUsecase.createPayment(amount, appointmentId, userId)
+            const { amount, appointmentId, userId, userName } = req.body
+            console.log('in payment amount : ', amount, 'appointmentId : ', appointmentId, 'userId : ', userId, "userName: ", userName)
+            const payment = await this.appointmentUsecase.createPayment(amount, appointmentId, userId, userName)
             console.log('payment in payment : ', payment)
             res.status(payment.status).json({
                 data: payment.data,
@@ -128,12 +128,14 @@ export class AppointmentAdapter {
                     console.log('metadata in webhook : ', metadata)
                     const appointmentId = metadata.appointmentId;
                     const userId = metadata.userId;
+                    const userName = metadata.userName;
                     const amount = metadata.amount;
                     const transactionId = event.data.object.payment_intent;
                     await this.appointmentUsecase.paymentConfirmation({
                         transactionId,
                         appointmentId,
                         userId,
+                        userName,
                         amount,
                     });
                     break;
@@ -162,6 +164,28 @@ export class AppointmentAdapter {
                 });
             } else {
                 throw ErrorResponse.notFound('User not found');
+            }
+        } catch (err) {
+            next(err);
+        }
+    }
+
+    // @desc      Get appointments data for expert
+    // route      GET api/expert/getAppointmentsData
+    // @access    Private
+    async getAppointmentsData(req: Req, res: Res, next: Next) {
+        try {
+            if (req.user && 'category' in req.user) {
+                const expertData = req.user as IExpert;
+                const expertId = expertData._id;
+                const appointments = await this.appointmentUsecase.getAppointmentsData(expertId || '');
+                return res.status(appointments.status).json({
+                    success: appointments.success,
+                    data: appointments.data,
+                    message: appointments.message,
+                });
+            } else {
+                throw ErrorResponse.notFound('Expert not found');
             }
         } catch (err) {
             next(err);

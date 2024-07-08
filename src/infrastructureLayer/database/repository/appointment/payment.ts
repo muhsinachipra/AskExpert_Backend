@@ -6,12 +6,14 @@ export const payment = async (
     appointmentId: string,
     transactionId: string,
     userId: string,
+    userName: string,
     appointmentModel: typeof AppointmentModel
 ): Promise<string> => {
     try {
         const newAppointment = await appointmentModel.findOne({ _id: appointmentId })
         if (newAppointment) {
             newAppointment.userId = userId
+            newAppointment.userName = userName
             newAppointment.paymentStatus = 'paid'
             newAppointment.paymentId = transactionId
             newAppointment.appointmentStatus = 'booked'

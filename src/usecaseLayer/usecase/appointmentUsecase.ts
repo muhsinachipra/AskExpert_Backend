@@ -56,13 +56,13 @@ export class AppointmentUsecase {
         );
     }
 
-    async createPayment(amount: number, appointmentId: string, userId: string) {
-        return createPayment(this.stripe, amount, appointmentId, userId, this.requestValidator,)
+    async createPayment(amount: number, appointmentId: string, userId: string, userName: string) {
+        return createPayment(this.stripe, amount, appointmentId, userId, userName, this.requestValidator,)
     }
 
-    async paymentConfirmation({ transactionId, appointmentId, userId, amount }: { transactionId: string, appointmentId: string, userId: string, amount: number }) {
+    async paymentConfirmation({ transactionId, appointmentId, userId, userName, amount }: { transactionId: string, appointmentId: string, userId: string, userName: string, amount: number }) {
         return paymentConfirmation(
-            this.appointmentRepository, this.expertRepository, transactionId, appointmentId, userId, amount
+            this.appointmentRepository, this.expertRepository, transactionId, appointmentId, userId, userName, amount
         )
     }
 
@@ -75,5 +75,26 @@ export class AppointmentUsecase {
             status: 200,
         };
     }
+
+    async getAppointmentsData(expertId: string) {
+        try {
+            const data = await this.appointmentRepository.getAppointmentsData(expertId);
+            return {
+                success: true,
+                data,
+                message: 'Expert Appointment data retrieved successfully',
+                status: 200,
+            };
+        } catch (error) {
+            return {
+                success: false,
+                data: null,
+                message: 'Failed to retrieve expert Appointment data',
+                status: 500,
+            };
+        }
+
+    }
+
 
 }

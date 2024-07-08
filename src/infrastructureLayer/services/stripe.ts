@@ -16,7 +16,8 @@ class StripeService implements IStripe {
     async createPaymentIntent(
         amount: number,
         appointmentId: string,
-        userId: string
+        userId: string,
+        userName: string
     ): Promise<IResponse> {
 
         console.log('inside createPaymentIntent stripe service', amount, appointmentId, 'userId : ', userId)
@@ -41,7 +42,8 @@ class StripeService implements IStripe {
             metadata: {
                 amount,
                 appointmentId,
-                userId
+                userId,
+                userName
             },
         });
         return {

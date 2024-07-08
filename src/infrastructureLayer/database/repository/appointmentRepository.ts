@@ -40,8 +40,8 @@ export class AppointmentRepository implements IAppointmentRepository {
         }
     }
 
-    async payment(appointmentId: string, transactionId: string, userId: string): Promise<string> {
-        return payment(appointmentId, transactionId, userId, this.appointmentModel)
+    async payment(appointmentId: string, transactionId: string, userId: string, userName: string): Promise<string> {
+        return payment(appointmentId, transactionId, userId, userName, this.appointmentModel)
     }
 
     async getExpertId(appointmentId: string): Promise<string> {
@@ -66,5 +66,35 @@ export class AppointmentRepository implements IAppointmentRepository {
             return [];
         }
     }
+
+    async getAppointmentsData(expertId: string): Promise<IAppointment[]> {
+        try {
+            const appointments = await this.appointmentModel.find({ expertId, appointmentStatus: 'booked' });
+            return appointments;
+        } catch (error) {
+            console.error('Error getting expert appointments:', error);
+            return [];
+        }
+    }
+
+    // async updateAppointment(appointmentId: string, transactionId: string, userId: string, userName: string, amount: number): Promise<IAppointment | null> {
+    //     try {
+    //         const appointment = await this.appointmentModel.findOneAndUpdate(
+    //             { _id: appointmentId },
+    //             {
+    //                 transactionId,
+    //                 userId,
+    //                 userName,
+    //                 paymentStatus: 'paid',
+    //                 amount,
+    //             },
+    //             { new: true }
+    //         );
+    //         return appointment;
+    //     } catch (error) {
+    //         console.error('Error updating appointment:', error);
+    //         return null;
+    //     }
+    // }
 
 }

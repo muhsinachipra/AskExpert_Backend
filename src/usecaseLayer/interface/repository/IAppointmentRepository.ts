@@ -9,7 +9,9 @@ export interface IAppointmentRepository {
     addSchedule(newAppointment: Partial<IAppointment>): Promise<IAppointment>
     getSchedules(expertId: string): Promise<IAppointment[]>
     deleteSchedule(scheduleId: string, expertId: string): Promise<boolean>
-    payment(appointmentId: string, transactionId: string, userId: string): Promise<string>;
+    payment(appointmentId: string, transactionId: string, userId: string, userName: string): Promise<string>;
     getExpertId(appointmentId: string): Promise<string>;
     getUserAppointments(userId: string): Promise<IAppointment[]>
+    getAppointmentsData(expertId: string): Promise<IAppointment[]>
+    // updateAppointment(appointmentId: string, transactionId: string, userId: string, userName: string, amount: number): Promise<IAppointment | null>
 }

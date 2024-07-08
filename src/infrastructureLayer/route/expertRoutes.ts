@@ -75,5 +75,11 @@ router.get(
         expertAdapter.getExpertData(req, res, next)
 )
 
+router.get(
+    "/getAppointmentsData",
+    (req: Request, res: Response, next: NextFunction) =>
+        appointmentAdapter.getAppointmentsData(req, res, next)
+)
+
 
 export default router

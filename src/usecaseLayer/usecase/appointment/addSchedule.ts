@@ -46,6 +46,8 @@ export const addSchedule = async (
             date: scheduleData.date,
             time: scheduleData.time,
             expertId: expertData._id || "",
+            expertName: expertData.name || "",
+            expertCategory: expertData.category || "",
             price: expertData.rate
         }
 

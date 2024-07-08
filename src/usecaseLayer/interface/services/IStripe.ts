@@ -4,7 +4,7 @@ import { Req } from "../../../infrastructureLayer/types/expressTypes";
 import { IResponse } from "./IResponse";
 
 interface IStripe {
-    createPaymentIntent(amount: number, appointmentId: string, userId: string): Promise<IResponse>
+    createPaymentIntent(amount: number, appointmentId: string, userId: string, userName: string): Promise<IResponse>
 }
 
 export default IStripe
