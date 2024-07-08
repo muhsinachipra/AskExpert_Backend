@@ -9,12 +9,13 @@ export const paymentConfirmation = async (
     expertRepository: IExpertRepository,
     transactionId: string,
     appointmentId: string,
-    userData: IUser,
+    userId: string,
     amount: number,
 ) => {
     try {
+        console.log('inside paymentConfirmation webhook logic')
         const expertId = await appointmentRepository.getExpertId(appointmentId)
-        await appointmentRepository.payment(appointmentId, transactionId, userData._id || '')
+        await appointmentRepository.payment(appointmentId, transactionId, userId)
         await expertRepository.amountToWallet(expertId, amount)
     } catch (err) {
         console.log(err)

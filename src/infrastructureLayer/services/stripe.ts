@@ -16,9 +16,10 @@ class StripeService implements IStripe {
     async createPaymentIntent(
         amount: number,
         appointmentId: string,
+        userId: string
     ): Promise<IResponse> {
 
-        console.log('inside createPaymentIntent stripe.ts', amount, appointmentId)
+        console.log('inside createPaymentIntent stripe service', amount, appointmentId, 'userId : ', userId)
         const session = await stripe.checkout.sessions.create({
             payment_method_types: ['card'],
             line_items: [
@@ -36,10 +37,11 @@ class StripeService implements IStripe {
             ],
             mode: 'payment',
             success_url: 'http://localhost:5000/success',
-            cancel_url: 'http://localhost:5000',
+            cancel_url: 'http://localhost:5000/home',
             metadata: {
                 amount,
                 appointmentId,
+                userId
             },
         });
         return {
@@ -48,7 +50,6 @@ class StripeService implements IStripe {
             data: session.id
         }
     }
-
 
 }
 

@@ -10,20 +10,20 @@ export const createPayment = async (
     stripe: IStripe,
     amount: number,
     appointmentId: string,
-    userData: IUser,
+    userId: string,
     requestValidator: IRequestValidator,
 ): Promise<IResponse> => {
     try {
         const validation = requestValidator.validateRequiredFields(
-            { amount, userData, appointmentId },
-            ["amount", "userData", "appointmentId"]
+            { amount, userId, appointmentId },
+            ["amount", "userId", "appointmentId"]
         );
 
         if (!validation.success) {
             throw ErrorResponse.badRequest(validation.message as string);
         }
 
-        const res = await stripe.createPaymentIntent(amount, appointmentId, userData._id?.toString() || '');
+        const res = await stripe.createPaymentIntent(amount, appointmentId, userId);
 
         if (res) {
             return {

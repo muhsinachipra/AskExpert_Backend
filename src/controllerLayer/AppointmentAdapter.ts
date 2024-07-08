@@ -102,17 +102,13 @@ export class AppointmentAdapter {
     async payment(req: Req, res: Res, next: Next) {
         try {
             console.log('payment entered')
-            if (req.user && 'mobile' in req.user) {
-                const userData = req.user as IUser;
-                const { amount, appointmentId } = req.body
-                const payment = await this.appointmentUsecase.createPayment(amount, appointmentId, userData || '')
-                res.status(payment.status).json({
-                    data: payment.data,
-                })
-            } else {
-                throw new Error('User not found');
-            }
-
+            const { amount, appointmentId, userId } = req.body
+            console.log('in payment amount : ', amount, 'appointmentId : ', appointmentId, 'userId : ', userId)
+            const payment = await this.appointmentUsecase.createPayment(amount, appointmentId, userId)
+            console.log('payment in payment : ', payment)
+            res.status(payment.status).json({
+                data: payment.data,
+            })
         } catch (err) {
             next(err)
         }
@@ -123,31 +119,28 @@ export class AppointmentAdapter {
     // @access  Private
     async webhook(req: Req, res: Res, next: Next) {
         try {
-            if (req.user && 'mobile' in req.user) {
-                const userData = req.user as IUser;
-                const event = req.body;
-                switch (event.type) {
-                    case "checkout.session.completed":
-                        const session = event.data.object;
-                        const metadata = session.metadata;
-                        console.log('metadata in webhook : ', metadata)
-                        const appointmentId = metadata.appointmentId;
-                        const amount = metadata.amount;
-                        const transactionId = event.data.object.payment_intent;
-                        await this.appointmentUsecase.paymentConfirmation({
-                            transactionId,
-                            appointmentId,
-                            userData,
-                            amount,
-                        });
-                        break;
-                    default:
-                        console.log(`Unhandled event type: ${event.type}`);
-                }
-                res.status(200).json({ received: true });
-            } else {
-                throw new Error('User not found');
+            console.log('inside webhook appointmentAdapter')
+            const event = req.body;
+            switch (event.type) {
+                case "checkout.session.completed":
+                    const session = event.data.object;
+                    const metadata = session.metadata;
+                    console.log('metadata in webhook : ', metadata)
+                    const appointmentId = metadata.appointmentId;
+                    const userId = metadata.userId;
+                    const amount = metadata.amount;
+                    const transactionId = event.data.object.payment_intent;
+                    await this.appointmentUsecase.paymentConfirmation({
+                        transactionId,
+                        appointmentId,
+                        userId,
+                        amount,
+                    });
+                    break;
+                default:
+                    console.log(`Unhandled event type: ${event.type}`);
             }
+            res.status(200).json({ received: true });
         } catch (error) {
             next(error);
         }

@@ -2,6 +2,7 @@
 
 import { IExpert } from '../../domainLayer/expert'
 import { IUser } from '../../domainLayer/user'
+import { Req } from '../../infrastructureLayer/types/expressTypes'
 import { IAppointmentRepository } from '../interface/repository/IAppointmentRepository'
 import { IExpertRepository } from '../interface/repository/IExpertRepository'
 import { IRequestValidator } from '../interface/repository/IValidateRepository'
@@ -55,13 +56,13 @@ export class AppointmentUsecase {
         );
     }
 
-    async createPayment(amount: number, appointmentId: string, userData: IUser) {
-        return createPayment(this.stripe, amount, appointmentId, userData, this.requestValidator,)
+    async createPayment(amount: number, appointmentId: string, userId: string) {
+        return createPayment(this.stripe, amount, appointmentId, userId, this.requestValidator,)
     }
 
-    async paymentConfirmation({ transactionId, appointmentId, userData, amount }: { transactionId: string, appointmentId: string, userData: IUser, amount: number }) {
+    async paymentConfirmation({ transactionId, appointmentId, userId, amount }: { transactionId: string, appointmentId: string, userId: string, amount: number }) {
         return paymentConfirmation(
-            this.appointmentRepository, this.expertRepository, transactionId, appointmentId, userData, amount
+            this.appointmentRepository, this.expertRepository, transactionId, appointmentId, userId, amount
         )
     }
 

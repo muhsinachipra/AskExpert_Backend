@@ -57,6 +57,12 @@ router.post(
         userAdapter.resetPassword(req, res, next)
 );
 
+router.post(
+    "/webhook",
+    (req: Request, res: Response, next: NextFunction) =>
+        appointmentAdapter.webhook(req, res, next)
+)
+
 // Use protectUser middleware for routes accessible only to authenticated users
 router.use(AuthMiddleware.authenticateUser);
 
@@ -96,10 +102,5 @@ router.post(
         appointmentAdapter.payment(req, res, next)
 )
 
-router.post(
-    "/webhook",
-    (req: Request, res: Response, next: NextFunction) =>
-        appointmentAdapter.webhook(req, res, next)
-)
 
 export default router
