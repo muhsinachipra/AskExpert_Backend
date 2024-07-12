@@ -10,7 +10,7 @@ export interface IAppointment {
     expertName: string;
     expertCategory: string;
     date: string;
-    time: string;
+    startTime: string;
     price: number;
     paymentStatus: string;
     paymentId: string;

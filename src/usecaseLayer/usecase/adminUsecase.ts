@@ -18,6 +18,7 @@ import { getUserData } from './admin/getUserData'
 import { loginAdmin } from './admin/loginAdmin'
 import { sendVerifiedEmail } from './admin/sendVerifiedEmail'
 import { toggleExpertVerification } from './admin/toggleExpertVerification'
+import { updateExpertBlockedStatus } from './admin/updateExpertBlockedStatus'
 import { updateUserBlockedStatus } from './admin/updateUserBlockedStatus'
 
 export class AdminUsecase {
@@ -117,6 +118,14 @@ export class AdminUsecase {
             userId,
             this.requestValidator,
             this.userRepository
+        )
+    }
+
+    async updateExpertBlockedStatus(expertId: string) {
+        return updateExpertBlockedStatus(
+            expertId,
+            this.requestValidator,
+            this.expertRepository
         )
     }
 

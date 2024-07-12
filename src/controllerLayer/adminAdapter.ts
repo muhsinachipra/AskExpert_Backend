@@ -212,4 +212,17 @@ export class AdminAdapter {
         }
     }
 
+    // @desc      Toggle expert block status
+    // route      PATCH api/admin/expertBlockedStatus/:id
+    // @access    Private
+    async updateExpertBlockedStatus(req: Req, res: Res, next: Next) {
+        try {
+            const expertId = req.params.id;
+            const response = await this.adminUsecase.updateExpertBlockedStatus(expertId);
+            console.log('response from updateExpertBlockedStatus in adminAdapter : ', response)
+            return res.status(response.status).json(response);
+        } catch (err) {
+            next(err);
+        }
+    }
 }

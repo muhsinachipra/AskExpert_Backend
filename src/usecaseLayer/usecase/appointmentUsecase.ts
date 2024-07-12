@@ -31,7 +31,7 @@ export class AppointmentUsecase {
         this.stripe = stripe
     }
 
-    async addSchedule(scheduleData: { date: string, time: string }, expertData: IExpert) {
+    async addSchedule(scheduleData: { date: string, startTime: string, rrule: string  }, expertData: IExpert) {
         return addSchedule(
             scheduleData,
             expertData,

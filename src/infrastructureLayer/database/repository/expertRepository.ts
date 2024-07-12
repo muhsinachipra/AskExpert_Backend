@@ -12,6 +12,7 @@ import { getExpertData } from "./expert/getExpertData";
 import { getExpertsByCategory } from "./expert/getExpertsByCategory";
 import { resetPassword } from "./expert/resetPassword";
 import { toggleExpertVerification } from "./expert/toggleExpertVerification";
+import { updateExpertBlockedStatus } from "./expert/updateExpertBlockedStatus";
 import { updateProfile } from "./expert/updateProfile";
 // import { resetPassword } from "./expert/resetPassword";
 
@@ -59,7 +60,11 @@ export class ExpertRepository implements IExpertRepository {
         try {
             const expert = await this.expertModel.findOne({ _id: expertId });
             if (expert) {
-                expert.wallet = (expert.wallet || 0) + amount;
+                const walletAmount = Number(expert.wallet) || 0;
+                const amountToAdd = Number(amount);
+                // console.log('wallet money: ', walletAmount, " amount: ", amountToAdd, " total: ", walletAmount + amountToAdd)
+
+                expert.wallet = walletAmount + amountToAdd;
                 await expert.save();
                 return "Amount added to wallet successfully";
             }
@@ -68,6 +73,10 @@ export class ExpertRepository implements IExpertRepository {
             console.error('Error adding amount to wallet:', error);
             return null;
         }
+    }
+
+    async updateExpertBlockedStatus(expertId: string): Promise<IExpert | null> {
+        return updateExpertBlockedStatus(expertId, this.expertModel);
     }
 
 }

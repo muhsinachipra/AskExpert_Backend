@@ -5,15 +5,20 @@ import AppointmentModel from "../../model/appointmentModel";
 
 export const getSchedules = async (expertId: string, appointmentModel: typeof AppointmentModel) => {
     try {
-        const now = new Date();
 
+        const now = new Date();
+        console.log('UTC time:', now);
+        const localTime = new Date(now.getTime() - (now.getTimezoneOffset() * 60000));
+        console.log('Local time:', localTime);
+
+        // filter past appointments
         const appointmentData = await appointmentModel.aggregate([
             {
                 $addFields: {
                     appointmentDateTime: {
                         $dateFromString: {
                             dateString: {
-                                $concat: ["$date", "T", "$time"]
+                                $concat: ["$date", "T", "$startTime"]
                             }
                         }
                     }
@@ -23,14 +28,13 @@ export const getSchedules = async (expertId: string, appointmentModel: typeof Ap
                 $match: {
                     expertId: new mongoose.Types.ObjectId(expertId),
                     appointmentStatus: 'pending',
-                    appointmentDateTime: { $gte: now }
+                    appointmentDateTime: { $gte: localTime }
                 }
             },
             {
-                $sort: { createdAt: -1 }
+                $sort: { appointmentDateTime: 1 }
             }
         ]);
-        console.log("now: ", now)
         console.log('appointmentData: ', appointmentData);
         return appointmentData;
     } catch (error) {

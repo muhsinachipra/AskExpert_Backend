@@ -14,8 +14,8 @@ export class AppointmentRepository implements IAppointmentRepository {
 
     constructor(private readonly appointmentModel: typeof AppointmentModel) { }
 
-    async findAppointmentByTimeAndExpert(date: string, time: string, expertId: string): Promise<IAppointment | null> {
-        return findAppointmentByTimeAndExpert(date, time, expertId, this.appointmentModel)
+    async findAppointmentByTimeAndExpert(date: string, startTime: string, expertId: string): Promise<IAppointment | null> {
+        return findAppointmentByTimeAndExpert(date, startTime, expertId, this.appointmentModel)
     }
 
     async addSchedule(newAppointment: Partial<IAppointment>): Promise<IAppointment> {
@@ -59,7 +59,7 @@ export class AppointmentRepository implements IAppointmentRepository {
 
     async getUserAppointments(userId: string): Promise<IAppointment[]> {
         try {
-            const appointments = await this.appointmentModel.find({ userId, appointmentStatus: 'booked' });
+            const appointments = await this.appointmentModel.find({ userId, appointmentStatus: 'booked' }).sort({ date: 1 });
             return appointments;
         } catch (error) {
             console.error('Error getting user appointments:', error);

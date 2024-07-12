@@ -5,7 +5,7 @@ import { IExpert } from "../../../domainLayer/expert"
 import { IResponse } from "../services/IResponse"
 
 export interface IAppointmentRepository {
-    findAppointmentByTimeAndExpert(date: string, time: string, expertId: string): Promise<IAppointment | null>
+    findAppointmentByTimeAndExpert(date: string, startTime: string, expertId: string): Promise<IAppointment | null>
     addSchedule(newAppointment: Partial<IAppointment>): Promise<IAppointment>
     getSchedules(expertId: string): Promise<IAppointment[]>
     deleteSchedule(scheduleId: string, expertId: string): Promise<boolean>

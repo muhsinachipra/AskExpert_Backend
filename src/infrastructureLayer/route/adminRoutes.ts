@@ -79,4 +79,10 @@ router.get(
         adminAdapter.getAdminData(req, res, next)
 )
 
+router.patch(
+    '/expertBlockedStatus/:id',
+    (req: Request, res: Response, next: NextFunction) =>
+        adminAdapter.updateExpertBlockedStatus(req, res, next)
+)
+
 export default router

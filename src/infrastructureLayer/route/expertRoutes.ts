@@ -20,12 +20,6 @@ router.post(
 )
 
 router.post(
-    "/logout",
-    (req: Request, res: Response, next: NextFunction) =>
-        expertAdapter.logoutExpert(req, res, next)
-)
-
-router.post(
     "/forgotPassword",
     (req: Request, res: Response, next: NextFunction) =>
         expertAdapter.forgotPassword(req, res, next)
@@ -44,6 +38,12 @@ router.post(
 );
 
 router.use(AuthMiddleware.authenticateExpert);
+
+router.post(
+    "/logout",
+    (req: Request, res: Response, next: NextFunction) =>
+        expertAdapter.logoutExpert(req, res, next)
+)
 
 router.patch(
     "/updateProfile",
