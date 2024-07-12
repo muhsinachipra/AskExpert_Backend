@@ -9,6 +9,7 @@ import { findAppointmentByTimeAndExpert } from "./appointment/findAppointmentByT
 import { IResponse } from "../../../usecaseLayer/interface/services/IResponse";
 import { getSchedules } from "./appointment/getSchedules";
 import { payment } from "./appointment/payment";
+import { findAppointmentByTimeRangeAndExpert } from "./appointment/findAppointmentByTimeRangeAndExpert";
 
 export class AppointmentRepository implements IAppointmentRepository {
 
@@ -16,6 +17,10 @@ export class AppointmentRepository implements IAppointmentRepository {
 
     async findAppointmentByTimeAndExpert(date: string, startTime: string, expertId: string): Promise<IAppointment | null> {
         return findAppointmentByTimeAndExpert(date, startTime, expertId, this.appointmentModel)
+    }
+
+    async findAppointmentByTimeRangeAndExpert(date: string, startTime: string, endTime: string, expertId: string): Promise<IAppointment | null> {
+        return findAppointmentByTimeRangeAndExpert(date, startTime, endTime, expertId, this.appointmentModel)
     }
 
     async addSchedule(newAppointment: Partial<IAppointment>): Promise<IAppointment> {

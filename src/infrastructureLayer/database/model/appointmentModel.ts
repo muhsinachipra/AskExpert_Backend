@@ -12,6 +12,7 @@ const appointmentSchema: Schema = new Schema<IAppointment & Document>(
         expertCategory: { type: String, required: true },
         date: { type: String, required: true },
         startTime: { type: String, required: true },
+        endTime: { type: String, required: true },
         price: { type: Number, required: true },
         paymentStatus: { type: String, default: 'pending' },
         paymentId: { type: String, default: '' },
