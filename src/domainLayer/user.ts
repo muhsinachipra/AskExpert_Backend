@@ -7,5 +7,6 @@ export interface IUser{
     mobile?: string;
     password: string;
     isBlocked?: boolean;
+    // refreshToken?: string[]
     createdAt?:Date
 }

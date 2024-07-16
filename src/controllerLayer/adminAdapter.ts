@@ -20,7 +20,7 @@ export class AdminAdapter {
         try {
             const admin = await this.adminUsecase.loginAdmin(req.body);
             if (admin) {
-                res.cookie("adminjwt", admin.token, {
+                res.cookie("adminjwt", admin.accessToken, {
                     httpOnly: true,
                     sameSite: "strict",
                     maxAge: 30 * 24 * 60 * 60 * 1000,

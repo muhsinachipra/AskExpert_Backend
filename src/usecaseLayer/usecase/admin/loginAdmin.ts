@@ -32,13 +32,14 @@ export const loginAdmin = async (
         if (admin && admin._id) {
             const match: boolean = await bcrypt.compare(password, admin.password);
             if (match) {
-                const token = jwt.createJWT(admin._id, admin.email, "admin", admin.name);
+                const { accessToken, refreshToken } = jwt.createJWT(admin._id, admin.email, "admin", admin.name);
                 admin.password = ""
 
                 return {
                     status: 200,
                     success: true,
-                    token: token,
+                    accessToken,
+                    refreshToken,
                     data: admin,
                     message: `Welcome ${admin.name}`,
                 };

@@ -10,6 +10,7 @@ const userSchema: Schema = new Schema<IUser & Document>(
         password: { type: String, required: true },
         mobile: { type: String, default: '' },
         isBlocked: { type: Boolean, default: false },
+        // refreshToken: [String]
     },
     {
         timestamps: true

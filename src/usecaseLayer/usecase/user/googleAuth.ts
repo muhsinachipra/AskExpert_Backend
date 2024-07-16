@@ -38,13 +38,14 @@ export const googleAuth = async (
                 password: hashedPassword,
             };
             const createnewUser = await userRepository.createUser(newUser);
-            const token = jwt.createJWT(createnewUser._id as string, createnewUser.email, "user", createnewUser.name);
+            const { accessToken, refreshToken } = jwt.createJWT(createnewUser._id as string, createnewUser.email, "user", createnewUser.name);
 
             return {
                 status: 200,
                 success: true,
                 message: `Register Successful, Welcome ${createnewUser.name}`,
-                token: token,
+                accessToken,
+                refreshToken,
                 data: createnewUser
             };
         }
@@ -53,14 +54,15 @@ export const googleAuth = async (
             if (user.isBlocked) {
                 throw ErrorResponse.badRequest("You account is blocked");
             }
-            const token = jwt.createJWT(user._id, user.email, "user", user.name);
+            const {accessToken,refreshToken} = jwt.createJWT(user._id, user.email, "user", user.name);
 
             user.password = ""
 
             return {
                 status: 200,
                 success: true,
-                token: token,
+                accessToken,
+                refreshToken,
                 data: user,
                 message: `Welcome ${user.name}`,
             };

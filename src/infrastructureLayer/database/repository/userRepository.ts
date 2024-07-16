@@ -43,4 +43,13 @@ export class UserRepository implements IUserRepository {
     async updateUserBlockedStatus(userId: string): Promise<IUser | null> {
         return updateUserBlockedStatus(userId, this.userModel);
     }
+
+    async findUserByToken(token: string): Promise<IUser | null> {
+        return this.userModel.findOne({ refreshToken: token });
+    }
+
+    async saveUser(user: IUser): Promise<IUser | null> {
+        return this.userModel.findOneAndUpdate({ _id: user._id }, user, { new: true });
+    }
+
 }

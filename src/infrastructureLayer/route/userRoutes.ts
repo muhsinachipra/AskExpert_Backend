@@ -114,5 +114,16 @@ router.get(
         userAdapter.userGetExpertData(req, res, next)
 )
 
+router.get(
+    "/categories",
+    (req: Request, res: Response, next: NextFunction) =>
+        userAdapter.getCategories(req, res, next)
+)
+
+router.get(
+    "/refresh",
+    (req: Request, res: Response, next: NextFunction) =>
+        userAdapter.refreshToken(req, res, next)
+)
 
 export default router

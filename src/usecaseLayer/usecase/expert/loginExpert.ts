@@ -34,13 +34,14 @@ export const loginExpert = async (
             }
             const match: boolean = await bcrypt.compare(password, expert.password);
             if (match) {
-                const token = jwt.createJWT(expert._id, expert.email, "expert", expert.name);
+                const { accessToken, refreshToken } = jwt.createJWT(expert._id, expert.email, "expert", expert.name);
                 expert.password = ""
 
                 return {
                     status: 200,
                     success: true,
-                    token: token,
+                    accessToken,
+                    refreshToken,
                     data: expert,
                     message: `Welcome ${expert.name}`,
                 };

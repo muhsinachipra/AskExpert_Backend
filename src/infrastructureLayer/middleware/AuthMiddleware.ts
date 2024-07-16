@@ -30,11 +30,16 @@ class AuthMiddleware {
         let token: string | undefined;
 
         console.log('User protect');
-        token = req.cookies.userjwt;
+        // console.log('req.cookies: ', req.cookies);
+        token = req.cookies.userAT;
+        // console.log('req.cookies access token: ', req.cookies);
 
         if (token) {
             try {
-                const decoded: any = jwt.verify(token, process.env.JWT_KEY as string);
+                console.log('auth came here 1')
+                const decoded: any = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET as string); // TokenExpiredError: jwt expired
+
+                console.log('auth came here 2')
                 if (decoded.role !== 'user') {
                     return next(ErrorResponse.unauthorized('Not authorized, Invalid token'));
                 }
@@ -51,6 +56,14 @@ class AuthMiddleware {
                     return next(ErrorResponse.notFound('User not found'));
                 }
             } catch (error) {
+                if (error instanceof jwt.TokenExpiredError) { // Type assertion to handle 'unknown' error
+                    // Handle token expiration, maybe by redirecting to refresh logic
+                    console.log('before forwade to refresh route by authMiddleware')
+                    return next(res.status(401).json({
+                        message: 'Token expired, please refresh',
+                        redirectTo: '/api/user/refresh', // Define your refresh endpoint
+                    }))
+                }
                 console.error(error);
                 return next(ErrorResponse.unauthorized('Not authorized, No token'));
             }
@@ -71,7 +84,7 @@ class AuthMiddleware {
 
         if (token) {
             try {
-                const decoded: any = jwt.verify(token, process.env.JWT_KEY as string);
+                const decoded: any = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET as string);
                 if (decoded.role !== 'admin') {
                     return next(ErrorResponse.unauthorized('Not authorized, Invalid token'));
                 }
@@ -103,7 +116,7 @@ class AuthMiddleware {
 
         if (token) {
             try {
-                const decoded: any = jwt.verify(token, process.env.JWT_KEY as string);
+                const decoded: any = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET as string);
                 if (decoded.role !== 'expert') {
                     return next(ErrorResponse.unauthorized('Not authorized, Invalid token'));
                 }

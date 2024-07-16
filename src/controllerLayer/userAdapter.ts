@@ -39,17 +39,23 @@ export class UserAdapter {
         try {
             const user = await this.userUsecase.loginUser(req.body);
             if (user) {
-                res.cookie("userjwt", user.token, {
+                res.cookie("userRT", user.refreshToken, {
                     httpOnly: true,
                     sameSite: "strict",
-                    maxAge: 30 * 24 * 60 * 60 * 1000,
-                    secure: process.env.NODE_ENV === "production",
+                    maxAge: 60 * 1000,
+                    secure: true,
                 });
-                console.log(user.data)
+                res.cookie("userAT", user.accessToken, {
+                    httpOnly: true,
+                    sameSite: "strict",
+                    maxAge: 10 * 24 * 60 * 60 * 1000,
+                    secure: true,
+                });
 
                 return res.status(user.status).json({
                     success: user.success,
                     data: user.data,
+                    token: user.accessToken,
                     message: user.message,
                 });
             }
@@ -68,16 +74,17 @@ export class UserAdapter {
             if (!user) {
                 throw ErrorResponse.unauthorized("Login failed");
             }
-            res.cookie("userjwt", user.token, {
+            res.cookie("userRT", user.refreshToken, {
                 httpOnly: true,
                 sameSite: "strict", // Prevent CSRF attacks
                 maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
-                secure: process.env.NODE_ENV === "production",
+                secure: true,
             });
 
             return res.status(user.status).json({
                 success: user.success,
                 data: user.data,
+                token: user.accessToken,
                 message: user.message,
             });
         } catch (err) {
@@ -88,7 +95,7 @@ export class UserAdapter {
     //     try {
     //         const user = await this.userUsecase.googleAuth(req.body);
     //         user &&
-    //             res.cookie("userjwt", user.token, {
+    //             res.cookie("userRT", user.accessToken, {
     //                 httpOnly: true,
     //                 sameSite: "strict", // Prevent CSRF attacks
     //                 maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
@@ -147,7 +154,7 @@ export class UserAdapter {
             const newUser = await this.userUsecase.forgotPassword(req.body);
             console.log("userAdapter,newUser :", newUser)
             newUser &&
-                res.cookie("userjwt", newUser.token, {
+                res.cookie("userRT", newUser.refreshToken, {
                     httpOnly: true,
                     sameSite: "strict", // Prevent CSRF attacks
                     maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
@@ -168,7 +175,7 @@ export class UserAdapter {
             console.log('--> userAdapter/validateAccessToken');
             const newUser = await this.userUsecase.validateAccessToken(req.body);
             newUser &&
-                res.cookie("userjwt", newUser.token, {
+                res.cookie("userRT", newUser.refreshToken, {
                     httpOnly: true,
                     sameSite: "strict", // Prevent CSRF attacks
                     maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
@@ -187,7 +194,7 @@ export class UserAdapter {
         try {
             const newUser = await this.userUsecase.resetPassword(req.body);
             newUser &&
-                res.cookie("userjwt", newUser.token, {
+                res.cookie("userRT", newUser.refreshToken, {
                     httpOnly: true,
                     sameSite: "strict", // Prevent CSRF attacks
                     maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
@@ -299,5 +306,61 @@ export class UserAdapter {
         }
     }
 
+    // @desc      Get Categories with pagination
+    // route      GET api/user/category
+    // @access    Private
+    async getCategories(req: Req, res: Res, next: Next) {
+        try {
+            const page = parseInt(req.query.page as string) || 1;
+            const limit = parseInt(req.query.limit as string) || 6;
+            const categories = await this.userUsecase.getCategories(page, limit);
+            return res.status(categories.status).json({
+                success: categories.success,
+                data: categories.data,
+                total: categories.total,
+                message: categories.message,
+            });
+        } catch (err) {
+            next(err);
+        }
+    }
+
+    // @desc      access token genarate using refresh token
+    // route      GET api/user/refresh
+    // @access    Private
+    async refreshToken(req: Req, res: Res, next: Next) {
+        try {
+
+            console.log('--> userAdapter/refreshToken');
+            const refreshToken = req.cookies.userRT;
+            if (!refreshToken) {
+                throw ErrorResponse.unauthorized("Refresh token not found");
+            }
+            const user = await this.userUsecase.refreshToken(refreshToken);
+            if (user) {
+                res.cookie("userRT", user.refreshToken, {
+                    httpOnly: true,
+                    sameSite: "strict",
+                    maxAge: 60 * 1000,
+                    secure: true,
+                });
+                res.cookie("userAT", user.accessToken, {
+                    httpOnly: true,
+                    sameSite: "strict",
+                    maxAge: 10 * 24 * 60 * 60 * 1000,
+                    secure: true,
+                });
+                return res.status(user.status).json({
+                    success: user.success,
+                    data: user.data,
+                    token: user.accessToken,
+                    message: user.message,
+                });
+            }
+            throw ErrorResponse.unauthorized("Refresh token is invalid");
+        } catch (err) {
+            next(err);
+        }
+    }
 
 }

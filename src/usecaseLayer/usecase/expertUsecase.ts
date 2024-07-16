@@ -109,7 +109,7 @@ export class ExpertUsecase {
     //     );
     // }
 
-    // async forgotPassword({ email, name, token }: { email: string, name: string, token: string; }) {
+    // async forgotPassword({ email, name, accessToken }: { email: string, name: string, accessToken: string; }) {
     //     return forgotPassword(
     //         this.requestValidator,
     //         this.expertRepository,
@@ -117,15 +117,15 @@ export class ExpertUsecase {
     //         this.nodemailer,
     //         email,
     //         name,
-    //         token
+    //         accessToken
 
     //     );
     // }
 
-    // async validateAccessToken({ token }: { token: string }) {
+    // async validateAccessToken({ accessToken }: { accessToken: string }) {
     //     return validateAccessToken(
     //         this.expertRepository,
-    //         token,
+    //         accessToken,
     //         this.jwt,
     //     )
     // }

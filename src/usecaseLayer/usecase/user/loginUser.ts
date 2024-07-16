@@ -35,7 +35,7 @@ export const loginUser = async (
             }
             const match: boolean = await bcrypt.compare(password, user.password);
             if (match) {
-                const token = jwt.createJWT(user._id, user.email, "user", user.name);
+                const { refreshToken, accessToken } = jwt.createJWT(user._id, user.email, "user", user.name);
                 console.log(user, "userrrrrrrrrrrrrrrrrrr");
 
                 // const userResponse = { ...user };
@@ -46,7 +46,8 @@ export const loginUser = async (
                 return {
                     status: 200,
                     success: true,
-                    token: token,
+                    accessToken,
+                    refreshToken,
                     data: user,
                     message: `Welcome ${user.name}`,
                 };

@@ -39,7 +39,7 @@ export class ExpertAdapter {
         try {
             const expert = await this.expertUsecase.loginExpert(req.body);
             if (expert) {
-                res.cookie("expertjwt", expert.token, {
+                res.cookie("expertjwt", expert.accessToken, {
                     httpOnly: true,
                     sameSite: "strict",
                     maxAge: 30 * 24 * 60 * 60 * 1000,
@@ -66,7 +66,7 @@ export class ExpertAdapter {
     //     try {
     //         const expert = await this.expertUsecase.googleAuth(req.body);
     //         if (expert) {
-    //             res.cookie("expertjwt", expert.token, {
+    //             res.cookie("expertjwt", expert.accessToken, {
     //                 httpOnly: true,
     //                 sameSite: "strict", // Prevent CSRF attacks
     //                 maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
@@ -96,7 +96,7 @@ export class ExpertAdapter {
     //         const newExpert = await this.expertUsecase.forgotPassword(req.body);
     //         console.log("expertAdapter,newExpert :", newExpert)
     //         newExpert &&
-    //             res.cookie("expertjwt", newExpert.token, {
+    //             res.cookie("expertjwt", newExpert.accessToken, {
     //                 httpOnly: true,
     //                 sameSite: "strict", // Prevent CSRF attacks
     //                 maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
@@ -117,7 +117,7 @@ export class ExpertAdapter {
     //         console.log('--> expertAdapter/validateAccessToken');
     //         const newExpert = await this.expertUsecase.validateAccessToken(req.body);
     //         newExpert &&
-    //             res.cookie("expertjwt", newExpert.token, {
+    //             res.cookie("expertjwt", newExpert.accessToken, {
     //                 httpOnly: true,
     //                 sameSite: "strict", // Prevent CSRF attacks
     //                 maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
@@ -136,7 +136,7 @@ export class ExpertAdapter {
     //     try {
     //         const newExpert = await this.expertUsecase.resetPassword(req.body);
     //         newExpert &&
-    //             res.cookie("expertjwt", newExpert.token, {
+    //             res.cookie("expertjwt", newExpert.accessToken, {
     //                 httpOnly: true,
     //                 sameSite: "strict", // Prevent CSRF attacks
     //                 maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
@@ -190,7 +190,7 @@ export class ExpertAdapter {
             const newExpert = await this.expertUsecase.forgotPassword(req.body);
             console.log("expertAdapter,newExpert :", newExpert)
             newExpert &&
-                res.cookie("expertjwt", newExpert.token, {
+                res.cookie("expertjwt", newExpert.accessToken, {
                     httpOnly: true,
                     sameSite: "strict", // Prevent CSRF attacks
                     maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
@@ -211,7 +211,7 @@ export class ExpertAdapter {
             console.log('--> expertAdapter/validateAccessToken');
             const newExpert = await this.expertUsecase.validateAccessToken(req.body);
             newExpert &&
-                res.cookie("expertjwt", newExpert.token, {
+                res.cookie("expertjwt", newExpert.accessToken, {
                     httpOnly: true,
                     sameSite: "strict", // Prevent CSRF attacks
                     maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
@@ -230,7 +230,7 @@ export class ExpertAdapter {
         try {
             const newExpert = await this.expertUsecase.resetPassword(req.body);
             newExpert &&
-                res.cookie("expertjwt", newExpert.token, {
+                res.cookie("expertjwt", newExpert.accessToken, {
                     httpOnly: true,
                     sameSite: "strict", // Prevent CSRF attacks
                     maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days

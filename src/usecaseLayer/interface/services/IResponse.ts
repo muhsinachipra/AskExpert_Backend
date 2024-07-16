@@ -12,7 +12,8 @@ export interface IResponse<T = IUser | IUser[] | IAdmin | IAdmin[] | IExpert | I
     message?: string
     data?: T
     total?: number
-    token?: string
+    accessToken?: string
+    refreshToken?: string
 }
 
 

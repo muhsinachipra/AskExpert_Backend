@@ -26,13 +26,13 @@ export const forgotPassword = async (
             throw ErrorResponse.badRequest(validation.message as string);
         }
 
-        const token = jwt.createJWT(expert._id as string, expert.email, "resetPassword", expert.name)
+        const { accessToken } = jwt.createJWT(expert._id as string, expert.email, "resetPassword", expert.name)
 
-        console.log('forgot password token', token);
+        console.log('forgot password token', accessToken);
 
         const expertRoute = '/expert'
 
-        const sendForgotPasswordEmail = await nodemailer.sendForgotPasswordEmail(expertRoute, expert.email, expert.name, token);
+        const sendForgotPasswordEmail = await nodemailer.sendForgotPasswordEmail(expertRoute, expert.email, expert.name, accessToken);
         // console.log('------------------- sendForgotPasswordEmail :', sendForgotPasswordEmail);
 
         return {

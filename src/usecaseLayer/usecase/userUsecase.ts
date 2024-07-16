@@ -16,12 +16,17 @@ import { validateAccessToken } from './user/validateAccessToken'
 import { updateProfile } from './user/updateProfile'
 import { IExpertRepository } from '../interface/repository/IExpertRepository'
 import { getExpertsByCategory } from './user/getExpertsByCategory'
+import { getCategories } from './user/getCategories'
+import { ICategoryRepository } from '../interface/repository/ICategoryRepository'
+import ErrorResponse from '../handler/errorResponse'
+import { IUser } from '../../domainLayer/user'
 
 
 
 export class UserUsecase {
     private readonly userRepository: IUserRepository
     private readonly expertRepository: IExpertRepository
+    private readonly categoryRepository: ICategoryRepository
     private readonly bcrypt: IBcrypt
     private readonly jwt: IJwt
     private readonly nodemailer: INodemailer
@@ -30,6 +35,7 @@ export class UserUsecase {
     constructor(
         userRepository: IUserRepository,
         expertRepository: IExpertRepository,
+        categoryRepository: ICategoryRepository,
         bcrypt: IBcrypt,
         jwt: IJwt,
         nodemailer: INodemailer,
@@ -37,6 +43,7 @@ export class UserUsecase {
     ) {
         this.userRepository = userRepository
         this.expertRepository = expertRepository
+        this.categoryRepository = categoryRepository
         this.bcrypt = bcrypt
         this.jwt = jwt
         this.nodemailer = nodemailer
@@ -78,6 +85,7 @@ export class UserUsecase {
         }
 
     }
+
 
     //to send OTP to verify the user's detail
     async sendOTP({ email, name }: { email: string; name: string }) {
@@ -170,6 +178,48 @@ export class UserUsecase {
                 success: false,
                 data: null,
                 message: 'Failed to retrieve expert data',
+                status: 500,
+            };
+        }
+    }
+
+    async getCategories(page: number, limit: number) {
+        return getCategories(
+            page, limit, this.categoryRepository
+        );
+    }
+
+    async refreshToken(token: string) {
+        try {
+            const user = await this.jwt.verifyJWT(token);
+            // const user = await this.userRepository.findUserByRefreshToken(refreshToken);
+            if (!user) {
+                throw ErrorResponse.unauthorized("Invalid refresh token");
+            }
+
+            const { refreshToken, accessToken } = this.jwt.createJWT(user.userId, user.email, "user", user.name);
+
+            const foundUser: IUser | null = await this.userRepository.findUser(user.email);
+            
+            if (!foundUser) {
+                throw ErrorResponse.notFound("User not found");
+            }
+
+            foundUser.password = ""
+
+            return {
+                status: 200,
+                success: true,
+                accessToken,
+                refreshToken,
+                data: foundUser,
+                message: `Welcome ${foundUser?.name}`,
+            };
+        } catch (error) {
+            return {
+                success: false,
+                data: null,
+                message: 'Failed to refresh access token',
                 status: 500,
             };
         }
