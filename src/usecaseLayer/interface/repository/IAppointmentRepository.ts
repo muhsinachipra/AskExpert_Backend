@@ -13,6 +13,7 @@ export interface IAppointmentRepository {
     getExpertId(appointmentId: string): Promise<string>;
     getUserAppointments(userId: string): Promise<IAppointment[]>
     getAppointmentsData(expertId: string): Promise<IAppointment[]>
+    getWalletData(expertId: string): Promise<IAppointment[]>
     findAppointmentByTimeRangeAndExpert(date: string, startTime: string, endTime: string, expertId: string): Promise<IAppointment | null>
     // updateAppointment(appointmentId: string, transactionId: string, userId: string, userName: string, amount: number): Promise<IAppointment | null>
 }

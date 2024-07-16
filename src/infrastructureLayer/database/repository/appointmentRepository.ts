@@ -82,6 +82,19 @@ export class AppointmentRepository implements IAppointmentRepository {
         }
     }
 
+    async getWalletData(expertId: string): Promise<IAppointment[]> {
+        try {
+            const appointments = await this.appointmentModel.find({
+                expertId,
+                appointmentStatus: { $in: ['booked', 'completed'] }
+            }).sort({ date: 1 }); // 1 for ascending, -1 for descending
+            return appointments;
+        } catch (error) {
+            console.error('Error getting expert appointments:', error);
+            return [];
+        }
+    }
+
     // async updateAppointment(appointmentId: string, transactionId: string, userId: string, userName: string, amount: number): Promise<IAppointment | null> {
     //     try {
     //         const appointment = await this.appointmentModel.findOneAndUpdate(

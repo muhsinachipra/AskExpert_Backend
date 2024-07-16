@@ -97,5 +97,25 @@ export class AppointmentUsecase {
 
     }
 
+    async getWalletData(expertId: string) {
+        try {
+            const data = await this.appointmentRepository.getWalletData(expertId);
+            return {
+                success: true,
+                data,
+                message: 'Expert Appointment data retrieved successfully',
+                status: 200,
+            };
+        } catch (error) {
+            return {
+                success: false,
+                data: null,
+                message: 'Failed to retrieve expert Appointment data',
+                status: 500,
+            };
+        }
+
+    }
+
 
 }

@@ -17,7 +17,7 @@ const expertSchema: Schema = new Schema<IExpert & Document>(
         experience: { type: Number, required: true, default: 0 },
         profilePic: { type: String, required: true },
         resume: { type: String, required: true },
-        rate: { type: Number, required: true },
+        mobile: { type: String, required: true },
         rating: { type: Number, default: 0 },
         wallet: { type: Number, default: 0 },
         isVerified: { type: Boolean, default: false },

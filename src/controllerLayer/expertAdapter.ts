@@ -265,4 +265,23 @@ export class ExpertAdapter {
             next(err);
         }
     }
+
+    // @desc      Get Categories with pagination
+    // route      GET api/expert/category
+    // @access    Private
+    async getCategories(req: Req, res: Res, next: Next) {
+        try {
+            const page = parseInt(req.query.page as string) || 1;
+            const limit = parseInt(req.query.limit as string) || 6;
+            const categories = await this.expertUsecase.getCategories(page, limit);
+            return res.status(categories.status).json({
+                success: categories.success,
+                data: categories.data,
+                total: categories.total,
+                message: categories.message,
+            });
+        } catch (err) {
+            next(err);
+        }
+    }
 }

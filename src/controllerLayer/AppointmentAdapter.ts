@@ -192,5 +192,28 @@ export class AppointmentAdapter {
         }
     }
 
+    // @desc      Get appointments data for expert wallet transaction history
+    // route      GET api/expert/getWalletData
+    // @access    Private
+    async getWalletData(req: Req, res: Res, next: Next) {
+        try {
+            if (req.user && 'category' in req.user) {
+                const expertData = req.user as IExpert;
+                const expertId = expertData._id;
+                const appointments = await this.appointmentUsecase.getWalletData(expertId || '');
+                return res.status(appointments.status).json({
+                    success: appointments.success,
+                    data: appointments.data,
+                    message: appointments.message,
+                });
+            } else {
+                throw ErrorResponse.notFound('Expert not found');
+            }
+        } catch (err) {
+            next(err);
+        }
+    }
+
+   
 
 }

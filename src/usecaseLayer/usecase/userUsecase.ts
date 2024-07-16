@@ -16,12 +16,15 @@ import { validateAccessToken } from './user/validateAccessToken'
 import { updateProfile } from './user/updateProfile'
 import { IExpertRepository } from '../interface/repository/IExpertRepository'
 import { getExpertsByCategory } from './user/getExpertsByCategory'
+import { getCategories } from './user/getCategories'
+import { ICategoryRepository } from '../interface/repository/ICategoryRepository'
 
 
 
 export class UserUsecase {
     private readonly userRepository: IUserRepository
     private readonly expertRepository: IExpertRepository
+    private readonly categoryRepository: ICategoryRepository
     private readonly bcrypt: IBcrypt
     private readonly jwt: IJwt
     private readonly nodemailer: INodemailer
@@ -30,6 +33,7 @@ export class UserUsecase {
     constructor(
         userRepository: IUserRepository,
         expertRepository: IExpertRepository,
+        categoryRepository: ICategoryRepository,
         bcrypt: IBcrypt,
         jwt: IJwt,
         nodemailer: INodemailer,
@@ -37,6 +41,7 @@ export class UserUsecase {
     ) {
         this.userRepository = userRepository
         this.expertRepository = expertRepository
+        this.categoryRepository = categoryRepository
         this.bcrypt = bcrypt
         this.jwt = jwt
         this.nodemailer = nodemailer
@@ -173,6 +178,12 @@ export class UserUsecase {
                 status: 500,
             };
         }
+    }
+
+    async getCategories(page: number, limit: number) {
+        return getCategories(
+            page, limit, this.categoryRepository
+        );
     }
 
 }

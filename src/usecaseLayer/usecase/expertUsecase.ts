@@ -1,6 +1,7 @@
 // backend\src\usecaseLayer\usecase\expertUsecase.ts
 
 // import { Types } from 'mongoose'
+import { ICategoryRepository } from '../interface/repository/ICategoryRepository'
 import { IExpertRepository } from '../interface/repository/IExpertRepository'
 import { IRequestValidator } from '../interface/repository/IValidateRepository'
 import IBcrypt from '../interface/services/IBcrypt'
@@ -8,6 +9,7 @@ import IJwt from '../interface/services/IJwt'
 import INodemailer from '../interface/services/INodemailer'
 import { createExpert } from "./expert/createExpert"
 import { forgotPassword } from './expert/forgotPassword'
+import { getCategories } from './expert/getCategories'
 import { loginExpert } from './expert/loginExpert'
 import { resetPassword } from './expert/resetPassword'
 import { updateProfile } from './expert/updateProfile'
@@ -20,6 +22,7 @@ import { validateAccessToken } from './expert/validateAccessToken'
 
 export class ExpertUsecase {
     private readonly expertRepository: IExpertRepository
+    private readonly categoryRepository: ICategoryRepository
     private readonly bcrypt: IBcrypt
     private readonly jwt: IJwt
     private readonly nodemailer: INodemailer
@@ -27,22 +30,24 @@ export class ExpertUsecase {
 
     constructor(
         expertRepository: IExpertRepository,
+        categoryRepository: ICategoryRepository,
         bcrypt: IBcrypt,
         jwt: IJwt,
         nodemailer: INodemailer,
         requestValidator: IRequestValidator
     ) {
         this.expertRepository = expertRepository
+        this.categoryRepository = categoryRepository
         this.bcrypt = bcrypt
         this.jwt = jwt
         this.nodemailer = nodemailer
         this.requestValidator = requestValidator
     }
 
-    async createExpert({ name, email, password, category, experience, rate, profilePic, resume }: {
-        name: string, email: string, password: string, category: string, experience: number, rate: number, profilePic: string, resume: string
+    async createExpert({ name, email, password, category, experience, mobile, profilePic, resume }: {
+        name: string, email: string, password: string, category: string, experience: number, mobile: string, profilePic: string, resume: string
     }) {
-        // console.log(' data in expertUsecase createExpert: ', name, email, password, category, experience, rate, profilePic, resume )
+        // console.log(' data in expertUsecase createExpert: ', name, email, password, category, experience, mobile, profilePic, resume )
         try {
             return await createExpert(
                 this.requestValidator,
@@ -53,7 +58,7 @@ export class ExpertUsecase {
                 password,
                 category,
                 experience,
-                rate,
+                mobile,
                 profilePic,
                 resume,
             );
@@ -79,7 +84,7 @@ export class ExpertUsecase {
         }
     }
 
-    async updateProfile({ _id, profilePic, name, rate, experience }: { _id: string, profilePic: string, name: string, rate: number, experience: number }) {
+    async updateProfile({ _id, profilePic, name, mobile, experience }: { _id: string, profilePic: string, name: string, mobile: string, experience: number }) {
         try {
             return await updateProfile(
                 this.requestValidator,
@@ -87,7 +92,7 @@ export class ExpertUsecase {
                 _id,
                 profilePic,
                 name,
-                rate,
+                mobile,
                 experience
             );
         } catch (error) {
@@ -171,5 +176,12 @@ export class ExpertUsecase {
             password
         )
     }
+
+    async getCategories(page: number, limit: number) {
+        return getCategories(
+            page, limit, this.categoryRepository
+        );
+    }
+
 
 }

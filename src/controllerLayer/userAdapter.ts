@@ -299,5 +299,24 @@ export class UserAdapter {
         }
     }
 
+    // @desc      Get Categories with pagination
+    // route      GET api/user/expertData
+    // @access    Private
+    async getCategories(req: Req, res: Res, next: Next) {
+        try {
+            const page = parseInt(req.query.page as string) || 1;
+            const limit = parseInt(req.query.limit as string) || 6;
+            const categories = await this.userUsecase.getCategories(page, limit);
+            return res.status(categories.status).json({
+                success: categories.success,
+                data: categories.data,
+                total: categories.total,
+                message: categories.message,
+            });
+        } catch (err) {
+            next(err);
+        }
+    }
+
 
 }

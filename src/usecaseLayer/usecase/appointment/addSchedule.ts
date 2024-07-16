@@ -77,14 +77,14 @@ export const addSchedule = async (
                 // throw ErrorResponse.badRequest("Appointment already exists or conflicts with existing appointments for " + appointmentDate);
             }
 
-            const newAppointment = {
+            const newAppointment: Partial<IAppointment> = {
                 date,
                 startTime,
                 endTime,
                 expertId: expertData._id || "",
                 expertName: expertData.name || "",
                 expertCategory: expertData.category || "",
-                price: expertData.rate,
+                price: parseInt(scheduleData.price),
             };
 
             await appointmentRepository.addSchedule(newAppointment);

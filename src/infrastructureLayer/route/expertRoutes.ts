@@ -81,5 +81,17 @@ router.get(
         appointmentAdapter.getAppointmentsData(req, res, next)
 )
 
+router.get(
+    "/categories",
+    (req: Request, res: Response, next: NextFunction) =>
+        expertAdapter.getCategories(req, res, next)
+)
+
+router.get(
+    "/getWalletData",
+    (req: Request, res: Response, next: NextFunction) =>
+        appointmentAdapter.getWalletData(req, res, next)
+)
+
 
 export default router

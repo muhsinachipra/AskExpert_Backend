@@ -17,17 +17,17 @@ export const createExpert = async (
     // category: Types.ObjectId,
     category: string,
     experience: number,
-    rate: number,
+    mobile: string,
     profilePic: string,
     resume: string
 ): Promise<IResponse> => {
     try {
 
-        console.log(' name, email, password, category, experience, rate, profilePic, resume ', name, email, password, category, experience, rate, profilePic, resume )
+        console.log(' name, email, password, category, experience, mobile, profilePic, resume ', name, email, password, category, experience, mobile, profilePic, resume)
 
         const validation = requestValidator.validateRequiredFields(
-            { name, email, password, category, experience, rate, profilePic, resume },
-            ['name', 'email', 'password', 'category', 'experience', 'rate', 'profilePic', 'resume']
+            { name, email, password, category, experience, mobile, profilePic, resume },
+            ['name', 'email', 'password', 'category', 'experience', 'mobile', 'profilePic', 'resume']
         );
 
         if (!validation.success) {
@@ -46,7 +46,7 @@ export const createExpert = async (
                 password: hashedPassword,
                 category,
                 experience,
-                rate,
+                mobile,
                 profilePic,
                 resume
             };

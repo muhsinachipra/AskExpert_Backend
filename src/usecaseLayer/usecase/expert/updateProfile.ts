@@ -12,14 +12,14 @@ export const updateProfile = async (
   _id: string,
   profilePic: string,
   name: string,
-  rate: number,
+  mobile: string,
   experience: number
 ): Promise<IResponse> => {
   try {
 
     const validation = requestValidator.validateRequiredFields(
-      { _id, profilePic, name, rate, experience },
-      ["_id", 'profilePic', "name", "rate", "experience"]
+      { _id, profilePic, name, mobile, experience },
+      ["_id", 'profilePic', "name", "mobile", "experience"]
     );
 
     if (!validation.success) {
@@ -32,7 +32,7 @@ export const updateProfile = async (
       _id,
       profilePic,
       name,
-      rate,
+      mobile,
       experience
     }
     const updatedExpert = await expertRepository.updateProfile(data);

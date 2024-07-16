@@ -4,7 +4,7 @@ import { IExpert } from "../../../../domainLayer/expert";
 import ExpertModel from "../../model/expertModel";
 
 export const updateProfile = async (
-    data: { _id: string; profilePic: string; name: string; rate: number; experience: number },
+    data: { _id: string; profilePic: string; name: string; mobile: string; experience: number },
     expertModels: typeof ExpertModel
 ): Promise<IExpert | never> => {
     try {
@@ -12,7 +12,7 @@ export const updateProfile = async (
         if (expert) {
             expert.profilePic = data.profilePic
             expert.name = data.name
-            expert.rate = data.rate
+            expert.mobile = data.mobile
             expert.experience = data.experience
             await expert.save();
             return expert;

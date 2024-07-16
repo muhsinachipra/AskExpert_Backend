@@ -28,7 +28,7 @@ export class ExpertRepository implements IExpertRepository {
         return findExpert(email, this.expertModel)
     }
 
-    async updateProfile(data: { _id: string; profilePic: string; name: string; rate: number; experience: number }): Promise<IExpert | never> {
+    async updateProfile(data: { _id: string; profilePic: string; name: string; mobile: string; experience: number }): Promise<IExpert | never> {
         return updateProfile(data, this.expertModel)
     }
 
