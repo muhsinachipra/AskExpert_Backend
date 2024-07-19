@@ -15,8 +15,26 @@ export interface IResponse<T = IUser | IUser[] | IAdmin | IAdmin[] | IExpert | I
     token?: string
 }
 
-
 export interface IResetPassword {
     id: string
     password: string;
 }
+
+export interface IConversationData {
+    _id: string;
+    members: string[];
+    user: string,
+    userEmail: string,
+    user_profile: string,
+    expert: string,
+    expert_profile: string
+}
+
+export interface ConversationResponse<T = IConversationData | IConversationData[] | string> {
+    status: number;
+    success: boolean;
+    message?: string;
+    data?: T;
+}
+
+
