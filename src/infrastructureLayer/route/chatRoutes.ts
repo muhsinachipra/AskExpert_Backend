@@ -12,32 +12,38 @@ router.post(
         chatAdapter.createConversation(req, res, next)
 );
 
-// // route for create message
-// router.post(
-//     "/message",
-//     (req: Request, res: Response, next: NextFunction) =>
-//         chatAdapter.createMessage(req, res, next)
-// );
+// route for getting conversation
+router.get(
+    "/conversation",
+    (req: Request, res: Response, next: NextFunction) =>
+        chatAdapter.getConversation(req, res, next)
+);
 
-// // route for get all message
-// router.get(
-//     "/message",
-//     (req: Request, res: Response, next: NextFunction) =>
-//         chatAdapter.getMessage(req, res, next)
-// );
+// route for create message
+router.post(
+    "/message",
+    (req: Request, res: Response, next: NextFunction) =>
+        chatAdapter.createMessage(req, res, next)
+);
 
-// // route for get all message
-// router.get(
-//     "/getUnReadMessages",
-//     (req: Request, res: Response, next: NextFunction) =>
-//         chatAdapter.getUnReadMessages(req, res, next)
-// );
+// route for get all message
+router.get(
+    "/message",
+    (req: Request, res: Response, next: NextFunction) =>
+        chatAdapter.getMessage(req, res, next)
+);
 
-// // route for get all message
-// router.patch(
-//     "/viewMessages",
-//     (req: Request, res: Response, next: NextFunction) =>
-//         chatAdapter.viewMessages(req, res, next)
-// );
+router.patch(
+    "/viewMessages",
+    (req: Request, res: Response, next: NextFunction) =>
+        chatAdapter.viewMessages(req, res, next)
+);
+
+router.get(
+    "/getUnReadMessages",
+    (req: Request, res: Response, next: NextFunction) =>
+        chatAdapter.getUnReadMessages(req, res, next)
+);
+
 
 export default router;

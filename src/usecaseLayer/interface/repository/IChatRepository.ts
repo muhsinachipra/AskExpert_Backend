@@ -2,14 +2,15 @@
 
 import { IConversation } from "../../../domainLayer/conversation";
 import { IMessage } from "../../../domainLayer/message";
-import { IConversationData } from "../services/IResponse";
+import { ConversationResponse, IConversationData, MessageResponse } from "../services/IResponse";
 
 
 export interface IChatRepository {
-    createConversation(senderId: string, receiverId: string): Promise<string>;
-    findConversation(senderId: string, receiverId: string): Promise<IConversationData | undefined>;
-    // createMessage(newMessage:IMessage): Promise<IMessage>;
-    // getMessage(conversationId:string): Promise<MessageResponse | null>;
-    // getUnReadMessages(id:string): Promise<MessageResponse | null>;
-    // viewMessages(_id:string[]): Promise<string>;
+    createConversation(senderId: string, receiverId: string): Promise<IConversation>;
+    getConversation(userId: string): Promise<IConversation[]>;
+    findConversation(senderId: string, receiverId: string): Promise<IConversation | null>;
+    createMessage(newMessage: IMessage): Promise<IMessage>;
+    getMessage(conversationId: string): Promise<IMessage[]>;
+    viewMessages(_id: string[]): Promise<string>;
+    getUnReadMessages(id: string): Promise<MessageResponse | null>;
 }

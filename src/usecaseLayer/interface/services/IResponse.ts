@@ -4,6 +4,7 @@ import { IAdmin } from "../../../domainLayer/admin"
 import { IAppointment } from "../../../domainLayer/appointment"
 import { ICategory } from "../../../domainLayer/category"
 import { IExpert } from "../../../domainLayer/expert"
+import { IMessage } from "../../../domainLayer/message"
 import { IUser } from "../../../domainLayer/user"
 
 export interface IResponse<T = IUser | IUser[] | IAdmin | IAdmin[] | IExpert | IExpert[] | ICategory | ICategory[] | IAppointment | IAppointment[] | Record<string, any> | string | null> {
@@ -37,4 +38,9 @@ export interface ConversationResponse<T = IConversationData | IConversationData[
     data?: T;
 }
 
-
+export interface MessageResponse<T = IMessage | IMessage[] | string> {
+    status: number;
+    success: boolean;
+    message?: string;
+    data?: T;
+}

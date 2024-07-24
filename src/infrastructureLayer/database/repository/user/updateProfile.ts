@@ -12,6 +12,7 @@ export const updateProfile = async (
         if (user) {
             user.name = data.name
             user.mobile = data.mobile
+            user.profilePic = data.profilePic
             await user.save();
             return user;
         }

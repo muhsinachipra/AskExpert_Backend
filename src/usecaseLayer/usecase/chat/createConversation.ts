@@ -1,5 +1,6 @@
 // backend\src\usecaseLayer\usecase\chat\createConversation.ts
 
+import { IConversation } from "../../../domainLayer/conversation";
 import ErrorResponse from "../../handler/errorResponse";
 import { IChatRepository } from "../../interface/repository/IChatRepository";
 import { IRequestValidator } from "../../interface/repository/IValidateRepository";
@@ -12,7 +13,7 @@ export const createConversation = async (
     senderId: string,
     receiverId: string
 
-): Promise<string | ConversationResponse> => {
+): Promise<IConversation> => {
     try {
         // Validate required parameters
         const validation = requestValidator.validateRequiredFields(
@@ -30,11 +31,7 @@ export const createConversation = async (
             return createnewConversation
         }
 
-        return {
-            status: 200,
-            success: true,
-            data: conversation,
-        };
+        return conversation;
     } catch (err) {
         throw err;
     }

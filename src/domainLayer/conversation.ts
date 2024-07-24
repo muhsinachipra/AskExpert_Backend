@@ -1,5 +1,8 @@
 // backend\src\domainLayer\conversation.ts
 
 export interface IConversation{
-    members : string[];
+    _id: string;
+    members: string[];
+    createdAt: Date;
+    updatedAt: Date;
 }

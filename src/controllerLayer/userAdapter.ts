@@ -64,6 +64,7 @@ export class UserAdapter {
     //@access   Public
     async googleAuth(req: Req, res: Res, next: Next) {
         try {
+
             const user = await this.userUsecase.googleAuth(req.body);
             if (!user) {
                 throw ErrorResponse.unauthorized("Login failed");
@@ -221,8 +222,7 @@ export class UserAdapter {
     // @access  Private
     async updateProfile(req: Req, res: Res, next: Next) {
         try {
-            // console.log('req from updateProfile userAdapter : ', req)
-            // console.log('res from updateProfile userAdapter : ', res)
+            console.log('req.body from updateProfile userAdapter : ', req.body)
             const user = await this.userUsecase.updateProfile(req.body);
             console.log('user from updateProfile userAdapter............ : ', user)
             user &&
