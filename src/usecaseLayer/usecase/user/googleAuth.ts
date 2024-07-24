@@ -15,13 +15,14 @@ export const googleAuth = async (
     jwt: Ijwt,
     name: string,
     email: string,
-    password: string
+    password: string,
+    profilePic: string,
 ): Promise<IResponse> => {
     try {
         // Validate required parameters
         const validation = requestValidator.validateRequiredFields(
-            { name, email, password },
-            ["name", "email", "password"]
+            { name, email, password, profilePic },
+            ["name", "email", "password", 'profilePic']
         );
 
         if (!validation.success) {
@@ -36,6 +37,7 @@ export const googleAuth = async (
                 name,
                 email,
                 password: hashedPassword,
+                profilePic,
             };
             const createnewUser = await userRepository.createUser(newUser);
             const token = jwt.createJWT(createnewUser._id as string, createnewUser.email, "user", createnewUser.name);

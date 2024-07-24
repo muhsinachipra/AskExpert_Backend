@@ -3,6 +3,7 @@
 // import { Types } from 'mongoose'
 import { ICategoryRepository } from '../interface/repository/ICategoryRepository'
 import { IExpertRepository } from '../interface/repository/IExpertRepository'
+import { IUserRepository } from '../interface/repository/IUserRepository'
 import { IRequestValidator } from '../interface/repository/IValidateRepository'
 import IBcrypt from '../interface/services/IBcrypt'
 import IJwt from '../interface/services/IJwt'
@@ -22,6 +23,7 @@ import { validateAccessToken } from './expert/validateAccessToken'
 
 export class ExpertUsecase {
     private readonly expertRepository: IExpertRepository
+    private readonly userRepository: IUserRepository
     private readonly categoryRepository: ICategoryRepository
     private readonly bcrypt: IBcrypt
     private readonly jwt: IJwt
@@ -30,6 +32,7 @@ export class ExpertUsecase {
 
     constructor(
         expertRepository: IExpertRepository,
+        userRepository: IUserRepository,
         categoryRepository: ICategoryRepository,
         bcrypt: IBcrypt,
         jwt: IJwt,
@@ -37,6 +40,7 @@ export class ExpertUsecase {
         requestValidator: IRequestValidator
     ) {
         this.expertRepository = expertRepository
+        this.userRepository = userRepository
         this.categoryRepository = categoryRepository
         this.bcrypt = bcrypt
         this.jwt = jwt
@@ -183,5 +187,22 @@ export class ExpertUsecase {
         );
     }
 
-
+    async expertGetUserData(userId: string) {
+        try {
+            const data = await this.userRepository.findUserById(userId);
+            return {
+                success: true,
+                data,
+                message: 'Expert data retrieved successfully',
+                status: 200,
+            };
+        } catch (error) {
+            return {
+                success: false,
+                data: null,
+                message: 'Failed to retrieve expert data',
+                status: 500,
+            };
+        }
+    }
 }

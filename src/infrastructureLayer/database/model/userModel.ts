@@ -9,6 +9,7 @@ const userSchema: Schema = new Schema<IUser & Document>(
         email: { type: String, required: true, unique: true },
         password: { type: String, required: true },
         mobile: { type: String, default: '' },
+        profilePic: { type: String, default: '' },
         isBlocked: { type: Boolean, default: false },
     },
     {

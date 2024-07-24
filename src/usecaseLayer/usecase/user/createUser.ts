@@ -10,14 +10,15 @@ export const createUser = async (
     bcrypt: IHashpassword,
     name: string,
     mobile: string,
+    profilePic: string,
     email: string,
     password: string
 ): Promise<IResponse> => {
     try {
 
         const validation = requestValidator.validateRequiredFields(
-            { name, mobile, email, password },
-            ['name', 'mobile', 'email', 'password']
+            { name, mobile, email, password, profilePic },
+            ['name', 'mobile', 'email', 'password', 'profilePic']
         )
 
         if (!validation.success) {
@@ -31,6 +32,7 @@ export const createUser = async (
                 name,
                 mobile,
                 email,
+                profilePic,
                 password: hashedPassword,
             }
             const createNewUser = await userRepository.createUser(newUser)

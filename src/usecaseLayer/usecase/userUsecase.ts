@@ -48,8 +48,8 @@ export class UserUsecase {
         this.requestValidator = requestValidator
     }
 
-    async createUser({ name, mobile, email, password }: {
-        name: string, mobile: string, email: string, password: string
+    async createUser({ name, mobile, email, password, profilePic }: {
+        name: string, mobile: string, email: string, password: string, profilePic: string
     }) {
         try {
             return await createUser(
@@ -58,6 +58,7 @@ export class UserUsecase {
                 this.bcrypt,
                 name,
                 mobile,
+                profilePic,
                 email,
                 password
             );
@@ -95,7 +96,7 @@ export class UserUsecase {
     }
 
     //to create user
-    async googleAuth({ name, email, password, }: { name: string; email: string; password: string; }) {
+    async googleAuth({ name, email, password, profilePic }: { name: string; email: string; password: string; profilePic: string; }) {
         return googleAuth(
             this.requestValidator,
             this.userRepository,
@@ -103,7 +104,8 @@ export class UserUsecase {
             this.jwt,
             name,
             email,
-            password
+            password,
+            profilePic,
         );
     }
 
@@ -138,14 +140,15 @@ export class UserUsecase {
         )
     }
 
-    async updateProfile({ _id, name, mobile }: { _id: string, name: string, mobile: string }) {
+    async updateProfile({ _id, name, mobile, profilePic }: { _id: string, name: string, mobile: string, profilePic: string }) {
         try {
             return await updateProfile(
                 this.requestValidator,
                 this.userRepository,
                 _id,
                 name,
-                mobile
+                mobile,
+                profilePic
             );
         } catch (error) {
             console.error('Error updating user profile:', error);
