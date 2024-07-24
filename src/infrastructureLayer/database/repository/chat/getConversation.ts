@@ -13,7 +13,7 @@ export const getConversation = async (
             members: userId
         });
 
-        console.log('conversation data in the getConversation repo: ', conversations)
+        // console.log('conversation data in the getConversation repo: ', conversations)
 
         return conversations;
 

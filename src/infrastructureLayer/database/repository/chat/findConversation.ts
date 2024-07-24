@@ -8,13 +8,13 @@ export const findConversation = async (
     conversationModel: typeof ConversationModel
 ) => {
     try {
-        console.log('name in find conversation in conversationRepository --->>>> ', senderId, " ", receiverId)
+        // console.log('name in find conversation in conversationRepository --->>>> ', senderId, " ", receiverId)
 
         const existingConversation = await conversationModel.findOne({
             members: { $all: [senderId, receiverId] }
         });
 
-        console.log('existingConversation in findConversation: ', existingConversation)
+        // console.log('existingConversation in findConversation: ', existingConversation)
 
         return existingConversation;
     } catch (error) {

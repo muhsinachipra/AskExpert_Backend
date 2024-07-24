@@ -29,7 +29,7 @@ class AuthMiddleware {
     static async authenticateUser(req: Request, res: Response, next: NextFunction): Promise<void> {
         let token: string | undefined;
 
-        console.log('User protect');
+        // console.log('User protect');
         token = req.cookies.userjwt;
 
         if (token) {
@@ -65,7 +65,7 @@ class AuthMiddleware {
     static async authenticateAdmin(req: Request, res: Response, next: NextFunction): Promise<void> {
         let token: string | undefined;
 
-        console.log('Admin protect');
+        // console.log('Admin protect');
         token = req.cookies.adminjwt;
 
 
@@ -98,7 +98,7 @@ class AuthMiddleware {
     static async authenticateExpert(req: Request, res: Response, next: NextFunction): Promise<void> {
         let token: string | undefined;
 
-        console.log('Expert protect');
+        // console.log('Expert protect');
         token = req.cookies.expertjwt;
 
         if (token) {

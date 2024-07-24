@@ -242,7 +242,7 @@ export class UserAdapter {
     async getUserData(req: Req, res: Res, next: Next) {
         try {
             if (req.user && 'mobile' in req.user) {
-                console.log('refetching user data userAdapter...')
+                // console.log('refetching user data userAdapter...')
                 const userData = req.user as IUser;
                 userData.password = '';
                 return res.status(200).json({

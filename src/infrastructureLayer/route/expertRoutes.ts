@@ -93,5 +93,10 @@ router.get(
         appointmentAdapter.getWalletData(req, res, next)
 )
 
+router.get(
+    "/getUserData/:userId",
+    (req: Request, res: Response, next: NextFunction) =>
+        expertAdapter.expertGetUserData(req, res, next)
+)
 
 export default router

@@ -45,7 +45,7 @@ export class ExpertAdapter {
                     maxAge: 30 * 24 * 60 * 60 * 1000,
                     secure: process.env.NODE_ENV === "production",
                 });
-                console.log(expert.data)
+                // console.log(expert.data)
 
                 return res.status(expert.status).json({
                     success: expert.success,
@@ -280,6 +280,25 @@ export class ExpertAdapter {
                 total: categories.total,
                 message: categories.message,
             });
+        } catch (err) {
+            next(err);
+        }
+    }
+
+    // @desc      fetch data of user for the expert
+    // route      POST api/expert/getUserData
+    // @access    Private
+    async expertGetUserData(req: Req, res: Res, next: Next) {
+        try {
+            const userId = req.params.userId;
+            const user = await this.expertUsecase.expertGetUserData(userId);
+            if (user) {
+                return res.status(user.status).json({
+                    success: user.success,
+                    data: user.data,
+                    message: user.message,
+                });
+            }
         } catch (err) {
             next(err);
         }

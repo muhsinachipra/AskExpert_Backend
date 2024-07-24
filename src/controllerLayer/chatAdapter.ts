@@ -31,7 +31,7 @@ export class ChatAdapter {
     //@access   Private
     async getConversation(req: Req, res: Res, next: Next) {
         try {
-            console.log('req in getConversation: ', req.query.userId);
+            // console.log('req in getConversation: ', req.query.userId);
             const userId = req.query.userId as string;
             const newConversation = await this.chatUsecase.getConversation(userId);
             newConversation &&
@@ -66,10 +66,10 @@ export class ChatAdapter {
     //@access   Private
     async getMessage(req: Req, res: Res, next: Next) {
         try {
-            console.log('req in getMessage: ', req.query.conversationId);
+            // console.log('req in getMessage: ', req.query.conversationId);
             const conversationId = req.query.conversationId as string;
             const message = await this.chatUsecase.getMessage(conversationId);
-            console.log('res in getMessage: ', message);
+            // console.log('res in getMessage: ', message);
             message &&
                 res.status(200).json({
                     message
