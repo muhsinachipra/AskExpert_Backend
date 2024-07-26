@@ -2,6 +2,7 @@
 
 import express, { NextFunction, Request, Response } from "express";
 import { chatAdapter } from "./injections/chatInjection";
+import upload from "../middleware/uploadMiddleware";
 
 const router = express.Router();
 
@@ -44,6 +45,19 @@ router.get(
     (req: Request, res: Response, next: NextFunction) =>
         chatAdapter.getUnReadMessages(req, res, next)
 );
+
+router.post(
+    "/uploadImage",
+    upload.single('image'),
+    (req: Request, res: Response, next: NextFunction) =>
+        chatAdapter.uploadImage(req, res, next)
+)
+
+router.get(
+    "/getImageUrl/:imageName",
+    (req: Request, res: Response, next: NextFunction) =>
+        chatAdapter.getImageUrl(req, res, next)
+)
 
 
 export default router;

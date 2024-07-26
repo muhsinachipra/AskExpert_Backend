@@ -1,4 +1,4 @@
-// backend\src\infrastructureLayer\services\Socket.ts
+// backend\src\infrastructureLayer\services\socket.ts
 
 import { Server, Socket } from "socket.io";
 import { createServer as createHttpServer, Server as HttpServer } from "http";
@@ -17,7 +17,8 @@ export class SocketManager {
     this.httpServer = httpServer;
     this.io = new Server(httpServer, {
       cors: {
-        origin: ["http://localhost:5000", "http://10.4.4.190:5000"],
+        // origin: ["http://localhost:5000", "http://10.4.4.190:5000"],
+        origin: ["http://localhost:5000"],
         methods: ["GET", "POST"],
         credentials: true,
         optionsSuccessStatus: 204,
@@ -37,11 +38,12 @@ export class SocketManager {
     });
 
     // send and get message
-    socket.on("sendMessage", ({ senderId, receiverId, text }) => {
+    socket.on("sendMessage", ({ senderId, receiverId, text, imageName }) => {
       console.log('users: ', this.users);
       console.log('senderId: ', senderId);
       console.log('receiverId: ', receiverId);
       console.log('text: ', text);
+      console.log('imageName: ', imageName);
       const user = this.getUser(receiverId);
       if (user) {
         this.io.to(user.socketId).emit("getMessage", {

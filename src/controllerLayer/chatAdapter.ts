@@ -1,7 +1,9 @@
 // backend\src\controllerLayer\chatAdapter.ts
 
+import { getPresignedUrl, uploadImageToS3 } from "../infrastructureLayer/services/uploadService";
 import { Next, Req, Res } from "../infrastructureLayer/types/expressTypes";
 import { ChatUseCase } from "../usecaseLayer/usecase/chatUsecase";
+import { PutObjectCommand } from "@aws-sdk/client-s3";
 
 export class ChatAdapter {
     private readonly chatUsecase: ChatUseCase;
@@ -111,6 +113,42 @@ export class ChatAdapter {
             message &&
                 res.status(200).json({
                     message
+                });
+        } catch (err) {
+            next(err);
+        }
+    }
+
+    //@desc     Upload image
+    //route     Post /api/chat/uploadImage
+    //@access   Private
+    async uploadImage(req: Req, res: Res, next: Next) {
+        try {
+            console.log('req.file: ', req.file)
+            console.log('req.body: ', req.body)
+            console.log('req.buffer: ', req.file?.buffer)
+
+            if (!req.file) {
+                return res.status(400).json({ message: 'No file uploaded' });
+            }
+            const imageName = await uploadImageToS3(req.file);
+            res.status(200).json({ imageName });
+        } catch (err) {
+            next(err);
+        }
+    }
+
+    //@desc     Get image url
+    //route     Post /api/chat/getImageUrl
+    //@access   Private
+    async getImageUrl(req: Req, res: Res, next: Next) {
+        try {
+            console.log('key inside getImageUrl: ', req.params.imageName)
+            const { imageName } = req.params;
+            const url = await getPresignedUrl(imageName);
+            url &&
+                res.status(200).json({
+                    url
                 });
         } catch (err) {
             next(err);
