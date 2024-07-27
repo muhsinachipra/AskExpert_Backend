@@ -1,6 +1,6 @@
 // backend\src\controllerLayer\chatAdapter.ts
 
-import { getPresignedUrl, uploadImageToS3 } from "../infrastructureLayer/services/uploadService";
+import { getPresignedUrl, uploadFileToS3 } from "../infrastructureLayer/services/uploadService";
 import { Next, Req, Res } from "../infrastructureLayer/types/expressTypes";
 import { ChatUseCase } from "../usecaseLayer/usecase/chatUsecase";
 import { PutObjectCommand } from "@aws-sdk/client-s3";
@@ -51,6 +51,7 @@ export class ChatAdapter {
     //@access   Private
     async createMessage(req: Req, res: Res, next: Next) {
         try {
+            console.log('req.body in createMessage: ', req.body);
             const newConversation = await this.chatUsecase.createMessage(req.body);
             newConversation &&
                 res.status(200).json({
@@ -119,10 +120,10 @@ export class ChatAdapter {
         }
     }
 
-    //@desc     Upload image
-    //route     Post /api/chat/uploadImage
+    //@desc     Upload file
+    //route     Post /api/chat/uploadFile
     //@access   Private
-    async uploadImage(req: Req, res: Res, next: Next) {
+    async uploadFile(req: Req, res: Res, next: Next) {
         try {
             console.log('req.file: ', req.file)
             console.log('req.body: ', req.body)
@@ -131,21 +132,21 @@ export class ChatAdapter {
             if (!req.file) {
                 return res.status(400).json({ message: 'No file uploaded' });
             }
-            const imageName = await uploadImageToS3(req.file);
-            res.status(200).json({ imageName });
+            const fileName = await uploadFileToS3(req.file);
+            res.status(200).json({ fileName });
         } catch (err) {
             next(err);
         }
     }
 
-    //@desc     Get image url
-    //route     Post /api/chat/getImageUrl
+    //@desc     Get file url
+    //route     Post /api/chat/getFileUrl
     //@access   Private
-    async getImageUrl(req: Req, res: Res, next: Next) {
+    async getFileUrl(req: Req, res: Res, next: Next) {
         try {
-            console.log('key inside getImageUrl: ', req.params.imageName)
-            const { imageName } = req.params;
-            const url = await getPresignedUrl(imageName);
+            console.log('key inside getFileUrl: ', req.params.fileName)
+            const { fileName } = req.params;
+            const url = await getPresignedUrl(fileName);
             url &&
                 res.status(200).json({
                     url

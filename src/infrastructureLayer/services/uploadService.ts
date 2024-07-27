@@ -9,40 +9,46 @@ import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 
 const bucketName = process.env.AWS_BUCKET_NAME;
 
-export const uploadImageToS3 = async (file: Express.Multer.File): Promise<string> => {
+export const uploadFileToS3 = async (file: Express.Multer.File): Promise<string> => {
 
-    const buffer = await sharp(file.buffer).resize({ width: 800 }).toBuffer();
-
-    const randomImageName = (bytes = 16) => crypto.randomBytes(bytes).toString('hex')
-    console.log('inside uploadImageToS3 file: ', file)
-    const imageName = randomImageName();
+    const randomFileName = (bytes = 16) => crypto.randomBytes(bytes).toString('hex')
+    console.log('inside uploadFileToS3 file: ', file)
+    const fileName = randomFileName();
 
     if (!bucketName) {
         throw new Error('AWS_BUCKET_NAME environment variable is not defined');
     }
 
+    let buffer = file.buffer;
+
+    // Only resize if the file is an image
+    if (file.mimetype.startsWith('image/')) {
+        buffer = await sharp(file.buffer).resize({ width: 700 }).toBuffer();
+    }
+
     const params = {
         Bucket: bucketName,
-        Key: imageName,
+        Key: fileName,
         Body: buffer,
         ContentType: file.mimetype,
     };
 
     const command = new PutObjectCommand(params);
     await s3.send(command);
-    return imageName;
+    console.log('fileName in uploadFileToS3: ', fileName)
+    return fileName;
 };
 
-// Generate presigned URL for viewing the image
-export const getPresignedUrl = async (imageName: string): Promise<string> => {
-    
+// Generate presigned URL for viewing the file
+export const getPresignedUrl = async (fileName: string): Promise<string> => {
+
     if (!bucketName) {
         throw new Error('AWS_BUCKET_NAME environment variable is not defined');
     }
 
     const params = {
         Bucket: bucketName,
-        Key: imageName,
+        Key: fileName,
     };
 
     const command = new GetObjectCommand(params);

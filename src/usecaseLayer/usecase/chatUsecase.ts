@@ -48,15 +48,17 @@ export class ChatUseCase {
 
 
     //to create createMessage
-    async createMessage({ conversationId, senderId, receiverId, text
-    }: { conversationId: string, senderId: string, receiverId: string, text: string }) {
+    async createMessage({ conversationId, senderId, receiverId, text, imageName, videoName
+    }: { conversationId: string, senderId: string, receiverId: string, text: string, imageName: string, videoName: string }) {
         return createMessage(
             this.requestValidator,
             this.chatRepository,
             conversationId,
             senderId,
             receiverId,
-            text
+            text,
+            imageName,
+            videoName,
         );
     }
 

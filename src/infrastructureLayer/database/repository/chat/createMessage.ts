@@ -8,6 +8,7 @@ export const createMessage = async (
     messageModel: typeof MessageModel
 ): Promise<IMessage> => {
     try {
+        console.log('newMessage in createMessage: ', newMessage)
         const message = await messageModel.create(newMessage);
         await message.save()
         return message;

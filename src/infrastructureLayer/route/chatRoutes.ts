@@ -47,16 +47,16 @@ router.get(
 );
 
 router.post(
-    "/uploadImage",
-    upload.single('image'),
+    "/uploadFile",
+    upload.single('file'),
     (req: Request, res: Response, next: NextFunction) =>
-        chatAdapter.uploadImage(req, res, next)
+        chatAdapter.uploadFile(req, res, next)
 )
 
 router.get(
-    "/getImageUrl/:imageName",
+    "/getFileUrl/:fileName",
     (req: Request, res: Response, next: NextFunction) =>
-        chatAdapter.getImageUrl(req, res, next)
+        chatAdapter.getFileUrl(req, res, next)
 )
 
 
