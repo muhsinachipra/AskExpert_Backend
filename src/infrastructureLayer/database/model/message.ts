@@ -11,6 +11,7 @@ const messageSchema: Schema = new Schema<IMessage & Document>(
     text: { type: String, },
     imageName: { type: String, default: '' },
     videoName: { type: String, default: '' },
+    audioName: { type: String, default: '' },
     status: { type: Boolean, default: false },
   },
   {

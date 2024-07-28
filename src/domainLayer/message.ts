@@ -7,5 +7,6 @@ export interface IMessage {
     text: string;
     imageName?: string;
     videoName?: string;
+    audioName?: string;
     status?: boolean;
 }
