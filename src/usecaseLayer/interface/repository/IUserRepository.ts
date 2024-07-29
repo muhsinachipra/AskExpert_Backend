@@ -12,4 +12,5 @@ export interface IUserRepository {
     findUserById(userId: string): Promise<IUser | null>
     getUserData(page: number, limit: number): Promise<{ data: IUser[], total: number }>
     updateUserBlockedStatus(userId: string): Promise<IUser | null>
+    amountToWallet(userId: string, amount: number): Promise<string | null>
 }
