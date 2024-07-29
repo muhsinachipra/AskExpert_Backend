@@ -11,7 +11,7 @@ import expertRouter from "../route/expertRoutes"
 import chatRouter from "../route/chatRoutes"
 import errorHandler from "../../usecaseLayer/handler/errorHandler";
 import http from "http"
-import { SocketManager } from '../services/Socket'
+import { SocketManager } from '../services/socket'
 
 export const app = express()
 

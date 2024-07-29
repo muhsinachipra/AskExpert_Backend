@@ -12,13 +12,16 @@ export const createMessage = async (
     conversationId: string,
     senderId: string,
     receiverId: string,
-    text: string
+    text: string,
+    imageName: string,
+    videoName: string,
+    audioName: string,
 ): Promise<IMessage> => {
     try {
         // Validate required parameters
         const validation = requestValidator.validateRequiredFields(
-            { conversationId, senderId, receiverId, text },
-            ["conversationId", "senderId", "receiverId", "text"]
+            { conversationId, senderId, receiverId, text, imageName, videoName, audioName },
+            ["conversationId", "senderId", "receiverId", "text", "imageName", "videoName", "audioName"]
         );
 
         if (!validation.success) {
@@ -31,7 +34,10 @@ export const createMessage = async (
             conversationId,
             senderId,
             receiverId,
-            text
+            text,
+            imageName,
+            videoName,
+            audioName,
         }
         const createNewMessage = await chatRepository.createMessage(newMessage);
         return createNewMessage

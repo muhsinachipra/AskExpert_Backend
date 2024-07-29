@@ -1,7 +1,9 @@
 // backend\src\controllerLayer\chatAdapter.ts
 
+import { getPresignedUrl, uploadFileToS3 } from "../infrastructureLayer/services/uploadService";
 import { Next, Req, Res } from "../infrastructureLayer/types/expressTypes";
 import { ChatUseCase } from "../usecaseLayer/usecase/chatUsecase";
+import { PutObjectCommand } from "@aws-sdk/client-s3";
 
 export class ChatAdapter {
     private readonly chatUsecase: ChatUseCase;
@@ -49,6 +51,7 @@ export class ChatAdapter {
     //@access   Private
     async createMessage(req: Req, res: Res, next: Next) {
         try {
+            console.log('req.body in createMessage: ', req.body);
             const newConversation = await this.chatUsecase.createMessage(req.body);
             newConversation &&
                 res.status(200).json({
@@ -111,6 +114,42 @@ export class ChatAdapter {
             message &&
                 res.status(200).json({
                     message
+                });
+        } catch (err) {
+            next(err);
+        }
+    }
+
+    //@desc     Upload file
+    //route     Post /api/chat/uploadFile
+    //@access   Private
+    async uploadFile(req: Req, res: Res, next: Next) {
+        try {
+            console.log('req.file: ', req.file)
+            console.log('req.body: ', req.body)
+            console.log('req.buffer: ', req.file?.buffer)
+
+            if (!req.file) {
+                return res.status(400).json({ message: 'No file uploaded' });
+            }
+            const fileName = await uploadFileToS3(req.file);
+            res.status(200).json({ fileName });
+        } catch (err) {
+            next(err);
+        }
+    }
+
+    //@desc     Get file url
+    //route     Post /api/chat/getFileUrl
+    //@access   Private
+    async getFileUrl(req: Req, res: Res, next: Next) {
+        try {
+            console.log('key inside getFileUrl: ', req.params.fileName)
+            const { fileName } = req.params;
+            const url = await getPresignedUrl(fileName);
+            url &&
+                res.status(200).json({
+                    url
                 });
         } catch (err) {
             next(err);
