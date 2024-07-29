@@ -1,8 +1,6 @@
 // backend\src\usecaseLayer\interface\repository\IAppointmentRepository.ts
 
 import { IAppointment } from "../../../domainLayer/appointment"
-import { IExpert } from "../../../domainLayer/expert"
-import { IResponse } from "../services/IResponse"
 
 export interface IAppointmentRepository {
     findAppointmentByTimeAndExpert(date: string, startTime: string, expertId: string): Promise<IAppointment | null>
@@ -15,5 +13,6 @@ export interface IAppointmentRepository {
     getAppointmentsData(expertId: string): Promise<IAppointment[]>
     getWalletData(expertId: string): Promise<IAppointment[]>
     findAppointmentByTimeRangeAndExpert(date: string, startTime: string, endTime: string, expertId: string): Promise<IAppointment | null>
-    // updateAppointment(appointmentId: string, transactionId: string, userId: string, userName: string, amount: number): Promise<IAppointment | null>
+    cancelAppointment(appointmentId: string): Promise<void>
+    getAppointmentById(appointmentId: string): Promise<IAppointment | null>
 }

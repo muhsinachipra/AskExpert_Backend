@@ -64,7 +64,10 @@ export class AppointmentRepository implements IAppointmentRepository {
 
     async getUserAppointments(userId: string): Promise<IAppointment[]> {
         try {
-            const appointments = await this.appointmentModel.find({ userId, appointmentStatus: 'booked' }).sort({ date: 1 });
+            const appointments = await this.appointmentModel.find({
+                userId,
+                appointmentStatus: { $in: ['booked', 'cancelled'] }
+            }).sort({ date: 1 });
             return appointments;
         } catch (error) {
             console.error('Error getting user appointments:', error);
@@ -114,5 +117,29 @@ export class AppointmentRepository implements IAppointmentRepository {
     //         return null;
     //     }
     // }
+
+    async cancelAppointment(appointmentId: string): Promise<void> {
+        try {
+            await this.appointmentModel.findOneAndUpdate(
+                { _id: appointmentId },
+                { appointmentStatus: 'cancelled' },
+            );
+        } catch (error) {
+            console.error('Error cancelling appointment:', error);
+        }
+    }
+
+    async getAppointmentById(appointmentId: string): Promise<IAppointment | null> {
+        try {
+            const appointment = await this.appointmentModel.findOne({ _id: appointmentId });
+            if (appointment) {
+                return appointment
+            }
+            return null;
+        } catch (error) {
+            console.error('Error finding appointment: ', error);
+            return null;
+        }
+    }
 
 }

@@ -96,6 +96,12 @@ router.get(
         appointmentAdapter.getExpertSlots(req, res, next)
 )
 
+router.patch(
+    "/cancelAppointment/:id",
+    (req: Request, res: Response, next: NextFunction) =>
+        appointmentAdapter.cancelAppointment(req, res, next)
+)
+
 router.post(
     "/payment",
     (req: Request, res: Response, next: NextFunction) =>

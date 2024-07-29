@@ -6,6 +6,7 @@ export interface IUser{
     email: string;
     mobile?: string;
     profilePic: string;
+    wallet?: number;
     password: string;
     isBlocked?: boolean;
     createdAt?:Date

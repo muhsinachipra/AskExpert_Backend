@@ -5,6 +5,7 @@ import { IUser } from '../../domainLayer/user'
 import { Req } from '../../infrastructureLayer/types/expressTypes'
 import { IAppointmentRepository } from '../interface/repository/IAppointmentRepository'
 import { IExpertRepository } from '../interface/repository/IExpertRepository'
+import { IUserRepository } from '../interface/repository/IUserRepository'
 import { IRequestValidator } from '../interface/repository/IValidateRepository'
 import IStripe from '../interface/services/IStripe'
 import { addSchedule } from './appointment/addSchedule'
@@ -12,21 +13,25 @@ import { cancelSchedule } from './appointment/cancelSchedule'
 import { createPayment } from './appointment/createPayment'
 import { getExpertSlots } from './appointment/getExpertSlots'
 import { getSchedules } from './appointment/getSchedules'
+import { cancelAppointment } from './appointment/cancelAppointment'
 import { paymentConfirmation } from './appointment/paymentConfirmation'
 
 export class AppointmentUsecase {
     private readonly appointmentRepository: IAppointmentRepository
     private readonly expertRepository: IExpertRepository
+    private readonly userRepository: IUserRepository
     private readonly requestValidator: IRequestValidator
     private readonly stripe: IStripe
     constructor(
         appointmentRepository: IAppointmentRepository,
         expertRepository: IExpertRepository,
+        userRepository: IUserRepository,
         requestValidator: IRequestValidator,
         stripe: IStripe
     ) {
         this.appointmentRepository = appointmentRepository
         this.expertRepository = expertRepository
+        this.userRepository = userRepository
         this.requestValidator = requestValidator
         this.stripe = stripe
     }
@@ -117,5 +122,18 @@ export class AppointmentUsecase {
 
     }
 
+    async cancelAppointment(appointmentId: string) {
+        try {
+            return await cancelAppointment(
+                this.requestValidator,
+                this.appointmentRepository,
+                this.userRepository,
+                appointmentId,
+            );
+        } catch (error) {
+            console.error('Error cancelling appointment: ', error);
+            throw error;
+        }
+    }
 
 }

@@ -96,6 +96,25 @@ export class AppointmentAdapter {
         }
     }
 
+    //   @desc    Cancel appointment
+    //   @route   PATCH /api/user/cancelAppointment/:id
+    //   @access  Private
+    async cancelAppointment(req: Req, res: Res, next: Next) {
+        try {
+            const appointmentId = req.params.id;
+            const response = await this.appointmentUsecase.cancelAppointment(appointmentId);
+            if (response) {
+                return res.status(response.status).json({
+                    success: response.success,
+                    message: response.message,
+                });
+            }
+            throw ErrorResponse.internalServerError("appointment cancellation failed");
+        } catch (err) {
+            next(err);
+        }
+    }
+
     // @desc    Pay for the service
     // @route   POST /api/user/payment
     // @access  Private
@@ -214,6 +233,6 @@ export class AppointmentAdapter {
         }
     }
 
-   
+
 
 }

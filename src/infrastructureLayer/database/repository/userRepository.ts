@@ -43,4 +43,21 @@ export class UserRepository implements IUserRepository {
     async updateUserBlockedStatus(userId: string): Promise<IUser | null> {
         return updateUserBlockedStatus(userId, this.userModel);
     }
+
+    async amountToWallet(userId: string, amount: number): Promise<string | null> {
+        try {
+            const user = await this.userModel.findOne({ _id: userId });
+            if (user) {
+                const walletAmount = Number(user.wallet) || 0;
+                const amountToAdd = Number(amount);
+                user.wallet = walletAmount + amountToAdd;
+                await user.save();
+                return "Amount added to wallet successfully";
+            }
+            return null;
+        } catch (error) {
+            console.error('Error adding amount to wallet:', error);
+            return null;
+        }
+    }
 }
