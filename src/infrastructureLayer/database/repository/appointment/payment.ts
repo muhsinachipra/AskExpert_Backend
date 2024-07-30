@@ -14,7 +14,7 @@ export const payment = async (
         if (newAppointment) {
             newAppointment.userId = userId
             newAppointment.userName = userName
-            newAppointment.paymentStatus = 'paid'
+            newAppointment.paymentStatus = 'completed'
             newAppointment.paymentId = transactionId
             newAppointment.appointmentStatus = 'booked'
             await newAppointment.save()

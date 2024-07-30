@@ -14,9 +14,9 @@ const appointmentSchema: Schema = new Schema<IAppointment & Document>(
         startTime: { type: String, required: true },
         endTime: { type: String, required: true },
         price: { type: Number, required: true },
-        paymentStatus: { type: String, default: 'pending' },
+        paymentStatus: { type: String, default: 'pending' },  // pending, completed, refunded
         paymentId: { type: String, default: '' },
-        appointmentStatus: { type: String, default: 'pending' },
+        appointmentStatus: { type: String, default: 'pending' },  // pending, cancelled
     },
     {
         timestamps: true

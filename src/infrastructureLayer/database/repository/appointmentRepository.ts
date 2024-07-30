@@ -98,31 +98,12 @@ export class AppointmentRepository implements IAppointmentRepository {
         }
     }
 
-    // async updateAppointment(appointmentId: string, transactionId: string, userId: string, userName: string, amount: number): Promise<IAppointment | null> {
-    //     try {
-    //         const appointment = await this.appointmentModel.findOneAndUpdate(
-    //             { _id: appointmentId },
-    //             {
-    //                 transactionId,
-    //                 userId,
-    //                 userName,
-    //                 paymentStatus: 'paid',
-    //                 amount,
-    //             },
-    //             { new: true }
-    //         );
-    //         return appointment;
-    //     } catch (error) {
-    //         console.error('Error updating appointment:', error);
-    //         return null;
-    //     }
-    // }
-
     async cancelAppointment(appointmentId: string): Promise<void> {
         try {
             await this.appointmentModel.findOneAndUpdate(
                 { _id: appointmentId },
                 { appointmentStatus: 'cancelled' },
+                { paymentStatus: 'refunded' },
             );
         } catch (error) {
             console.error('Error cancelling appointment:', error);

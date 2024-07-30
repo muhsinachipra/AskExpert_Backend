@@ -27,7 +27,7 @@ export const getSchedules = async (expertId: string, appointmentModel: typeof Ap
             {
                 $match: {
                     expertId: new mongoose.Types.ObjectId(expertId),
-                    appointmentStatus: 'pending',
+                    appointmentStatus: { $in: ['pending', 'cancelled'] },
                     appointmentDateTime: { $gte: localTime }
                 }
             },
