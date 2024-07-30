@@ -233,6 +233,24 @@ export class AppointmentAdapter {
         }
     }
 
+    // @desc    Pay for the service using wallet
+    // @route   POST /api/user/walletPayment
+    // @access  Private
+    async walletPayment(req: Req, res: Res, next: Next) {
+        try {
+            console.log('walletPayment entered')
+            const { amount, appointmentId, userId, userName } = req.body
+            console.log('in walletPayment amount : ', amount, 'appointmentId : ', appointmentId, 'userId : ', userId, "userName: ", userName)
+            const walletPayment = await this.appointmentUsecase.processWalletPayment({ amount, appointmentId, userId, userName })
+            console.log('walletPayment after processWalletPayment : ', walletPayment)
+            res.status(walletPayment.status).json({
+                success: walletPayment.success,
+                message: walletPayment.message,
+            })
+        } catch (err) {
+            next(err)
+        }
+    }
 
 
 }

@@ -126,5 +126,12 @@ router.get(
         userAdapter.getCategories(req, res, next)
 )
 
+router.post(
+    "/walletPayment",
+    (req: Request, res: Response, next: NextFunction) =>
+        appointmentAdapter.walletPayment(req, res, next)
+)
+
+
 
 export default router

@@ -15,6 +15,7 @@ import { getExpertSlots } from './appointment/getExpertSlots'
 import { getSchedules } from './appointment/getSchedules'
 import { cancelAppointment } from './appointment/cancelAppointment'
 import { paymentConfirmation } from './appointment/paymentConfirmation'
+import { processWalletPayment } from './appointment/processWalletPayment'
 
 export class AppointmentUsecase {
     private readonly appointmentRepository: IAppointmentRepository
@@ -136,4 +137,10 @@ export class AppointmentUsecase {
         }
     }
 
+    async processWalletPayment({ amount, appointmentId, userId, userName }:
+        { appointmentId: string, userId: string, userName: string, amount: number }) {
+        return processWalletPayment(
+            this.requestValidator, this.userRepository, this.expertRepository, this.appointmentRepository, appointmentId, userId, userName, amount
+        )
+    }
 }

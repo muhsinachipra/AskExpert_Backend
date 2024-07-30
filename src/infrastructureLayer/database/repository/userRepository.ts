@@ -5,6 +5,7 @@ import { IUserRepository } from "../../../usecaseLayer/interface/repository/IUse
 import { IResetPassword } from "../../../usecaseLayer/interface/services/IResponse";
 import UserModel from "../model/userModel";
 import { createUser } from "./user/createUser";
+import { deductFromWallet } from "./user/deductFromWallet";
 import { findUser } from "./user/findUser";
 import { findUserById } from "./user/findUserById";
 import { getUserData } from "./user/getUserData";
@@ -59,5 +60,9 @@ export class UserRepository implements IUserRepository {
             console.error('Error adding amount to wallet:', error);
             return null;
         }
+    }
+
+    async deductFromWallet(userId: string, amount: number): Promise<void> {
+        return deductFromWallet(userId, amount, this.userModel);
     }
 }
