@@ -122,8 +122,16 @@ export class AppointmentRepository implements IAppointmentRepository {
             return null;
         }
     }
-    // helo
 
-    //// helllosvdsf 
+    async getAllAppointments(page: number, limit: number): Promise<{ data: IAppointment[], total: number }> {
+        try {
+            const skip = (page - 1) * limit;
+            const appointmentData = await this.appointmentModel.find().skip(skip).limit(limit).sort({ createdAt: 1 });
+            const total = await this.appointmentModel.countDocuments();
+            return { data: appointmentData, total };
+        } catch (error) {
+            throw error
+        }
+    }
 
 }

@@ -15,4 +15,5 @@ export interface IAppointmentRepository {
     findAppointmentByTimeRangeAndExpert(date: string, startTime: string, endTime: string, expertId: string): Promise<IAppointment | null>
     cancelAppointment(appointmentId: string): Promise<void>
     getAppointmentById(appointmentId: string): Promise<IAppointment | null>
+    getAllAppointments(page: number, limit: number): Promise<{ data: IAppointment[], total: number }>
 }

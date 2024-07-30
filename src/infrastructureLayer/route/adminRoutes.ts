@@ -2,6 +2,7 @@
 
 import express, { NextFunction, Request, Response } from 'express';
 import { adminAdapter } from './injections/adminInjection';
+import { appointmentAdapter } from './injections/appointmentInjection';
 import loginRateLimiter from '../middleware/rateLimiter';
 import AuthMiddleware from '../middleware/AuthMiddleware'
 
@@ -83,6 +84,12 @@ router.patch(
     '/expertBlockedStatus/:id',
     (req: Request, res: Response, next: NextFunction) =>
         adminAdapter.updateExpertBlockedStatus(req, res, next)
+)
+
+router.get(
+    "/appointmentData",
+    (req: Request, res: Response, next: NextFunction) =>
+        appointmentAdapter.allAppointmentsData(req, res, next)
 )
 
 export default router

@@ -252,5 +252,23 @@ export class AppointmentAdapter {
         }
     }
 
+    // @desc    Get all appointments data for admin
+    // @route   GET /api/admin/appointmentData
+    // @access  Private
+    async allAppointmentsData(req: Req, res: Res, next: Next) {
+        try {
+            const page = parseInt(req.query.page as string) || 1;
+            const limit = parseInt(req.query.limit as string) || 6;
+            const appointments = await this.appointmentUsecase.allAppointmentsData(page, limit);
+            return res.status(appointments.status).json({
+                success: appointments.success,
+                data: appointments.data,
+                total: appointments.total,
+                message: appointments.message,
+            });
+        } catch (err) {
+            next(err)
+        }
+    }
 
 }

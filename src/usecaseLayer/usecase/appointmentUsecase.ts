@@ -16,6 +16,7 @@ import { getSchedules } from './appointment/getSchedules'
 import { cancelAppointment } from './appointment/cancelAppointment'
 import { paymentConfirmation } from './appointment/paymentConfirmation'
 import { processWalletPayment } from './appointment/processWalletPayment'
+import { allAppointmentsData } from './appointment/allAppointmentsData'
 
 export class AppointmentUsecase {
     private readonly appointmentRepository: IAppointmentRepository
@@ -142,5 +143,11 @@ export class AppointmentUsecase {
         return processWalletPayment(
             this.requestValidator, this.userRepository, this.expertRepository, this.appointmentRepository, appointmentId, userId, userName, amount
         )
+    }
+
+    async allAppointmentsData(page: number, limit: number) {
+        return allAppointmentsData(
+            page, limit, this.appointmentRepository
+        );
     }
 }
