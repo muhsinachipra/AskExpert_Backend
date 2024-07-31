@@ -66,7 +66,7 @@ export class AppointmentRepository implements IAppointmentRepository {
         try {
             const appointments = await this.appointmentModel.find({
                 userId,
-                appointmentStatus: { $in: ['booked', 'cancelled'] }
+                appointmentStatus: { $in: ['booked', 'cancelled', 'completed'] }
             }).sort({ date: 1 });
             return appointments;
         } catch (error) {
@@ -134,4 +134,30 @@ export class AppointmentRepository implements IAppointmentRepository {
         }
     }
 
+    async updateAppointmentStatus(appointmentId: string, status: string): Promise<IAppointment | null> {
+        try {
+            const appointment = await this.appointmentModel.findOneAndUpdate(
+                { _id: appointmentId },
+                { appointmentStatus: status },
+                { new: true }
+            );
+            if (appointment) {
+                return appointment;
+            }
+            return null;
+        } catch (error) {
+            console.error('Error updating appointment status: ', error);
+            return null;
+        }
+    }
+
+    async getAppointmentsCount(userId: string): Promise<number> {
+        try {
+            const count = await this.appointmentModel.countDocuments({ userId, appointmentStatus: 'booked' });
+            return count;
+        } catch (error) {
+            console.error('Error counting appointments: ', error);
+            return 0;
+        }
+    }    
 }

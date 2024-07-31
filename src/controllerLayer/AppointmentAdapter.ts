@@ -271,4 +271,45 @@ export class AppointmentAdapter {
         }
     }
 
+    // @desc    Update appointment status
+    // @route   PATCH /api/user/updateAppointmentStatus/:id
+    // @access  Private
+    async updateAppointmentStatus(req: Req, res: Res, next: Next) {
+        try {
+            const appointmentId = req.params.id;
+            const status = req.body.status;
+            const response = await this.appointmentUsecase.updateAppointmentStatus(appointmentId, status);
+            if (response) {
+                return res.status(response.status).json({
+                    success: response.success,
+                    message: response.message,
+                });
+            }
+            throw ErrorResponse.internalServerError("appointment status update failed");
+        } catch (err) {
+            next(err);
+        }
+    }
+
+    // @desc      Get Appointments Count
+    // route      GET api/user/getAppointmentsCount
+    // @access    Private
+    async getAppointmentsCount(req: Req, res: Res, next: Next) {
+        try {
+            if (req.user && 'mobile' in req.user) {
+                const userData = req.user as IUser;
+                const userId = userData._id;
+                const appointments = await this.appointmentUsecase.getAppointmentsCount(userId || '');
+                return res.status(appointments.status).json({
+                    success: appointments.success,
+                    data: appointments.data,
+                    message: appointments.message,
+                });
+            } else {
+                throw ErrorResponse.notFound('User not found');
+            }
+        } catch (err) {
+            next(err);
+        }
+    }
 }

@@ -99,4 +99,10 @@ router.get(
         expertAdapter.expertGetUserData(req, res, next)
 )
 
+router.patch(
+    "/updateAppointmentStatus/:id",
+    (req: Request, res: Response, next: NextFunction) =>
+        appointmentAdapter.updateAppointmentStatus(req, res, next)
+)
+
 export default router

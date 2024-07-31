@@ -17,6 +17,7 @@ import { cancelAppointment } from './appointment/cancelAppointment'
 import { paymentConfirmation } from './appointment/paymentConfirmation'
 import { processWalletPayment } from './appointment/processWalletPayment'
 import { allAppointmentsData } from './appointment/allAppointmentsData'
+import ErrorResponse from '../handler/errorResponse'
 
 export class AppointmentUsecase {
     private readonly appointmentRepository: IAppointmentRepository
@@ -150,4 +151,33 @@ export class AppointmentUsecase {
             page, limit, this.appointmentRepository
         );
     }
+
+    async updateAppointmentStatus(appointmentId: string, status: string) {
+        try {
+            const appointment =  await this.appointmentRepository.updateAppointmentStatus(appointmentId, status);
+            if(appointment){
+                return {
+                    success: true,
+                    message: 'Appointment status updated successfully',
+                    status: 200,
+                };
+            }
+            throw ErrorResponse.internalServerError('Failed to update appointment status')
+        } catch (error) {
+            console.error('Error updating appointment status: ', error);
+            throw error;
+        }
+    }
+
+    async getAppointmentsCount(userId: string) {
+        const data = await this.appointmentRepository.getAppointmentsCount(userId);
+        return {
+            success: true,
+            data,
+            message: 'User Appointment data retrieved successfully',
+            status: 200,
+        };
+    }
+
+
 }

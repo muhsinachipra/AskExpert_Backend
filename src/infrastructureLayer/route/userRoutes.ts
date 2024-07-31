@@ -132,6 +132,16 @@ router.post(
         appointmentAdapter.walletPayment(req, res, next)
 )
 
+router.patch(
+    "/updateAppointmentStatus/:id",
+    (req: Request, res: Response, next: NextFunction) =>
+        appointmentAdapter.updateAppointmentStatus(req, res, next)
+)
 
+router.get(
+    "/getAppointmentsCount",
+    (req: Request, res: Response, next: NextFunction) =>
+        appointmentAdapter.getAppointmentsCount(req, res, next)
+)
 
 export default router

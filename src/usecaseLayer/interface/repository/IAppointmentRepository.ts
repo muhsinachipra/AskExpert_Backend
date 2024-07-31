@@ -16,4 +16,6 @@ export interface IAppointmentRepository {
     cancelAppointment(appointmentId: string): Promise<void>
     getAppointmentById(appointmentId: string): Promise<IAppointment | null>
     getAllAppointments(page: number, limit: number): Promise<{ data: IAppointment[], total: number }>
+    updateAppointmentStatus(appointmentId: string, status: string): Promise<IAppointment | null>
+    getAppointmentsCount(userId: string): Promise<number>
 }
