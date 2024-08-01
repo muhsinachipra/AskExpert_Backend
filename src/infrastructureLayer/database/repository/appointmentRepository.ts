@@ -100,13 +100,19 @@ export class AppointmentRepository implements IAppointmentRepository {
 
     async cancelAppointment(appointmentId: string): Promise<void> {
         try {
-            await this.appointmentModel.findOneAndUpdate(
+            const appointment = await this.appointmentModel.findOneAndUpdate(
                 { _id: appointmentId },
-                { appointmentStatus: 'cancelled' },
-                { paymentStatus: 'refunded' },
+                {
+                    $set: {
+                        appointmentStatus: 'cancelled',
+                        paymentStatus: 'refunded'
+                    }
+                },
+                { new: true }  // This option returns the modified document rather than the original
             );
         } catch (error) {
             console.error('Error cancelling appointment:', error);
+            throw error;
         }
     }
 
@@ -159,5 +165,5 @@ export class AppointmentRepository implements IAppointmentRepository {
             console.error('Error counting appointments: ', error);
             return 0;
         }
-    }    
+    }
 }

@@ -144,7 +144,7 @@ export class ChatAdapter {
     //@access   Private
     async getFileUrl(req: Req, res: Res, next: Next) {
         try {
-            console.log('key inside getFileUrl: ', req.params.fileName)
+            // console.log('key inside getFileUrl: ', req.params.fileName)
             const { fileName } = req.params;
             const url = await getPresignedUrl(fileName);
             url &&
