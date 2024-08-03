@@ -91,7 +91,7 @@ router.get(
 )
 
 router.get(
-    "/getExpertSlots/:expertId",
+    "/getExpertSlots/:expertId/:page/:limit",
     (req: Request, res: Response, next: NextFunction) =>
         appointmentAdapter.getExpertSlots(req, res, next)
 )

@@ -58,7 +58,7 @@ router.post(
 )
 
 router.get(
-    '/schedules',
+    '/schedules/:page/:limit',
     (req: Request, res: Response, next: NextFunction) =>
         appointmentAdapter.getSchedules(req, res, next)
 );
@@ -76,7 +76,7 @@ router.get(
 )
 
 router.get(
-    "/getAppointmentsData",
+    "/getAppointmentsData/:page/:limit",
     (req: Request, res: Response, next: NextFunction) =>
         appointmentAdapter.getAppointmentsData(req, res, next)
 )
@@ -88,7 +88,7 @@ router.get(
 )
 
 router.get(
-    "/getWalletData",
+    "/getWalletData/:page/:limit",
     (req: Request, res: Response, next: NextFunction) =>
         appointmentAdapter.getWalletData(req, res, next)
 )

@@ -46,7 +46,9 @@ export class AppointmentAdapter {
             if (req.user && 'category' in req.user) {
                 const expertData = req.user as IExpert;
                 const expertId = expertData._id;
-                const schedules = await this.appointmentUsecase.getSchedules(expertId || '');
+                const page = parseInt(req.params.page as string) || 1;
+                const limit = parseInt(req.params.limit as string) || 4;
+                const schedules = await this.appointmentUsecase.getSchedules(expertId || '', page, limit);
                 return res.status(schedules.status).json(schedules)
             } else {
                 throw ErrorResponse.notFound('Expert not found');
@@ -83,11 +85,14 @@ export class AppointmentAdapter {
     async getExpertSlots(req: Req, res: Res, next: Next) {
         try {
             const expertId = req.params.expertId;
-            const expertSlots = await this.appointmentUsecase.getExpertSlots(expertId);
+            const page = parseInt(req.params.page as string) || 1;
+            const limit = parseInt(req.params.limit as string) || 4;
+            const expertSlots = await this.appointmentUsecase.getExpertSlots(expertId, page, limit);
             if (expertSlots) {
                 return res.status(expertSlots.status).json({
                     success: expertSlots.success,
                     data: expertSlots.data,
+                    total: expertSlots.total,
                     message: expertSlots.message,
                 });
             }
@@ -175,10 +180,13 @@ export class AppointmentAdapter {
             if (req.user && 'mobile' in req.user) {
                 const userData = req.user as IUser;
                 const userId = userData._id;
-                const appointments = await this.appointmentUsecase.getUserAppointments(userId || '');
+                const page = parseInt(req.query.page as string) || 1;
+                const limit = parseInt(req.query.limit as string) || 4;
+                const appointments = await this.appointmentUsecase.getUserAppointments(userId || '', page, limit);
                 return res.status(appointments.status).json({
                     success: appointments.success,
                     data: appointments.data,
+                    total: appointments.total,
                     message: appointments.message,
                 });
             } else {
@@ -197,10 +205,13 @@ export class AppointmentAdapter {
             if (req.user && 'category' in req.user) {
                 const expertData = req.user as IExpert;
                 const expertId = expertData._id;
-                const appointments = await this.appointmentUsecase.getAppointmentsData(expertId || '');
+                const page = parseInt(req.params.page as string) || 1;
+                const limit = parseInt(req.params.limit as string) || 4;
+                const appointments = await this.appointmentUsecase.getAppointmentsData(expertId || '', page, limit);
                 return res.status(appointments.status).json({
                     success: appointments.success,
                     data: appointments.data,
+                    total: appointments.total,
                     message: appointments.message,
                 });
             } else {
@@ -219,10 +230,13 @@ export class AppointmentAdapter {
             if (req.user && 'category' in req.user) {
                 const expertData = req.user as IExpert;
                 const expertId = expertData._id;
-                const appointments = await this.appointmentUsecase.getWalletData(expertId || '');
+                const page = parseInt(req.params.page as string) || 1;
+                const limit = parseInt(req.params.limit as string) || 4;
+                const appointments = await this.appointmentUsecase.getWalletData(expertId || '', page, limit);
                 return res.status(appointments.status).json({
                     success: appointments.success,
                     data: appointments.data,
+                    total: appointments.total,
                     message: appointments.message,
                 });
             } else {

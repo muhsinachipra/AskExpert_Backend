@@ -27,8 +27,8 @@ export class AppointmentRepository implements IAppointmentRepository {
         return addSchedule(newAppointment, this.appointmentModel)
     }
 
-    async getSchedules(expertId: string): Promise<IAppointment[]> {
-        return getSchedules(expertId, this.appointmentModel);
+    async getSchedules(expertId: string, page: number, limit: number): Promise<{ data: IAppointment[], total: number }> {
+        return getSchedules(expertId, page, limit, this.appointmentModel);
     }
 
     async deleteSchedule(scheduleId: string, expertId: string): Promise<boolean> {
@@ -62,39 +62,45 @@ export class AppointmentRepository implements IAppointmentRepository {
         }
     }
 
-    async getUserAppointments(userId: string): Promise<IAppointment[]> {
+    async getUserAppointments(userId: string, page: number, limit: number): Promise<{ data: IAppointment[], total: number }> {
         try {
+            const skip = (page - 1) * limit;
             const appointments = await this.appointmentModel.find({
                 userId,
                 appointmentStatus: { $in: ['booked', 'cancelled', 'completed'] }
-            }).sort({ date: 1 });
-            return appointments;
+            }).skip(skip).limit(limit).sort({ date: 1 });
+            const total = await this.appointmentModel.countDocuments({ userId, appointmentStatus: { $in: ['booked', 'cancelled', 'completed'] } });
+            return { data: appointments, total };
         } catch (error) {
             console.error('Error getting user appointments:', error);
-            return [];
+            throw error;
         }
     }
 
-    async getAppointmentsData(expertId: string): Promise<IAppointment[]> {
+    async getAppointmentsData(expertId: string, page: number, limit: number): Promise<{ data: IAppointment[], total: number }> {
         try {
-            const appointments = await this.appointmentModel.find({ expertId, appointmentStatus: 'booked' });
-            return appointments;
+            const skip = (page - 1) * limit;
+            const appointments = await this.appointmentModel.find({ expertId, appointmentStatus: 'booked' }).skip(skip).limit(limit).sort({ date: 1 });
+            const total = await this.appointmentModel.countDocuments({ expertId, appointmentStatus: 'booked' });
+            return { data: appointments, total };
         } catch (error) {
             console.error('Error getting expert appointments:', error);
-            return [];
+            throw error;
         }
     }
 
-    async getWalletData(expertId: string): Promise<IAppointment[]> {
+    async getWalletData(expertId: string, page: number, limit: number): Promise<{ data: IAppointment[], total: number }> {
         try {
+            const skip = (page - 1) * limit;
             const appointments = await this.appointmentModel.find({
                 expertId,
                 appointmentStatus: { $in: ['booked', 'completed'] }
-            }).sort({ date: 1 }); // 1 for ascending, -1 for descending
-            return appointments;
+            }).skip(skip).limit(limit).sort({ date: 1 }); // 1 for ascending, -1 for descending
+            const total = await this.appointmentModel.countDocuments({ expertId, appointmentStatus: { $in: ['booked', 'completed'] } });
+            return { data: appointments, total };
         } catch (error) {
             console.error('Error getting expert appointments:', error);
-            return [];
+            throw error
         }
     }
 

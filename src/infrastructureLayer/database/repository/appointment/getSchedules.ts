@@ -3,8 +3,10 @@
 import mongoose from "mongoose";
 import AppointmentModel from "../../model/appointmentModel";
 
-export const getSchedules = async (expertId: string, appointmentModel: typeof AppointmentModel) => {
+export const getSchedules = async (expertId: string, page: number, limit: number, appointmentModel: typeof AppointmentModel) => {
     try {
+
+        const skip = (page - 1) * limit;
 
         const now = new Date();
         console.log('UTC time:', now);
@@ -33,10 +35,15 @@ export const getSchedules = async (expertId: string, appointmentModel: typeof Ap
             },
             {
                 $sort: { appointmentDateTime: 1 }
-            }
+            },
         ]);
-        console.log('appointmentData: ', appointmentData);
-        return appointmentData;
+        // Paginate the result
+        const paginatedData = appointmentData.slice(skip, skip + limit);
+
+        // Get total count of matching documents
+        const total = appointmentData.length;
+
+        return { data: paginatedData, total };
     } catch (error) {
         throw error;
     }

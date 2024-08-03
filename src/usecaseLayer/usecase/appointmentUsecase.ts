@@ -49,17 +49,19 @@ export class AppointmentUsecase {
         );
     }
 
-    async getSchedules(expertId: string) {
-        return getSchedules(expertId, this.appointmentRepository);
+    async getSchedules(expertId: string, page: number, limit: number) {
+        return getSchedules(expertId, page, limit, this.appointmentRepository);
     }
 
     async cancelSchedule(scheduleId: string, expertId: string) {
         return cancelSchedule(scheduleId, expertId, this.appointmentRepository);
     }
 
-    async getExpertSlots(expertId: string) {
+    async getExpertSlots(expertId: string, page: number, limit: number) {
         return getExpertSlots(
             expertId,
+            page,
+            limit,
             this.requestValidator,
             this.appointmentRepository,
         );
@@ -75,52 +77,48 @@ export class AppointmentUsecase {
         )
     }
 
-    async getUserAppointments(userId: string) {
-        const data = await this.appointmentRepository.getUserAppointments(userId);
+    async getUserAppointments(userId: string, page: number, limit: number) {
+        const { data, total } = await this.appointmentRepository.getUserAppointments(
+            userId,
+            page,
+            limit,
+        );
         return {
             success: true,
             data,
+            total,
             message: 'User Appointment data retrieved successfully',
             status: 200,
         };
     }
 
-    async getAppointmentsData(expertId: string) {
+    async getAppointmentsData(expertId: string, page: number, limit: number) {
         try {
-            const data = await this.appointmentRepository.getAppointmentsData(expertId);
+            const { data, total } = await this.appointmentRepository.getAppointmentsData(expertId, page, limit);
             return {
                 success: true,
                 data,
+                total,
                 message: 'Expert Appointment data retrieved successfully',
                 status: 200,
             };
         } catch (error) {
-            return {
-                success: false,
-                data: null,
-                message: 'Failed to retrieve expert Appointment data',
-                status: 500,
-            };
+            throw error
         }
-
     }
 
-    async getWalletData(expertId: string) {
+    async getWalletData(expertId: string, page: number, limit: number) {
         try {
-            const data = await this.appointmentRepository.getWalletData(expertId);
+            const { data, total } = await this.appointmentRepository.getWalletData(expertId, page, limit);
             return {
                 success: true,
                 data,
+                total,
                 message: 'Expert Appointment data retrieved successfully',
                 status: 200,
             };
         } catch (error) {
-            return {
-                success: false,
-                data: null,
-                message: 'Failed to retrieve expert Appointment data',
-                status: 500,
-            };
+            throw error
         }
 
     }
@@ -154,8 +152,8 @@ export class AppointmentUsecase {
 
     async updateAppointmentStatus(appointmentId: string, status: string) {
         try {
-            const appointment =  await this.appointmentRepository.updateAppointmentStatus(appointmentId, status);
-            if(appointment){
+            const appointment = await this.appointmentRepository.updateAppointmentStatus(appointmentId, status);
+            if (appointment) {
                 return {
                     success: true,
                     message: 'Appointment status updated successfully',
