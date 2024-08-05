@@ -326,4 +326,61 @@ export class AppointmentAdapter {
             next(err);
         }
     }
+
+    // @desc      Get Single Appointments Data
+    // route      GET api/user/getSingleAppointment
+    // @access    Private
+    async getSingleAppointment(req: Req, res: Res, next: Next) {
+        try {
+            const appointmentId = req.params.appointmentId;
+            const appointments = await this.appointmentUsecase.getSingleAppointment(appointmentId);
+            return res.status(appointments.status).json({
+                success: appointments.success,
+                data: appointments.data,
+                message: appointments.message,
+            });
+        } catch (err) {
+            next(err);
+        }
+    }
+
+    // @desc      User Review the Session
+    // route      POST api/user/review
+    // @access    Private
+    async review(req: Req, res: Res, next: Next) {
+        try {
+            const response = await this.appointmentUsecase.review(req.body);
+            return res.status(response.status).json({
+                success: response.success,
+                message: response.message,
+            });
+        } catch (err) {
+            next(err);
+        }
+    }
+
+    // @desc      Get Reviews for expert
+    // route      GET api/expert/expertGetReview
+    // @access    Private
+    async expertGetReview(req: Req, res: Res, next: Next) {
+        try {
+            if (req.user && 'category' in req.user) {
+                const expertData = req.user as IExpert;
+                const expertId = expertData._id;
+                const page = parseInt(req.params.page as string) || 1;
+                const limit = parseInt(req.params.limit as string) || 6;
+                const appointments = await this.appointmentUsecase.expertGetReview(expertId || '', page, limit);
+                return res.status(appointments.status).json({
+                    success: appointments.success,
+                    data: appointments.data,
+                    total: appointments.total,
+                    message: appointments.message,
+                });
+            } else {
+                throw ErrorResponse.notFound('User not found');
+            }
+        } catch (err) {
+            next(err);
+        }
+    }
 }

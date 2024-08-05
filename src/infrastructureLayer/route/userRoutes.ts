@@ -144,4 +144,16 @@ router.get(
         appointmentAdapter.getAppointmentsCount(req, res, next)
 )
 
+router.get(
+    "/getSingleAppointment/:appointmentId",
+    (req: Request, res: Response, next: NextFunction) =>
+        appointmentAdapter.getSingleAppointment(req, res, next)
+)
+
+router.post(
+    "/review",
+    (req: Request, res: Response, next: NextFunction) =>
+        appointmentAdapter.review(req, res, next)
+)
+
 export default router

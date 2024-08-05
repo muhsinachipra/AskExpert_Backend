@@ -18,7 +18,7 @@ const expertSchema: Schema = new Schema<IExpert & Document>(
         profilePic: { type: String, required: true },
         resume: { type: String, required: true },
         mobile: { type: String, required: true },
-        rating: { type: Number, default: 0 },
+        averageRating: { type: Number, default: 0 },
         wallet: { type: Number, default: 0 },
         isVerified: { type: Boolean, default: false },
         isBlocked: { type: Boolean, default: false },

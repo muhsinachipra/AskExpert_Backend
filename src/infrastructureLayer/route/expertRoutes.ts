@@ -105,4 +105,10 @@ router.patch(
         appointmentAdapter.updateAppointmentStatus(req, res, next)
 )
 
+router.get(
+    "/review/:page/:limit",
+    (req: Request, res: Response, next: NextFunction) =>
+        appointmentAdapter.expertGetReview(req, res, next)
+)
+
 export default router

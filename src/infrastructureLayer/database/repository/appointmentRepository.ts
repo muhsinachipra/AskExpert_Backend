@@ -10,6 +10,7 @@ import { IResponse } from "../../../usecaseLayer/interface/services/IResponse";
 import { getSchedules } from "./appointment/getSchedules";
 import { payment } from "./appointment/payment";
 import { findAppointmentByTimeRangeAndExpert } from "./appointment/findAppointmentByTimeRangeAndExpert";
+import { IReview } from "../../../domainLayer/review";
 
 export class AppointmentRepository implements IAppointmentRepository {
 
@@ -172,4 +173,15 @@ export class AppointmentRepository implements IAppointmentRepository {
             return 0;
         }
     }
+
+    getSingleAppointment(appointmentId: string): Promise<IAppointment | null> {
+        try {
+            const appointment = this.appointmentModel.findOne({ _id: appointmentId });
+            return appointment;
+        } catch (error) {
+            console.error('Error getting single appointment: ', error);
+            throw error;
+        }
+    }
+
 }

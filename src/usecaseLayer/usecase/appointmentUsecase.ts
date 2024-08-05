@@ -1,7 +1,7 @@
 // backend\src\usecaseLayer\usecase\appointmentUsecase.ts
 
 import { IExpert } from '../../domainLayer/expert'
-import { IUser } from '../../domainLayer/user'
+import { IReview } from '../../domainLayer/review'
 import { Req } from '../../infrastructureLayer/types/expressTypes'
 import { IAppointmentRepository } from '../interface/repository/IAppointmentRepository'
 import { IExpertRepository } from '../interface/repository/IExpertRepository'
@@ -18,21 +18,25 @@ import { paymentConfirmation } from './appointment/paymentConfirmation'
 import { processWalletPayment } from './appointment/processWalletPayment'
 import { allAppointmentsData } from './appointment/allAppointmentsData'
 import ErrorResponse from '../handler/errorResponse'
+import { IReviewRepository } from '../interface/repository/IReviewRepository'
 
 export class AppointmentUsecase {
     private readonly appointmentRepository: IAppointmentRepository
+    private readonly reviewRepository: IReviewRepository
     private readonly expertRepository: IExpertRepository
     private readonly userRepository: IUserRepository
     private readonly requestValidator: IRequestValidator
     private readonly stripe: IStripe
     constructor(
         appointmentRepository: IAppointmentRepository,
+        reviewRepository: IReviewRepository,
         expertRepository: IExpertRepository,
         userRepository: IUserRepository,
         requestValidator: IRequestValidator,
         stripe: IStripe
     ) {
         this.appointmentRepository = appointmentRepository
+        this.reviewRepository = reviewRepository
         this.expertRepository = expertRepository
         this.userRepository = userRepository
         this.requestValidator = requestValidator
@@ -177,5 +181,40 @@ export class AppointmentUsecase {
         };
     }
 
+    async getSingleAppointment(appointmentId: string) {
+        const data = await this.appointmentRepository.getSingleAppointment(appointmentId);
+        return {
+            success: true,
+            data,
+            message: 'Appointment data retrieved successfully',
+            status: 200,
+        };
+    }
+
+    async review({ userId, expertId, rating, feedback, appointmentId }: IReview) {
+        try {
+            await this.reviewRepository.review({ userId, expertId, rating, feedback, appointmentId });
+            return {
+                success: true,
+                message: 'Review submited successfully',
+                status: 200,
+            };
+        } catch (error) {
+            console.error('Error submitting review: ', error);
+            throw error;
+        }
+    }
+
+
+    async expertGetReview(expertId: string, page: number, limit: number) {
+        const { data, total } = await this.reviewRepository.expertGetReview(expertId, page, limit);
+        return {
+            success: true,
+            data,
+            total,
+            message: 'Appointment data retrieved successfully',
+            status: 200,
+        };
+    }
 
 }
