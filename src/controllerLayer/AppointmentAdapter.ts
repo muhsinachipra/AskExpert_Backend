@@ -419,4 +419,29 @@ export class AppointmentAdapter {
             next(err);
         }
     }
+
+    // @desc      Get appointments data for user wallet transaction history
+    // route      GET api/user/getUserWalletData
+    // @access    Private
+    async getUserWalletData(req: Req, res: Res, next: Next) {
+        try {
+            if (req.user && 'mobile' in req.user) {
+                const userData = req.user as IUser;
+                const userId = userData._id;
+                const page = parseInt(req.params.page as string) || 1;
+                const limit = parseInt(req.params.limit as string) || 4;
+                const appointments = await this.appointmentUsecase.getUserWalletData(userId || '', page, limit);
+                return res.status(appointments.status).json({
+                    success: appointments.success,
+                    data: appointments.data,
+                    total: appointments.total,
+                    message: appointments.message,
+                });
+            } else {
+                throw ErrorResponse.notFound('User not found');
+            }
+        } catch (err) {
+            next(err);
+        }
+    }
 }

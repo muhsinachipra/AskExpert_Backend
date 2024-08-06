@@ -119,7 +119,7 @@ export class AppointmentUsecase {
                 success: true,
                 data,
                 total,
-                message: 'Expert Appointment data retrieved successfully',
+                message: 'Expert Wallet data retrieved successfully',
                 status: 200,
             };
         } catch (error) {
@@ -241,5 +241,21 @@ export class AppointmentUsecase {
             message: 'Report data retrieved successfully',
             status: 200,
         };
+    }
+
+    async getUserWalletData(userId: string, page: number, limit: number) {
+        try {
+            const { data, total } = await this.appointmentRepository.getUserWalletData(userId, page, limit);
+            return {
+                success: true,
+                data,
+                total,
+                message: 'User Wallet data retrieved successfully',
+                status: 200,
+            };
+        } catch (error) {
+            throw error
+        }
+
     }
 }

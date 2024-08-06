@@ -96,7 +96,7 @@ export class AppointmentRepository implements IAppointmentRepository {
             const appointments = await this.appointmentModel.find({
                 expertId,
                 appointmentStatus: { $in: ['booked', 'completed'] }
-            }).skip(skip).limit(limit).sort({ date: 1 }); // 1 for ascending, -1 for descending
+            }).skip(skip).limit(limit).sort({ date: 1 });
             const total = await this.appointmentModel.countDocuments({ expertId, appointmentStatus: { $in: ['booked', 'completed'] } });
             return { data: appointments, total };
         } catch (error) {
@@ -115,7 +115,7 @@ export class AppointmentRepository implements IAppointmentRepository {
                         paymentStatus: 'refunded'
                     }
                 },
-                { new: true }  // This option returns the modified document rather than the original
+                { new: true }
             );
         } catch (error) {
             console.error('Error cancelling appointment:', error);
@@ -181,6 +181,21 @@ export class AppointmentRepository implements IAppointmentRepository {
         } catch (error) {
             console.error('Error getting single appointment: ', error);
             throw error;
+        }
+    }
+
+    async getUserWalletData(userId: string, page: number, limit: number): Promise<{ data: IAppointment[], total: number }> {
+        try {
+            const skip = (page - 1) * limit;
+            const appointments = await this.appointmentModel.find({
+                userId,
+                appointmentStatus: { $in: ['booked', 'completed', 'cancelled'] }
+            }).skip(skip).limit(limit).sort({ updatedAt: -1 });
+            const total = await this.appointmentModel.countDocuments({ userId, appointmentStatus: { $in: ['booked', 'completed', 'cancelled'] } });
+            return { data: appointments, total };
+        } catch (error) {
+            console.error('Error getting user appointments:', error);
+            throw error
         }
     }
 

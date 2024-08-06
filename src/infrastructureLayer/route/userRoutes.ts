@@ -162,4 +162,11 @@ router.post(
         appointmentAdapter.report(req, res, next)
 )
 
+router.get(
+    "/getWalletData/:page/:limit",
+    (req: Request, res: Response, next: NextFunction) =>
+        appointmentAdapter.getUserWalletData(req, res, next)
+)
+
+
 export default router
