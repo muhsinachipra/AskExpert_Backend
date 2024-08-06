@@ -14,6 +14,7 @@ import { addCategory } from './admin/addCategory'
 import { editCategory } from './admin/editCategory'
 import { getCategories } from './admin/getCategories'
 import { getExpertData } from './admin/getExpertData'
+import { getExpertDataSortByReport } from './admin/getExpertDataSortByReport'
 import { getUserData } from './admin/getUserData'
 import { loginAdmin } from './admin/loginAdmin'
 import { sendVerifiedEmail } from './admin/sendVerifiedEmail'
@@ -67,6 +68,12 @@ export class AdminUsecase {
 
     async getExpertData(page: number, limit: number) {
         return getExpertData(
+            page, limit, this.expertRepository
+        );
+    }
+
+    async getExpertDataSortByReport(page: number, limit: number) {
+        return getExpertDataSortByReport(
             page, limit, this.expertRepository
         );
     }

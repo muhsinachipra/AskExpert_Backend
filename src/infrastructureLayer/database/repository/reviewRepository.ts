@@ -1,14 +1,19 @@
 // backend\src\infrastructureLayer\database\repository\reviewRepository.ts
 
 import ReviewModel from "../model/reviewModel";
+import ReportModel from "../model/reportModel";
 import { IReview } from "../../../domainLayer/review";
+import { IReport } from "../../../domainLayer/report";
 import { IReviewRepository } from "../../../usecaseLayer/interface/repository/IReviewRepository";
 import { ObjectId } from "mongoose";
 import ExpertModel from "../model/expertModel";
 
 export class ReviewRepository implements IReviewRepository {
 
-    constructor(private readonly reviewModel: typeof ReviewModel) { }
+    constructor(
+        private readonly reviewModel: typeof ReviewModel,
+        private readonly reportModel: typeof ReportModel
+    ) { }
 
     private async updateExpertAverageRating(expertId: string | ObjectId): Promise<void> {
         const reviews = await this.reviewModel.find({ expertId });
@@ -47,4 +52,32 @@ export class ReviewRepository implements IReviewRepository {
         }
     }
 
+    async report({ userId, expertId, reason }: IReport): Promise<void> {
+        try {
+            const newReport = new this.reportModel({ userId, expertId, reason });
+            await newReport.save();
+
+            await ExpertModel.findByIdAndUpdate(expertId, { $inc: { reports: 1 } });
+        } catch (error) {
+            console.error('Error submitting report: ', error);
+            throw error;
+        }
+    }
+
+    async reportByExpertId(expertId: string, page: number, limit: number): Promise<{ data: IReport[], total: number }> {
+        try {
+            const skip = (page - 1) * limit;
+            const reports = await this.reportModel.find({ expertId })
+                .populate('userId', 'name')
+                .populate('expertId', 'name')
+                .skip(skip)
+                .limit(limit)
+                .sort({ createdAt: -1 });
+            const total = await this.reportModel.countDocuments({ expertId });
+            return { data: reports, total };
+        } catch (error) {
+            console.error('Error getting expert reports: ', error);
+            throw error;
+        }
+    }
 }

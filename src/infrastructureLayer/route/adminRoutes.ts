@@ -26,6 +26,12 @@ router.get(
         adminAdapter.getExpertData(req, res, next)
 )
 
+router.get(
+    "/expertDataReport",
+    (req: Request, res: Response, next: NextFunction) =>
+        adminAdapter.getExpertDataSortByReport(req, res, next)
+)
+
 router.post(
     "/logout",
     (req: Request, res: Response, next: NextFunction) =>
@@ -90,6 +96,12 @@ router.get(
     "/appointmentData",
     (req: Request, res: Response, next: NextFunction) =>
         appointmentAdapter.allAppointmentsData(req, res, next)
+)
+
+router.get(
+    "/report/:expertId",
+    (req: Request, res: Response, next: NextFunction) =>
+        appointmentAdapter.reportByExpertId(req, res, next)
 )
 
 export default router

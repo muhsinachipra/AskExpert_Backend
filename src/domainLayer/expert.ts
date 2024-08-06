@@ -15,6 +15,7 @@ export interface IExpert {
     mobile?: string;
     wallet?: number;
     averageRating?: number;
+    reports?: number;
     isVerified?: boolean
     isBlocked?: boolean
     createdAt?: Date

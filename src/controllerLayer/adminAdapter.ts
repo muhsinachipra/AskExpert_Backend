@@ -59,6 +59,25 @@ export class AdminAdapter {
         }
     }
 
+    // @desc      Get expert data with pagination
+    // route      GET api/admin/expertDataReport
+    // @access    Private
+    async getExpertDataSortByReport(req: Req, res: Res, next: Next) {
+        try {
+            const page = parseInt(req.query.page as string) || 1;
+            const limit = parseInt(req.query.limit as string) || 6;
+            const expertData = await this.adminUsecase.getExpertDataSortByReport(page, limit);
+            return res.status(expertData.status).json({
+                success: expertData.success,
+                data: expertData.data,
+                total: expertData.total,
+                message: expertData.message,
+            });
+        } catch (err) {
+            next(err);
+        }
+    }
+
     // @desc      Toggle expert isVerified
     // route      PATCH api/admin/verifyExpert/:id
     // @access    Private

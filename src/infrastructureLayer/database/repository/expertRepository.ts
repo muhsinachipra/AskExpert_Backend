@@ -9,6 +9,7 @@ import { createExpert } from "./expert/createExpert";
 import { findExpert } from "./expert/findExpert";
 import { findExpertById } from "./expert/findExpertById";
 import { getExpertData } from "./expert/getExpertData";
+import { getExpertDataSortByReport } from "./expert/getExpertDataSortByReport";
 import { getExpertsByCategory } from "./expert/getExpertsByCategory";
 import { resetPassword } from "./expert/resetPassword";
 import { toggleExpertVerification } from "./expert/toggleExpertVerification";
@@ -40,12 +41,12 @@ export class ExpertRepository implements IExpertRepository {
         return findExpertById(expertId, this.expertModel);
     }
 
-    // async resetPassword(newPassword: IResetPassword): Promise<IExpert> {
-    //     return resetPassword(newPassword, this.expertModel);
-    // }
-
     async getExpertData(page: number, limit: number): Promise<{ data: IExpert[], total: number }> {
         return getExpertData(page, limit, this.expertModel);
+    }
+
+    async getExpertDataSortByReport(page: number, limit: number): Promise<{ data: IExpert[], total: number }> {
+        return getExpertDataSortByReport(page, limit, this.expertModel);
     }
 
     async toggleExpertVerification(expertId: string): Promise<IExpert | null> {

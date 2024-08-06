@@ -12,9 +12,10 @@ import { UserRepository } from '../../database/repository/userRepository'
 import UserModel from '../../database/model/userModel'
 import { ReviewRepository } from '../../database/repository/reviewRepository'
 import ReviewModel from '../../database/model/reviewModel'
+import ReportModel from '../../database/model/reportModel'
 
 const appointmentRepository = new AppointmentRepository(AppointmentModel)
-const reviewRepository = new ReviewRepository(ReviewModel)
+const reviewRepository = new ReviewRepository(ReviewModel, ReportModel)
 const expertRepository = new ExpertRepository(ExpertModel)
 const userRepository = new UserRepository(UserModel)
 const requestValidator = new RequestValidator()

@@ -10,6 +10,7 @@ export interface IExpertRepository {
     resetPassword(newPassword: IResetPassword): Promise<IExpert>
     findExpertById(_id: string): Promise<IExpert | null>
     getExpertData(page: number, limit: number): Promise<{ data: IExpert[], total: number }>
+    getExpertDataSortByReport(page: number, limit: number): Promise<{ data: IExpert[], total: number }>
     toggleExpertVerification(expertId: string): Promise<IExpert | null>;
     getExpertsByCategory(categoryName: string): Promise<{ data: IExpert[], total: number }>
     amountToWallet(expertId: string, amount: number): Promise<string | null>

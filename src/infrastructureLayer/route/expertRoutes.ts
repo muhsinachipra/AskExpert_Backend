@@ -106,7 +106,7 @@ router.patch(
 )
 
 router.get(
-    "/review/:page/:limit",
+    "/review",
     (req: Request, res: Response, next: NextFunction) =>
         appointmentAdapter.expertGetReview(req, res, next)
 )

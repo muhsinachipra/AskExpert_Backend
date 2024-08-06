@@ -367,18 +367,54 @@ export class AppointmentAdapter {
             if (req.user && 'category' in req.user) {
                 const expertData = req.user as IExpert;
                 const expertId = expertData._id;
-                const page = parseInt(req.params.page as string) || 1;
-                const limit = parseInt(req.params.limit as string) || 6;
-                const appointments = await this.appointmentUsecase.expertGetReview(expertId || '', page, limit);
-                return res.status(appointments.status).json({
-                    success: appointments.success,
-                    data: appointments.data,
-                    total: appointments.total,
-                    message: appointments.message,
+                const page = parseInt(req.query.page as string) || 1;
+                const limit = parseInt(req.query.limit as string) || 6;
+                const response = await this.appointmentUsecase.expertGetReview(expertId || '', page, limit);
+                console.log('response of review: ', response)
+                return res.status(response.status).json({
+                    success: response.success,
+                    data: response.data,
+                    total: response.total,
+                    message: response.message,
                 });
             } else {
                 throw ErrorResponse.notFound('User not found');
             }
+        } catch (err) {
+            next(err);
+        }
+    }
+
+    // @desc      User Report Expert for misconduct
+    // route      POST api/user/report
+    // @access    Private
+    async report(req: Req, res: Res, next: Next) {
+        try {
+            const response = await this.appointmentUsecase.report(req.body);
+            return res.status(response.status).json({
+                success: response.success,
+                message: response.message,
+            });
+        } catch (err) {
+            next(err);
+        }
+    }
+
+    // @desc      Get Report of an expert for admin
+    // route      GET api/admin/report
+    // @access    Private
+    async reportByExpertId(req: Req, res: Res, next: Next) {
+        try {
+            const expertId = req.params.expertId;
+            const page = parseInt(req.query.page as string) || 1;
+            const limit = parseInt(req.query.limit as string) || 6;
+            const response = await this.appointmentUsecase.reportByExpertId(expertId || '', page, limit);
+            return res.status(response.status).json({
+                success: response.success,
+                data: response.data,
+                total: response.total,
+                message: response.message,
+            });
         } catch (err) {
             next(err);
         }

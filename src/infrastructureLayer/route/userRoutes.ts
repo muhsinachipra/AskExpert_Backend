@@ -156,4 +156,10 @@ router.post(
         appointmentAdapter.review(req, res, next)
 )
 
+router.post(
+    "/report",
+    (req: Request, res: Response, next: NextFunction) =>
+        appointmentAdapter.report(req, res, next)
+)
+
 export default router

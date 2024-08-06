@@ -19,6 +19,7 @@ import { processWalletPayment } from './appointment/processWalletPayment'
 import { allAppointmentsData } from './appointment/allAppointmentsData'
 import ErrorResponse from '../handler/errorResponse'
 import { IReviewRepository } from '../interface/repository/IReviewRepository'
+import { IReport } from '../../domainLayer/report'
 
 export class AppointmentUsecase {
     private readonly appointmentRepository: IAppointmentRepository
@@ -217,4 +218,28 @@ export class AppointmentUsecase {
         };
     }
 
+    async report({ userId, expertId, reason }: IReport) {
+        try {
+            await this.reviewRepository.report({ userId, expertId, reason });
+            return {
+                success: true,
+                message: 'Report submited successfully',
+                status: 200,
+            };
+        } catch (error) {
+            console.error('Error submitting report: ', error);
+            throw error;
+        }
+    }
+
+    async reportByExpertId(expertId: string, page: number, limit: number) {
+        const { data, total } = await this.reviewRepository.reportByExpertId(expertId, page, limit);
+        return {
+            success: true,
+            data,
+            total,
+            message: 'Report data retrieved successfully',
+            status: 200,
+        };
+    }
 }
