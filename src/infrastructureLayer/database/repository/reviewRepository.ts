@@ -80,4 +80,14 @@ export class ReviewRepository implements IReviewRepository {
             throw error;
         }
     }
+
+    async getReportStatistics() {
+        try {
+            const totalReports = await this.reportModel.countDocuments();
+            return { totalReports };
+        } catch (error) {
+            console.error('Error getting report statistics:', error);
+            throw error;
+        }
+    }
 }

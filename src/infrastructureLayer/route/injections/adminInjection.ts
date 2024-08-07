@@ -16,12 +16,16 @@ import RequestValidator from '../../services/validateRepository'
 import UserModel from '../../database/model/userModel'
 import AppointmentModel from '../../database/model/appointmentModel'
 import { AppointmentRepository } from '../../database/repository/appointmentRepository'
+import { ReviewRepository } from '../../database/repository/reviewRepository'
+import ReviewModel from '../../database/model/reviewModel'
+import ReportModel from '../../database/model/reportModel'
 
 const adminRepository = new AdminRepository(AdminModel)
 const expertRepository = new ExpertRepository(ExpertModel)
 const userRepository = new UserRepository(UserModel)
 const categoryRepository = new CategoryRepository(CategoryModel)
 const appointmentRepository = new AppointmentRepository(AppointmentModel)
+const reviewRepository = new ReviewRepository(ReviewModel, ReportModel)
 const bcrypt = new Encrypt()
 const jwt = new JwtPassword()
 const requestValidator = new RequestValidator()
@@ -32,6 +36,7 @@ const adminUsecase = new AdminUsecase(
     userRepository,
     categoryRepository,
     appointmentRepository,
+    reviewRepository,
     bcrypt,
     jwt,
     nodemailer,

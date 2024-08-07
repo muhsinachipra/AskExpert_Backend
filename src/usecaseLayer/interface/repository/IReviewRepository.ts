@@ -8,4 +8,5 @@ export interface IReviewRepository {
     expertGetReview(expertId: string, page: number, limit: number): Promise<{ data: IReview[], total: number }>
     report({ userId, expertId, reason }: IReport): Promise<void>
     reportByExpertId(expertId: string, page: number, limit: number): Promise<{ data: IReport[], total: number }>
+    getReportStatistics(): Promise<Record<string, number>>
 }

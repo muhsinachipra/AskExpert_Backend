@@ -80,4 +80,28 @@ export class ExpertRepository implements IExpertRepository {
         return updateExpertBlockedStatus(expertId, this.expertModel);
     }
 
+    async getExpertStatistics() {
+        try {
+            const totalExperts = await this.expertModel.countDocuments();
+            const verifiedExperts = await this.expertModel.countDocuments({ isVerified: true });
+            const blockedExperts = await this.expertModel.countDocuments({ isBlocked: true });
+            return { totalExperts, verifiedExperts, blockedExperts };
+        } catch (error) {
+            console.error('Error getting expert statistics:', error);
+            throw error;
+        }
+    }
+
+    async expertsByCategory() {
+        try {
+            const categories = await this.expertModel.aggregate([
+                { $group: { _id: "$category", count: { $sum: 1 } } }
+            ]);
+            // console.log('categories from expertsByCategory: ', categories)
+            return categories;
+        } catch (error) {
+            console.error('Error getting expertsByCategory:', error);
+            throw error;
+        }
+    }
 }

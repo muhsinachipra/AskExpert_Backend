@@ -104,4 +104,22 @@ router.get(
         appointmentAdapter.reportByExpertId(req, res, next)
 )
 
+router.get(
+    "/dashboard",
+    (req: Request, res: Response, next: NextFunction) =>
+        adminAdapter.getDashboardData(req, res, next)
+)
+
+router.get(
+    "/expertsByCategory",
+    (req: Request, res: Response, next: NextFunction) =>
+        adminAdapter.expertsByCategory(req, res, next)
+)
+
+router.get(
+    "/userCount",
+    (req: Request, res: Response, next: NextFunction) =>
+        adminAdapter.userCount(req, res, next)
+)
+
 export default router

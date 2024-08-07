@@ -199,4 +199,16 @@ export class AppointmentRepository implements IAppointmentRepository {
         }
     }
 
+    async getAppointmentStatistics() {
+        try {
+            const totalAppointments = await this.appointmentModel.countDocuments();
+            const upcomingAppointments = await this.appointmentModel.countDocuments({ appointmentStatus: 'booked' });
+            const completedAppointments = await this.appointmentModel.countDocuments({ appointmentStatus: 'completed' });
+            return { totalAppointments, upcomingAppointments, completedAppointments };
+        } catch (error) {
+            console.error('Error getting appointment statistics:', error);
+            throw error;
+        }
+    }
+
 }

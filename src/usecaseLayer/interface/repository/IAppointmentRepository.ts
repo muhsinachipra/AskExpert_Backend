@@ -21,4 +21,5 @@ export interface IAppointmentRepository {
     getAppointmentsCount(userId: string): Promise<number>
     getSingleAppointment(appointmentId: string): Promise<IAppointment | null>
     getUserWalletData(userId: string, page: number, limit: number): Promise<{ data: IAppointment[], total: number }>
+    getAppointmentStatistics(): Promise<Record<string, number>>
 }

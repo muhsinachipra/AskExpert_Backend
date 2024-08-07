@@ -5,6 +5,7 @@ import { IAdminRepository } from '../interface/repository/IAdminRepository'
 import { IAppointmentRepository } from '../interface/repository/IAppointmentRepository'
 import { ICategoryRepository } from '../interface/repository/ICategoryRepository'
 import { IExpertRepository } from '../interface/repository/IExpertRepository'
+import { IReviewRepository } from '../interface/repository/IReviewRepository'
 import { IUserRepository } from '../interface/repository/IUserRepository'
 import { IRequestValidator } from '../interface/repository/IValidateRepository'
 import IBcrypt from '../interface/services/IBcrypt'
@@ -28,6 +29,7 @@ export class AdminUsecase {
     private readonly userRepository: IUserRepository
     private readonly categoryRepository: ICategoryRepository
     private readonly appointmentRepository: IAppointmentRepository
+    private readonly reviewRepository: IReviewRepository
     private readonly bcrypt: IBcrypt
     private readonly jwt: IJwt
     private readonly nodemailer: INodemailer
@@ -39,6 +41,7 @@ export class AdminUsecase {
         userRepository: IUserRepository,
         categoryRepository: ICategoryRepository,
         appointmentRepository: IAppointmentRepository,
+        reviewRepository: IReviewRepository,
         bcrypt: IBcrypt,
         jwt: IJwt,
         nodemailer: INodemailer,
@@ -49,6 +52,7 @@ export class AdminUsecase {
         this.userRepository = userRepository
         this.categoryRepository = categoryRepository
         this.appointmentRepository = appointmentRepository
+        this.reviewRepository = reviewRepository
         this.bcrypt = bcrypt
         this.jwt = jwt
         this.nodemailer = nodemailer
@@ -136,4 +140,45 @@ export class AdminUsecase {
         )
     }
 
+    async getDashboardData() {
+        try {
+            const userData = await this.userRepository.getUserStatistics();
+            const expertData = await this.expertRepository.getExpertStatistics();
+            const appointmentData = await this.appointmentRepository.getAppointmentStatistics();
+            const reportData = await this.reviewRepository.getReportStatistics();
+            return {
+                userData,
+                expertData,
+                appointmentData,
+                reportData,
+                status: 200,
+            };
+        } catch (error) {
+            throw error
+        }
+    }
+
+    async expertsByCategory() {
+        try {
+            const data = await this.expertRepository.expertsByCategory();
+            return {
+                data,
+                status: 200,
+            };
+        } catch (error) {
+            throw error
+        }
+    }
+
+    async userCount() {
+        try {
+            const data = await this.userRepository.userCount();
+            return {
+                data,
+                status: 200,
+            };
+        } catch (error) {
+            throw error;
+        }
+    }
 }

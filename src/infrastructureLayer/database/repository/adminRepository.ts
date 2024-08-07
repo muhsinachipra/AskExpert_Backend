@@ -15,7 +15,4 @@ export class AdminRepository implements IAdminRepository {
         return findAdmin(email, this.adminModel)
     }
 
-    // async addCategory(newCategory: ICategory): Promise<ICategory> {
-    //     return addCategory(newCategory, this.categoryModel)
-    // }
 }

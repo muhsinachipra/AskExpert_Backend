@@ -1,6 +1,7 @@
 // backend\src\infrastructureLayer\database\repository\userRepository.ts
 
 import { IUser } from "../../../domainLayer/user";
+import ErrorResponse from "../../../usecaseLayer/handler/errorResponse";
 import { IUserRepository } from "../../../usecaseLayer/interface/repository/IUserRepository";
 import { IResetPassword } from "../../../usecaseLayer/interface/services/IResponse";
 import UserModel from "../model/userModel";
@@ -64,5 +65,60 @@ export class UserRepository implements IUserRepository {
 
     async deductFromWallet(userId: string, amount: number): Promise<void> {
         return deductFromWallet(userId, amount, this.userModel);
+    }
+
+    async getUserStatistics() {
+        try {
+            const totalUsers = await this.userModel.countDocuments();
+            const activeUsers = await this.userModel.countDocuments({ isBlocked: false });
+            const blockedUsers = await this.userModel.countDocuments({ isBlocked: true });
+            return { totalUsers, activeUsers, blockedUsers };
+        } catch (error) {
+            console.error('Error getting user statistics:', error);
+            throw error;
+        }
+    }
+
+    async userCount() {
+        try {
+            const yearlyData = await this.userModel.aggregate([
+                {
+                    $group: {
+                        _id: { year: { $year: "$createdAt" } },
+                        count: { $sum: 1 }
+                    }
+                },
+                {
+                    $sort: { "_id.year": 1 }
+                }
+            ]);
+            const monthlyData = await this.userModel.aggregate([
+                {
+                    $group: {
+                        _id: { year: { $year: "$createdAt" }, month: { $month: "$createdAt" } },
+                        count: { $sum: 1 }
+                    }
+                },
+                {
+                    $sort: { "_id.year": 1, "_id.month": 1 }
+                }
+            ]);
+            const weeklyData = await this.userModel.aggregate([
+                {
+                    $group: {
+                        _id: { year: { $year: "$createdAt" }, week: { $week: "$createdAt" } },
+                        count: { $sum: 1 }
+                    }
+                },
+                {
+                    $sort: { "_id.year": 1, "_id.week": 1 }
+                }
+            ]);
+
+            return { yearlyData, monthlyData, weeklyData }
+        } catch (error) {
+            console.error('Error getting userCount:', error);
+            throw error;
+        }
     }
 }

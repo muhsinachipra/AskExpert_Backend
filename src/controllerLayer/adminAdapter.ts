@@ -244,4 +244,37 @@ export class AdminAdapter {
             next(err);
         }
     }
+
+    // @desc      Get data to show in dashboard
+    // route      GET api/admin/dashboard
+    // @access    Private
+    async getDashboardData(req: Req, res: Res, next: Next) {
+        try {
+            const response = await this.adminUsecase.getDashboardData();
+            return res.status(response.status).json({response});
+        } catch (err) {
+            next(err);
+        }
+    }
+
+    // @desc      Get expertsByCategory data to show in dashboard
+    // route      GET api/admin/expertsByCategory
+    // @access    Private
+    async expertsByCategory(req: Req, res: Res, next: Next) {
+        try {
+            const response = await this.adminUsecase.expertsByCategory();
+            return res.status(response.status).json({response});
+        } catch (err) {
+            next(err);
+        }
+    }
+
+    async userCount(req: Req, res: Res, next: Next) {
+    try {
+        const response = await this.adminUsecase.userCount();
+        return res.status(response.status).json({ response });
+    } catch (err) {
+        next(err);
+    }
+}
 }
