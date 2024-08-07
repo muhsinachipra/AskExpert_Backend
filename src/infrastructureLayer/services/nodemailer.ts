@@ -164,7 +164,7 @@ class Nodemailer implements INodemailer {
                         <p style="color: #555;">We are thrilled to have you on board. Your application for becoming an expert has been accepted.</p>
                     </div>
                     <div style="width: 75%; margin: 0 auto; background-color: #00255F; color: white; padding: 20px; font-size: 24px; text-align: center; border-radius: 5px;">
-                        <strong><a href="http://localhost:5000/expert/home" style="color: #007bff; text-decoration: none;">Welcome Onboard</a></strong>
+                        <strong><a href="http://localhost:5000/expert/appointments" style="color: #007bff; text-decoration: none;">Welcome Onboard</a></strong>
                     </div>
                     <div style="text-align: center; margin-top: 20px;">
                         <p style="color: #555;">If you did not request this email, please ignore it.</p>
