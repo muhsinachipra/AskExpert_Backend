@@ -105,51 +105,6 @@ export class ExpertUsecase {
         }
     }
 
-    // //to create expert
-    // async googleAuth({ name, email, password, }: { name: string; email: string; password: string; }) {
-    //     return googleAuth(
-    //         this.requestValidator,
-    //         this.expertRepository,
-    //         this.bcrypt,
-    //         this.jwt,
-    //         name,
-    //         email,
-    //         password
-    //     );
-    // }
-
-    // async forgotPassword({ email, name, token }: { email: string, name: string, token: string; }) {
-    //     return forgotPassword(
-    //         this.requestValidator,
-    //         this.expertRepository,
-    //         this.jwt,
-    //         this.nodemailer,
-    //         email,
-    //         name,
-    //         token
-
-    //     );
-    // }
-
-    // async validateAccessToken({ token }: { token: string }) {
-    //     return validateAccessToken(
-    //         this.expertRepository,
-    //         token,
-    //         this.jwt,
-    //     )
-    // }
-
-    // async resetPassword({ id, password }: { id: string, password: string }) {
-    //     return resetPassword(
-    //         this.expertRepository,
-    //         this.requestValidator,
-    //         this.bcrypt,
-    //         id,
-    //         password
-    //     )
-    // }
-
-
     async forgotPassword({ email, name, token }: { email: string, name: string, token: string; }) {
         return forgotPassword(
             this.requestValidator,
