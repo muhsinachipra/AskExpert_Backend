@@ -68,9 +68,24 @@ export class AppointmentRepository implements IAppointmentRepository {
             const skip = (page - 1) * limit;
             const appointments = await this.appointmentModel.find({
                 userId,
-                appointmentStatus: { $in: ['booked', 'cancelled', 'completed'] }
+                appointmentStatus: { $in: ['booked'] }
             }).skip(skip).limit(limit).sort({ date: 1 });
-            const total = await this.appointmentModel.countDocuments({ userId, appointmentStatus: { $in: ['booked', 'cancelled', 'completed'] } });
+            const total = await this.appointmentModel.countDocuments({ userId, appointmentStatus: { $in: ['booked'] } });
+            return { data: appointments, total };
+        } catch (error) {
+            console.error('Error getting user appointments:', error);
+            throw error;
+        }
+    }
+
+    async getUserAppointmentsHistory(userId: string, page: number, limit: number): Promise<{ data: IAppointment[], total: number }> {
+        try {
+            const skip = (page - 1) * limit;
+            const appointments = await this.appointmentModel.find({
+                userId,
+                appointmentStatus: { $in: ['cancelled', 'completed'] }
+            }).skip(skip).limit(limit).sort({ date: 1 });
+            const total = await this.appointmentModel.countDocuments({ userId, appointmentStatus: { $in: ['cancelled', 'completed'] } });
             return { data: appointments, total };
         } catch (error) {
             console.error('Error getting user appointments:', error);

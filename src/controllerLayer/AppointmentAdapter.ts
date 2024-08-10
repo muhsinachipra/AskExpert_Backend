@@ -197,6 +197,31 @@ export class AppointmentAdapter {
         }
     }
 
+    // @desc      Get user appointments
+    // route      GET api/user/getUserAppointmentsHistory
+    // @access    Private
+    async getUserAppointmentsHistory(req: Req, res: Res, next: Next) {
+        try {
+            if (req.user && 'mobile' in req.user) {
+                const userData = req.user as IUser;
+                const userId = userData._id;
+                const page = parseInt(req.query.page as string) || 1;
+                const limit = parseInt(req.query.limit as string) || 4;
+                const appointments = await this.appointmentUsecase.getUserAppointmentsHistory(userId || '', page, limit);
+                return res.status(appointments.status).json({
+                    success: appointments.success,
+                    data: appointments.data,
+                    total: appointments.total,
+                    message: appointments.message,
+                });
+            } else {
+                throw ErrorResponse.notFound('User not found');
+            }
+        } catch (err) {
+            next(err);
+        }
+    }
+
     // @desc      Get appointments data for expert
     // route      GET api/expert/getAppointmentsData
     // @access    Private

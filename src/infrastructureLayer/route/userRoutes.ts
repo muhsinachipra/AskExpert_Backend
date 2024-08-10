@@ -63,6 +63,12 @@ router.post(
         appointmentAdapter.webhook(req, res, next)
 )
 
+router.get(
+    "/categories",
+    (req: Request, res: Response, next: NextFunction) =>
+        userAdapter.getCategories(req, res, next)
+)
+
 // Use protectUser middleware for routes accessible only to authenticated users
 router.use(AuthMiddleware.authenticateUser);
 
@@ -115,15 +121,15 @@ router.get(
 )
 
 router.get(
-    "/getExpertData/:expertId",
+    "/getUserAppointmentsHistory",
     (req: Request, res: Response, next: NextFunction) =>
-        userAdapter.userGetExpertData(req, res, next)
+        appointmentAdapter.getUserAppointmentsHistory(req, res, next)
 )
 
 router.get(
-    "/categories",
+    "/getExpertData/:expertId",
     (req: Request, res: Response, next: NextFunction) =>
-        userAdapter.getCategories(req, res, next)
+        userAdapter.userGetExpertData(req, res, next)
 )
 
 router.post(

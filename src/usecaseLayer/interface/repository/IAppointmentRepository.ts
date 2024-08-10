@@ -11,6 +11,7 @@ export interface IAppointmentRepository {
     payment(appointmentId: string, transactionId: string, userId: string, userName: string): Promise<string>;
     getExpertId(appointmentId: string): Promise<string>;
     getUserAppointments(userId: string, page: number, limit: number): Promise<{ data: IAppointment[], total: number }>
+    getUserAppointmentsHistory(userId: string, page: number, limit: number): Promise<{ data: IAppointment[], total: number }>
     getAppointmentsData(expertId: string, page: number, limit: number): Promise<{ data: IAppointment[], total: number }>
     getWalletData(expertId: string, page: number, limit: number): Promise<{ data: IAppointment[], total: number }>
     findAppointmentByTimeRangeAndExpert(date: string, startTime: string, endTime: string, expertId: string): Promise<IAppointment | null>

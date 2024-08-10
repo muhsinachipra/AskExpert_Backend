@@ -97,6 +97,21 @@ export class AppointmentUsecase {
         };
     }
 
+    async getUserAppointmentsHistory(userId: string, page: number, limit: number) {
+        const { data, total } = await this.appointmentRepository.getUserAppointmentsHistory(
+            userId,
+            page,
+            limit,
+        );
+        return {
+            success: true,
+            data,
+            total,
+            message: 'User Appointment data retrieved successfully',
+            status: 200,
+        };
+    }
+
     async getAppointmentsData(expertId: string, page: number, limit: number) {
         try {
             const { data, total } = await this.appointmentRepository.getAppointmentsData(expertId, page, limit);
