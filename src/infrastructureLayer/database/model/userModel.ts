@@ -11,7 +11,7 @@ const userSchema: Schema = new Schema<IUser & Document>(
         mobile: { type: String, default: '' },
         profilePic: { type: String, default: '' },
         isBlocked: { type: Boolean, default: false },
-        wallet: { type: Number, default: 0 },
+        wallet: { type: Number, default: 1500 },
     },
     {
         timestamps: true
