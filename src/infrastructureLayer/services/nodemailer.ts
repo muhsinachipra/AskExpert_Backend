@@ -3,6 +3,8 @@
 import nodemailer from "nodemailer";
 import INodemailer from "../../usecaseLayer/interface/services/INodemailer";
 
+const BASE_URL = process.env.BASE_URL as string;
+
 class Nodemailer implements INodemailer {
     private otps: Map<string, { otp: string, timestamp: number }> = new Map();
     private OTP_EXPIRATION_TIME = 1 * 60 * 1000; // 5 minutes
@@ -123,7 +125,7 @@ class Nodemailer implements INodemailer {
                     <p style="color: #555;">Please click on the link below to reset your password:</p>
                 </div>
                 <div style="width: 75%; margin: 0 auto; background-color: #00255F; color: white; padding: 20px; font-size: 24px; text-align: center; border-radius: 5px;">
-                    <strong><a href="http://localhost:5000${route}/resetpassword/${email}/${token}" style="color: #007bff; text-decoration: none;">Reset Password</a></strong>
+                    <strong><a href="${BASE_URL}${route}/resetpassword/${email}/${token}" style="color: #007bff; text-decoration: none;">Reset Password</a></strong>
                 </div>
                 <div style="text-align: center; margin-top: 20px;">
                     <p style="color: #555;">If you did not request this change, please ignore this email.</p>
@@ -164,7 +166,7 @@ class Nodemailer implements INodemailer {
                         <p style="color: #555;">We are thrilled to have you on board. Your application for becoming an expert has been accepted.</p>
                     </div>
                     <div style="width: 75%; margin: 0 auto; background-color: #00255F; color: white; padding: 20px; font-size: 24px; text-align: center; border-radius: 5px;">
-                        <strong><a href="http://localhost:5000/expert/appointments" style="color: #007bff; text-decoration: none;">Welcome Onboard</a></strong>
+                        <strong><a href="${BASE_URL}/expert/appointments" style="color: #007bff; text-decoration: none;">Welcome Onboard</a></strong>
                     </div>
                     <div style="text-align: center; margin-top: 20px;">
                         <p style="color: #555;">If you did not request this email, please ignore it.</p>

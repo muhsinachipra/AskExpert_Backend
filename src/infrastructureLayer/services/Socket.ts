@@ -8,6 +8,8 @@ interface IUser {
   socketId: string;
 }
 
+const BASE_URL = process.env.BASE_URL as string;
+
 export class SocketManager {
   private httpServer: HttpServer;
   private io: Server;
@@ -17,8 +19,7 @@ export class SocketManager {
     this.httpServer = httpServer;
     this.io = new Server(httpServer, {
       cors: {
-        // origin: ["http://localhost:5000", "http://10.4.4.190:5000"],
-        origin: ["http://localhost:5000"],
+        origin: [BASE_URL],
         methods: ["GET", "POST"],
         credentials: true,
         optionsSuccessStatus: 204,

@@ -21,6 +21,11 @@ class StripeService implements IStripe {
     ): Promise<IResponse> {
 
         console.log('inside createPaymentIntent stripe service', amount, appointmentId, 'userId : ', userId)
+
+        const BASE_URL = process.env.BASE_URL as string;
+        const successUrl = `${BASE_URL}/success`;
+        const cancelUrl = `${BASE_URL}/home`;
+
         const session = await stripe.checkout.sessions.create({
             payment_method_types: ['card'],
             line_items: [
@@ -29,7 +34,6 @@ class StripeService implements IStripe {
                         currency: 'inr',
                         product_data: {
                             name: 'Service Payment is',
-                            // images:["https://raw.githubusercontent.com/muhsinachipra/AskExpert_Frontend/146f8c02bb33babdf65a13943d940f5c2bfe9def/public/Ask.svg"]
                         },
                         unit_amount: amount * 100,
                     },
@@ -37,8 +41,8 @@ class StripeService implements IStripe {
                 },
             ],
             mode: 'payment',
-            success_url: 'http://localhost:5000/success',
-            cancel_url: 'http://localhost:5000/home',
+            success_url: successUrl,
+            cancel_url: cancelUrl,
             metadata: {
                 amount,
                 appointmentId,
