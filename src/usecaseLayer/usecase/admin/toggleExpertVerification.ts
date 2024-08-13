@@ -22,11 +22,6 @@ export const toggleExpertVerification = async (expertId: string, expertRepositor
             status: 404,
         };
     } catch (error) {
-        return {
-            success: false,
-            data: null,
-            message: 'Failed to update expert verification status',
-            status: 500,
-        };
+        throw error;
     }
 }
