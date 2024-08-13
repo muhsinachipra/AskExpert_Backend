@@ -1,6 +1,5 @@
 // backend\src\usecaseLayer\interface\repository\IUserRepository.ts
 
-import { IExpert } from "../../../domainLayer/expert"
 import { IUser } from "../../../domainLayer/user"
 import { IResetPassword } from '../services/IResponse'
 

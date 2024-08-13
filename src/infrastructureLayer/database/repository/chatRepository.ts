@@ -13,10 +13,6 @@ import { getConversation } from "./chat/getConversation";
 import { getMessage } from "./chat/getMessage";
 import { getUnReadMessages } from "./chat/getUnReadMessages";
 import { viewMessages } from "./chat/viewMessages";
-// import { createMessage } from "./chat/createMessage";
-// import { getMessage } from "./chat/getMessage";
-// import { getUnReadMessages } from "./chat/getUnReadMessages";
-// import { viewMessages } from "./chat/viewMessages";
 
 // This class for exporting all the single DB operations togethor
 export class ChatRepository implements IChatRepository {
@@ -64,6 +60,5 @@ export class ChatRepository implements IChatRepository {
     async getUnReadMessages(id: string): Promise<MessageResponse | null> {
         return getUnReadMessages(id, this.messageModel);
     }
-
 
 }

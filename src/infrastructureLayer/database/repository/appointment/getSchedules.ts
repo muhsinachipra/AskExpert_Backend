@@ -48,23 +48,3 @@ export const getSchedules = async (expertId: string, page: number, limit: number
         throw error;
     }
 };
-
-
-
-
-
-// // backend\src\infrastructureLayer\database\repository\appointment\getSchedules.ts
-
-// import AppointmentModel from "../../model/appointmentModel";
-
-// export const getSchedules = async (expertId: string, appointmentModel: typeof AppointmentModel) => {
-//     try {
-//         const appointmentData = await appointmentModel.find({
-//             expertId,
-//             appointmentStatus: 'pending',
-//         }).sort({ createdAt: -1 });
-//         return appointmentData
-//     } catch (error) {
-//         throw error;
-//     }
-// };

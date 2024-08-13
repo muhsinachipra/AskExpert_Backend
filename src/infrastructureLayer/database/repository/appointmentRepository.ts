@@ -4,13 +4,10 @@ import { IAppointment } from "../../../domainLayer/appointment";
 import { addSchedule } from "./appointment/addSchedule";
 import AppointmentModel from "../model/appointmentModel";
 import { IAppointmentRepository } from "../../../usecaseLayer/interface/repository/IAppointmentRepository";
-import { IExpert } from "../../../domainLayer/expert";
 import { findAppointmentByTimeAndExpert } from "./appointment/findAppointmentByTimeAndExpert";
-import { IResponse } from "../../../usecaseLayer/interface/services/IResponse";
 import { getSchedules } from "./appointment/getSchedules";
 import { payment } from "./appointment/payment";
 import { findAppointmentByTimeRangeAndExpert } from "./appointment/findAppointmentByTimeRangeAndExpert";
-import { IReview } from "../../../domainLayer/review";
 
 export class AppointmentRepository implements IAppointmentRepository {
 
@@ -59,7 +56,7 @@ export class AppointmentRepository implements IAppointmentRepository {
             return "";
         } catch (error) {
             console.error('Error getting expertId:', error);
-            return "";
+            throw error;
         }
     }
 

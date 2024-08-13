@@ -1,3 +1,5 @@
+// backend\src\infrastructureLayer\config\db.ts
+
 import mongoose from "mongoose";
 require('dotenv').config()
 

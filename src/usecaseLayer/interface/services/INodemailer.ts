@@ -1,3 +1,5 @@
+// backend\src\usecaseLayer\interface\services\INodemailer.ts
+
 export default interface INodemailer {
     generateOTP(email: string): string;
     sendEmailVerification(email: string, username: string): Promise<string>

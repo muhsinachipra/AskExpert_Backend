@@ -2,7 +2,6 @@
 
 import IStripe from "../../usecaseLayer/interface/services/IStripe";
 import { IResponse } from "../../usecaseLayer/interface/services/IResponse";
-import { Req } from "../types/expressTypes";
 
 import dotenv from "dotenv";
 import Stripe from "stripe";

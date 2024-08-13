@@ -1,3 +1,5 @@
+// backend\src\usecaseLayer\interface\repository\IValidateRepository.ts
+
 export interface ValidationResult {
     success: boolean
     message?: string

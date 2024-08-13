@@ -25,11 +25,6 @@ export const sendOTP = async (
             throw ErrorResponse.badRequest(validation.message as string);
         }
 
-        // const user = await userRepository.findUser(email);
-        // if (user) {
-        //     throw ErrorResponse.badRequest("User already exist");
-        // }
-
         const verify = await nodemailer.sendEmailVerification(email, name);
 
         return {

@@ -30,14 +30,6 @@ export const addCategory = async (
             throw ErrorResponse.badRequest("Category already exists")
         }
 
-        // if (existingCategory) {
-        //     return {
-        //         status: 400,
-        //         success: false,
-        //         message: "Category already exists"
-        //     }
-        // }
-
         await categoryRepository.addCategory(newCategory)
 
         return {

@@ -2,8 +2,7 @@
 
 import { IConversation } from "../../../domainLayer/conversation";
 import { IMessage } from "../../../domainLayer/message";
-import { ConversationResponse, IConversationData, MessageResponse } from "../services/IResponse";
-
+import { MessageResponse } from "../services/IResponse";
 
 export interface IChatRepository {
     createConversation(senderId: string, receiverId: string): Promise<IConversation>;

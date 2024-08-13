@@ -1,6 +1,5 @@
 // backend\src\usecaseLayer\usecase\expertUsecase.ts
 
-// import { Types } from 'mongoose'
 import { ICategoryRepository } from '../interface/repository/ICategoryRepository'
 import { IExpertRepository } from '../interface/repository/IExpertRepository'
 import { IUserRepository } from '../interface/repository/IUserRepository'
@@ -15,10 +14,6 @@ import { loginExpert } from './expert/loginExpert'
 import { resetPassword } from './expert/resetPassword'
 import { updateProfile } from './expert/updateProfile'
 import { validateAccessToken } from './expert/validateAccessToken'
-// import { forgotPassword } from './expert/forgotPassword'
-// import { googleAuth } from './expert/googleAuth'
-// import { resetPassword } from './expert/resetPassword'
-// import { validateAccessToken } from './expert/validateAccessToken'
 
 
 export class ExpertUsecase {

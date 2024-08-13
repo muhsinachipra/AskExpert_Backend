@@ -85,26 +85,6 @@ export class UserAdapter {
             next(err);
         }
     }
-    // async googleAuth(req: Req, res: Res, next: Next) {
-    //     try {
-    //         const user = await this.userUsecase.googleAuth(req.body);
-    //         user &&
-    //             res.cookie("userjwt", user.token, {
-    //                 httpOnly: true,
-    //                 sameSite: "strict", // Prevent CSRF attacks
-    //                 maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
-    //             });
-
-    //         res.status(user.status).json({
-    //             success: user.success,
-    //             data: user.data,
-    //             message: user.message,
-    //         });
-    //     } catch (err) {
-    //         next(err);
-    //     }
-    // }
-
 
     //@desc     send otp to new user email
     //route     POST api/user/sendOTP

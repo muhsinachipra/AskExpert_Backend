@@ -15,8 +15,6 @@ export const resetPassword = async (
     password: string
 ): Promise<IResponse> => {
     try {
-        console.log("--> usecaseLayer-usecase-user-resetPassword.ts")
-        console.log("creating reseting passsword  ...")
         const validation = requestValidator.validateRequiredFields(
             { password },
             ["password"]
