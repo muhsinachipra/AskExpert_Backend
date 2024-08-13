@@ -3,8 +3,9 @@
 import { Next, Req, Res } from '../../infrastructureLayer/types/expressTypes'
 import ErrorResponse from "./errorResponse";
 
-const errorHandler = (err: any, req: Req, res: Res, next: Next) => {
-    console.log('--> usecaseLayer\handler\errorHandler.ts')
+const errorHandler = (err: Error | ErrorResponse, req: Req, res: Res, next: Next) => {
+    console.log('--> usecaseLayer/handler/errorHandler.ts');
+
     if (err instanceof ErrorResponse) {
         return res.status(err.status).json({
             success: false,
@@ -13,9 +14,11 @@ const errorHandler = (err: any, req: Req, res: Res, next: Next) => {
         });
     }
 
-    return res
-        .status(500)
-        .json({ success: false, status: 500, message: "Something went wrong" });
+    return res.status(500).json({
+        success: false,
+        status: 500,
+        message: err.message || "Something went wrong",
+    });
 };
 
 export default errorHandler;

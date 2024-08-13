@@ -1,6 +1,6 @@
 // backend\src\infrastructureLayer\middleware\authenticate.ts
 
-import jwt from 'jsonwebtoken';
+import jwt, { JwtPayload } from 'jsonwebtoken';
 import { Request, Response, NextFunction } from 'express';
 import { UserRepository } from '../database/repository/userRepository';
 import { AdminRepository } from '../database/repository/adminRepository';
@@ -12,6 +12,7 @@ import { ExpertRepository } from '../database/repository/expertRepository';
 import ExpertModel from '../database/model/expertModel';
 import { IExpert } from '../../domainLayer/expert';
 import ErrorResponse from '../../usecaseLayer/handler/errorResponse';
+import { DecodedToken } from '../types/jwtTypes';
 
 // Augment the express Request type to include a user property
 declare global {
@@ -34,7 +35,7 @@ class AuthMiddleware {
 
         if (token) {
             try {
-                const decoded: any = jwt.verify(token, process.env.JWT_KEY as string);
+                const decoded = jwt.verify(token, process.env.JWT_KEY as string) as DecodedToken;
                 if (decoded.role !== 'user') {
                     return next(ErrorResponse.unauthorized('Not authorized, Invalid token'));
                 }
@@ -71,7 +72,7 @@ class AuthMiddleware {
 
         if (token) {
             try {
-                const decoded: any = jwt.verify(token, process.env.JWT_KEY as string);
+                const decoded = jwt.verify(token, process.env.JWT_KEY as string) as DecodedToken;
                 if (decoded.role !== 'admin') {
                     return next(ErrorResponse.unauthorized('Not authorized, Invalid token'));
                 }
@@ -103,7 +104,7 @@ class AuthMiddleware {
 
         if (token) {
             try {
-                const decoded: any = jwt.verify(token, process.env.JWT_KEY as string);
+                const decoded = jwt.verify(token, process.env.JWT_KEY as string) as DecodedToken;
                 if (decoded.role !== 'expert') {
                     return next(ErrorResponse.unauthorized('Not authorized, Invalid token'));
                 }

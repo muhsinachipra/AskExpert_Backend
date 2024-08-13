@@ -1,18 +1,24 @@
 // backend\src\infrastructureLayer\config\db.ts
 
 import mongoose from "mongoose";
-require('dotenv').config()
+import dotenv from 'dotenv';
 
-const DB_String: string = process.env.MONGO_URI || ''
+dotenv.config();
 
-const connectDB = async () => {
+const DB_URI: string = process.env.MONGO_URI || '';
+
+const connectDB = async (): Promise<void> => {
     try {
-        await mongoose.connect(DB_String)
-            .then((data: any) => console.log(`db connection: ${data.connection.host}`))
-    } catch (error: any) {
-        console.log(error.message)
-        setTimeout(connectDB, 5000)
+        await mongoose.connect(DB_URI);
+        console.log(`DB connected: ${mongoose.connection.host}`);
+    } catch (error: unknown) {
+        if (error instanceof Error) {
+            console.error(`DB connection error: ${error.message}`);
+        } else {
+            console.error('An unknown error occurred during DB connection.');
+        }
+        setTimeout(connectDB, 5000);
     }
 }
 
-export default connectDB
+export default connectDB;
