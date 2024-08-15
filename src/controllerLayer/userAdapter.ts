@@ -41,9 +41,9 @@ export class UserAdapter {
             if (user) {
                 res.cookie("userjwt", user.token, {
                     httpOnly: true,
-                    sameSite: "strict",
+                    sameSite: "none",
                     maxAge: 30 * 24 * 60 * 60 * 1000,
-                    secure: process.env.NODE_ENV === "production",
+                    secure: true,
                 });
                 console.log(user.data)
 
@@ -71,9 +71,9 @@ export class UserAdapter {
             }
             res.cookie("userjwt", user.token, {
                 httpOnly: true,
-                sameSite: "strict", // Prevent CSRF attacks
-                maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
-                secure: process.env.NODE_ENV === "production",
+                sameSite: "none",
+                maxAge: 30 * 24 * 60 * 60 * 1000,
+                secure: true,
             });
 
             return res.status(user.status).json({
@@ -130,8 +130,9 @@ export class UserAdapter {
             newUser &&
                 res.cookie("userjwt", newUser.token, {
                     httpOnly: true,
-                    sameSite: "strict", // Prevent CSRF attacks
-                    maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
+                    sameSite: "none",
+                    maxAge: 30 * 24 * 60 * 60 * 1000,
+                    secure: true,
                 });
 
             res.status(newUser.status).json({
@@ -151,8 +152,9 @@ export class UserAdapter {
             newUser &&
                 res.cookie("userjwt", newUser.token, {
                     httpOnly: true,
-                    sameSite: "strict", // Prevent CSRF attacks
-                    maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
+                    sameSite: "none",
+                    maxAge: 30 * 24 * 60 * 60 * 1000,
+                    secure: true
                 });
             res.status(newUser.status).json({
                 success: newUser.success,
@@ -170,8 +172,9 @@ export class UserAdapter {
             newUser &&
                 res.cookie("userjwt", newUser.token, {
                     httpOnly: true,
-                    sameSite: "strict", // Prevent CSRF attacks
-                    maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
+                    sameSite: "none",
+                    maxAge: 30 * 24 * 60 * 60 * 1000,
+                    secure: true
                 });
             res.status(newUser.status).json({
                 success: newUser.success,
@@ -187,8 +190,8 @@ export class UserAdapter {
         try {
             res.cookie("jwt", "", {
                 httpOnly: true,
-                secure: process.env.NODE_ENV === 'production', // Only send over HTTPS in production
-                sameSite: 'strict', // Strictly same site for CSRF protection
+                secure: true,
+                sameSite: 'none',
                 expires: new Date(0),
             });
             res.status(200).json({ message: "Logged out successfully" });

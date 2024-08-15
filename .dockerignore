@@ -1,0 +1,24 @@
+# Node modules
+node_modules
+
+# Environment variables
+.env
+
+# Logs
+*.log
+
+# OS and Editor files
+.DS_Store
+.vscode/
+
+# Git files
+.git
+.gitignore
+
+# Build artifacts
+dist/
+build/
+
+# Tests and documentation
+tests/
+docs/

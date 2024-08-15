@@ -41,9 +41,9 @@ export class ExpertAdapter {
             if (expert) {
                 res.cookie("expertjwt", expert.token, {
                     httpOnly: true,
-                    sameSite: "strict",
+                    sameSite: "none",
                     maxAge: 30 * 24 * 60 * 60 * 1000,
-                    secure: process.env.NODE_ENV === "production",
+                    secure: true,
                 });
                 // console.log(expert.data)
 
@@ -63,8 +63,8 @@ export class ExpertAdapter {
         try {
             res.cookie("jwt", "", {
                 httpOnly: true,
-                secure: process.env.NODE_ENV === 'production', // Only send over HTTPS in production
-                sameSite: 'strict', // Strictly same site for CSRF protection
+                secure: true,
+                sameSite: 'none',
                 expires: new Date(0),
             });
             res.status(200).json({ message: "Logged out successfully" });
@@ -100,8 +100,9 @@ export class ExpertAdapter {
             newExpert &&
                 res.cookie("expertjwt", newExpert.token, {
                     httpOnly: true,
-                    sameSite: "strict", // Prevent CSRF attacks
-                    maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
+                    sameSite: "none",
+                    maxAge: 30 * 24 * 60 * 60 * 1000,
+                    secure: true
                 });
 
             res.status(newExpert.status).json({
@@ -121,8 +122,9 @@ export class ExpertAdapter {
             newExpert &&
                 res.cookie("expertjwt", newExpert.token, {
                     httpOnly: true,
-                    sameSite: "strict", // Prevent CSRF attacks
-                    maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
+                    sameSite: "none",
+                    maxAge: 30 * 24 * 60 * 60 * 1000,
+                    secure: true
                 });
             res.status(newExpert.status).json({
                 success: newExpert.success,
@@ -140,8 +142,9 @@ export class ExpertAdapter {
             newExpert &&
                 res.cookie("expertjwt", newExpert.token, {
                     httpOnly: true,
-                    sameSite: "strict", // Prevent CSRF attacks
-                    maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
+                    sameSite: "none",
+                    maxAge: 30 * 24 * 60 * 60 * 1000,
+                    secure: true
                 });
             res.status(newExpert.status).json({
                 success: newExpert.success,

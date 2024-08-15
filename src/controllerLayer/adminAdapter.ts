@@ -22,9 +22,9 @@ export class AdminAdapter {
             if (admin) {
                 res.cookie("adminjwt", admin.token, {
                     httpOnly: true,
-                    sameSite: "strict",
+                    sameSite: "none",
                     maxAge: 30 * 24 * 60 * 60 * 1000,
-                    secure: process.env.NODE_ENV === "production",
+                    secure: true,
                 });
                 console.log(admin.data)
 
@@ -98,8 +98,8 @@ export class AdminAdapter {
         try {
             res.cookie("jwt", "", {
                 httpOnly: true,
-                secure: process.env.NODE_ENV === 'production', // Only send over HTTPS in production
-                sameSite: 'strict', // Strictly same site for CSRF protection
+                secure: true,
+                sameSite: 'none',
                 expires: new Date(0),
             });
             res.status(200).json({ message: "Logged out successfully" });

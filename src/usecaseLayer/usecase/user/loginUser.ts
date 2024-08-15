@@ -49,7 +49,7 @@ export const loginUser = async (
             }
             throw ErrorResponse.badRequest("Invalid credentials");
         }
-        throw ErrorResponse.notFound("Invalid credentials");
+        throw ErrorResponse.notFound("User Not Found");
     } catch (err) {
         console.error("Login error:", err);
         throw err;
