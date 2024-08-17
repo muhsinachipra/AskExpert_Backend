@@ -24,7 +24,6 @@ class StripeService implements IStripe {
         const BASE_URL = process.env.BASE_URL as string;
         const successUrl = `${BASE_URL}/success`;
         const cancelUrl = `${BASE_URL}/home`;
-
         const session = await stripe.checkout.sessions.create({
             payment_method_types: ['card'],
             line_items: [
