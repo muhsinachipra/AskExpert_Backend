@@ -96,7 +96,7 @@ BASE_URL=https://ask-expert-frontend.vercel.app
 
 ## Usage
 
-Refer to the [API](./[api-docs](https://vatchshop.online/api/)) for detailed information on available endpoints and usage.
+Refer to the [API](./[api-docs]()) for detailed information on available endpoints and usage.
 
 ## Contributing
 
