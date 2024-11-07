@@ -16,6 +16,7 @@
     "@types/cors": "^2.8.17",
     "@types/morgan": "^1.9.9",
     "@types/nodemailer": "^6.4.15",
+    "@types/socket.io": "^3.0.2",
     "bcryptjs": "^2.4.3",
     "cloudinary": "^2.5.1",
     "cookie-parser": "^1.4.6",

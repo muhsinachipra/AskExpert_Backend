@@ -10,8 +10,8 @@ import adminRouter from "../route/adminRoutes"
 import expertRouter from "../route/expertRoutes"
 import chatRouter from "../route/chatRoutes"
 import errorHandler from "../../usecaseLayer/handler/errorHandler";
+import { SocketManager } from '../services/socket.ts';
 import http from "http"
-import { SocketManager } from '../services/socket'
 
 export const app = express()
 const BASE_URL = process.env.BASE_URL as string;
