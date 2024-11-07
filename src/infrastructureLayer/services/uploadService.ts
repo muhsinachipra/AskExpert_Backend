@@ -10,12 +10,17 @@ import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 
 export const uploadFileToCloudinary = async (file: Express.Multer.File): Promise<string> => {
     return new Promise((resolve, reject) => {
+        // Determine if the file is an image or video based on its mimetype
+        const isImage = file.mimetype.startsWith('image/');
+        
         const uploadStream = cloudinary.uploader.upload_stream(
             {
                 resource_type: 'auto',
                 folder: 'uploads',
-                format: 'jpg',
-                transformation: { width: 700, crop: "limit" }
+                // Apply different transformations for images and videos
+                transformation: isImage
+                    ? { width: 700, crop: "limit" } // Only resize images
+                    : undefined, // No resizing for videos
             },
             (error, result) => {
                 if (error) {
@@ -34,6 +39,11 @@ export const uploadFileToCloudinary = async (file: Express.Multer.File): Promise
         }
     });
 };
+
+
+
+
+
 
 const bucketName = process.env.AWS_BUCKET_NAME;
 
