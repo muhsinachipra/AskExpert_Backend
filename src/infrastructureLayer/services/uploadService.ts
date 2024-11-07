@@ -1,11 +1,39 @@
 // backend\src\infrastructureLayer\services\uploadService.ts
 
 import s3 from '../config/aws';
+import cloudinary from '../config/cloudinary';
 import { PutObjectCommand, GetObjectCommand } from "@aws-sdk/client-s3";
 import crypto from 'crypto'
 import sharp from 'sharp'
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 
+
+export const uploadFileToCloudinary = async (file: Express.Multer.File): Promise<string> => {
+    return new Promise((resolve, reject) => {
+        const uploadStream = cloudinary.uploader.upload_stream(
+            {
+                resource_type: 'auto',
+                folder: 'uploads',
+                format: 'jpg',
+                transformation: { width: 700, crop: "limit" }
+            },
+            (error, result) => {
+                if (error) {
+                    reject(new Error('Upload to Cloudinary failed'));
+                } else {
+                    resolve(result?.secure_url || '');
+                }
+            }
+        );
+
+        // Pass the file buffer to the upload stream
+        if (file.buffer) {
+            uploadStream.end(file.buffer);
+        } else {
+            reject(new Error('File buffer is missing'));
+        }
+    });
+};
 
 const bucketName = process.env.AWS_BUCKET_NAME;
 

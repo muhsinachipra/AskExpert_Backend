@@ -53,11 +53,11 @@ router.post(
         chatAdapter.uploadFile(req, res, next)
 )
 
-router.get(
-    "/getFileUrl/:fileName",
-    (req: Request, res: Response, next: NextFunction) =>
-        chatAdapter.getFileUrl(req, res, next)
-)
+// router.get(
+//     "/getFileUrl/:fileName",
+//     (req: Request, res: Response, next: NextFunction) =>
+//         chatAdapter.getFileUrl(req, res, next)
+// )
 
 
 export default router;

@@ -1,6 +1,7 @@
 // backend\src\controllerLayer\chatAdapter.ts
 
 import { getPresignedUrl, uploadFileToS3 } from "../infrastructureLayer/services/uploadService";
+import { uploadFileToCloudinary } from '../infrastructureLayer/services/uploadService';
 import { Next, Req, Res } from "../infrastructureLayer/types/expressTypes";
 import { ChatUseCase } from "../usecaseLayer/usecase/chatUsecase";
 import { PutObjectCommand } from "@aws-sdk/client-s3";
@@ -120,40 +121,55 @@ export class ChatAdapter {
         }
     }
 
-    //@desc     Upload file
+    //@desc     Upload file To Cloudinary
     //route     Post /api/chat/uploadFile
     //@access   Private
     async uploadFile(req: Req, res: Res, next: Next) {
         try {
-            console.log('req.file: ', req.file)
-            console.log('req.body: ', req.body)
-            console.log('req.buffer: ', req.file?.buffer)
-
             if (!req.file) {
                 return res.status(400).json({ message: 'No file uploaded' });
             }
-            const fileName = await uploadFileToS3(req.file);
-            res.status(200).json({ fileName });
+            const fileUrl = await uploadFileToCloudinary(req.file);
+            res.status(200).json({ fileUrl });
         } catch (err) {
             next(err);
         }
     }
 
-    //@desc     Get file url
-    //route     Post /api/chat/getFileUrl
-    //@access   Private
-    async getFileUrl(req: Req, res: Res, next: Next) {
-        try {
-            // console.log('key inside getFileUrl: ', req.params.fileName)
-            const { fileName } = req.params;
-            const url = await getPresignedUrl(fileName);
-            url &&
-                res.status(200).json({
-                    url
-                });
-        } catch (err) {
-            next(err);
-        }
-    }
+    // //@desc     Upload file To S3
+    // //route     Post /api/chat/uploadFile
+    // //@access   Private
+    // async uploadFile(req: Req, res: Res, next: Next) {
+    //     try {
+    //         console.log('req.file: ', req.file)
+    //         console.log('req.body: ', req.body)
+    //         console.log('req.buffer: ', req.file?.buffer)
+
+    //         if (!req.file) {
+    //             return res.status(400).json({ message: 'No file uploaded' });
+    //         }
+    //         const fileName = await uploadFileToS3(req.file);
+    //         res.status(200).json({ fileName });
+    //     } catch (err) {
+    //         next(err);
+    //     }
+    // }
+
+    // //@desc     Get file url
+    // //route     Post /api/chat/getFileUrl
+    // //@access   Private
+    // async getFileUrl(req: Req, res: Res, next: Next) {
+    //     try {
+    //         // console.log('key inside getFileUrl: ', req.params.fileName)
+    //         const { fileName } = req.params;
+    //         const url = await getPresignedUrl(fileName);
+    //         url &&
+    //             res.status(200).json({
+    //                 url
+    //             });
+    //     } catch (err) {
+    //         next(err);
+    //     }
+    // }
 
 }
