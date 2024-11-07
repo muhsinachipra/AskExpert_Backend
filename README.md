@@ -53,7 +53,7 @@ backend
 Ensure the following environment variables are set in your `.env` file:
 
 ```
-PORT=3000
+PORT=10000
 MONGO_URI=mongodb+srv://<username>:<password>@cluster0.erxet.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
 JWT_KEY=your_jwt_key
 SMTP_USER=your_smtp_user

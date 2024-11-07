@@ -4,7 +4,7 @@ import connectDB from "./infrastructureLayer/config/db";
 import { httpServer } from './infrastructureLayer/config/app'
 require('dotenv').config()
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 10000;
 
 console.log("App is listening on port", PORT);
 
