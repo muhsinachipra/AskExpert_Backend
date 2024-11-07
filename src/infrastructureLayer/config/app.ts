@@ -10,7 +10,7 @@ import adminRouter from "../route/adminRoutes"
 import expertRouter from "../route/expertRoutes"
 import chatRouter from "../route/chatRoutes"
 import errorHandler from "../../usecaseLayer/handler/errorHandler";
-import { SocketManager } from '../services/socket.ts';
+import { SocketManager } from '../services/socket';
 import http from "http"
 
 export const app = express()
