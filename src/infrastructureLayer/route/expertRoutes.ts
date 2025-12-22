@@ -37,6 +37,12 @@ router.post(
         expertAdapter.resetPassword(req, res, next)
 );
 
+router.get(
+    "/categories",
+    (req: Request, res: Response, next: NextFunction) =>
+        expertAdapter.getCategories(req, res, next)
+)
+
 router.use(AuthMiddleware.authenticateExpert);
 
 router.post(
@@ -79,12 +85,6 @@ router.get(
     "/getAppointmentsData/:page/:limit",
     (req: Request, res: Response, next: NextFunction) =>
         appointmentAdapter.getAppointmentsData(req, res, next)
-)
-
-router.get(
-    "/categories",
-    (req: Request, res: Response, next: NextFunction) =>
-        expertAdapter.getCategories(req, res, next)
 )
 
 router.get(
