@@ -69,6 +69,12 @@ router.get(
         userAdapter.getCategories(req, res, next)
 )
 
+router.get(
+    "/getExpertsByCategory/:categoryName",
+    (req: Request, res: Response, next: NextFunction) =>
+        userAdapter.getExpertsByCategory(req, res, next)
+)
+
 // Use protectUser middleware for routes accessible only to authenticated users
 router.use(AuthMiddleware.authenticateUser);
 
@@ -88,12 +94,6 @@ router.get(
     "/getUserData",
     (req: Request, res: Response, next: NextFunction) =>
         userAdapter.getUserData(req, res, next)
-)
-
-router.get(
-    "/getExpertsByCategory/:categoryName",
-    (req: Request, res: Response, next: NextFunction) =>
-        userAdapter.getExpertsByCategory(req, res, next)
 )
 
 router.get(
