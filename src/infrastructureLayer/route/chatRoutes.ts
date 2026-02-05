@@ -1,7 +1,7 @@
 // backend\src\infrastructureLayer\route\chatRoutes.ts
 
 import express, { NextFunction, Request, Response } from "express";
-import { chatAdapter } from "./injections/chatInjection";
+import { chatController } from "./injections/chatInjection";
 import upload from "../middleware/uploadMiddleware";
 
 const router = express.Router();
@@ -10,53 +10,53 @@ const router = express.Router();
 router.post(
     "/conversation",
     (req: Request, res: Response, next: NextFunction) =>
-        chatAdapter.createConversation(req, res, next)
+        chatController.createConversation(req, res, next)
 );
 
 // route for getting conversation
 router.get(
     "/conversation",
     (req: Request, res: Response, next: NextFunction) =>
-        chatAdapter.getConversation(req, res, next)
+        chatController.getConversation(req, res, next)
 );
 
 // route for create message
 router.post(
     "/message",
     (req: Request, res: Response, next: NextFunction) =>
-        chatAdapter.createMessage(req, res, next)
+        chatController.createMessage(req, res, next)
 );
 
 // route for get all message
 router.get(
     "/message",
     (req: Request, res: Response, next: NextFunction) =>
-        chatAdapter.getMessage(req, res, next)
+        chatController.getMessage(req, res, next)
 );
 
 router.patch(
     "/viewMessages",
     (req: Request, res: Response, next: NextFunction) =>
-        chatAdapter.viewMessages(req, res, next)
+        chatController.viewMessages(req, res, next)
 );
 
 router.get(
     "/getUnReadMessages",
     (req: Request, res: Response, next: NextFunction) =>
-        chatAdapter.getUnReadMessages(req, res, next)
+        chatController.getUnReadMessages(req, res, next)
 );
 
 router.post(
     "/uploadFile",
     upload.single('file'),
     (req: Request, res: Response, next: NextFunction) =>
-        chatAdapter.uploadFile(req, res, next)
+        chatController.uploadFile(req, res, next)
 )
 
 // router.get(
 //     "/getFileUrl/:fileName",
 //     (req: Request, res: Response, next: NextFunction) =>
-//         chatAdapter.getFileUrl(req, res, next)
+//         chatController.getFileUrl(req, res, next)
 // )
 
 

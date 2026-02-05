@@ -1,6 +1,6 @@
 // backend\src\infrastructureLayer\route\injections\expertInjection.ts
 
-import { ExpertAdapter } from '../../../controllerLayer/expertAdapter'
+import { ExpertController } from '../../../controllerLayer/ExpertController'
 import { ExpertUsecase } from '../../../usecaseLayer/usecase/expertUsecase'
 import CategoryModel from '../../database/model/categoryModel'
 import ExpertModel from '../../database/model/expertModel'
@@ -29,5 +29,5 @@ const expertUsecase = new ExpertUsecase(
     nodemailer,
     requestValidator
 )
-const expertAdapter = new ExpertAdapter(expertUsecase)
-export { expertAdapter }
+const expertController = new ExpertController(expertUsecase)
+export { expertController }

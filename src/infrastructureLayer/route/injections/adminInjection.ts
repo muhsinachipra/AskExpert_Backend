@@ -1,6 +1,6 @@
 // backend\src\infrastructureLayer\route\injections\adminInjection.ts
 
-import { AdminAdapter } from '../../../controllerLayer/adminAdapter'
+import { AdminController } from '../../../controllerLayer/AdminController'
 import { AdminUsecase } from '../../../usecaseLayer/usecase/adminUsecase'
 import AdminModel from '../../database/model/adminModel'
 import ExpertModel from '../../database/model/expertModel'
@@ -42,5 +42,5 @@ const adminUsecase = new AdminUsecase(
     nodemailer,
     requestValidator
 )
-const adminAdapter = new AdminAdapter(adminUsecase)
-export { adminAdapter }
+const adminController = new AdminController(adminUsecase)
+export { adminController }

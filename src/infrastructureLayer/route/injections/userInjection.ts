@@ -1,6 +1,6 @@
 // backend\src\infrastructureLayer\route\injections\userInjection.ts
 
-import { UserAdapter } from '../../../controllerLayer/userAdapter'
+import { UserController } from '../../../controllerLayer/UserController'
 import { UserUsecase } from '../../../usecaseLayer/usecase/userUsecase'
 import CategoryModel from '../../database/model/categoryModel'
 import ExpertModel from '../../database/model/expertModel'
@@ -29,5 +29,5 @@ const userUsecase = new UserUsecase(
     nodemailer,
     requestValidator
 )
-const userAdapter = new UserAdapter(userUsecase)
-export { userAdapter }
+const userController = new UserController(userUsecase)
+export { userController }

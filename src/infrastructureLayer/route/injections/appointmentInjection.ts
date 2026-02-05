@@ -4,7 +4,7 @@ import RequestValidator from '../../services/validateRepository'
 import AppointmentModel from '../../database/model/appointmentModel'
 import { AppointmentRepository } from '../../database/repository/appointmentRepository'
 import { AppointmentUsecase } from '../../../usecaseLayer/usecase/appointmentUsecase'
-import { AppointmentAdapter } from '../../../controllerLayer/AppointmentAdapter'
+import { AppointmentController } from '../../../controllerLayer/AppointmentController'
 import StripeService from '../../services/stripe'
 import ExpertModel from '../../database/model/expertModel'
 import { ExpertRepository } from '../../database/repository/expertRepository'
@@ -28,5 +28,5 @@ const appointmentUsecase = new AppointmentUsecase(
     requestValidator,
     stripe
 )
-const appointmentAdapter = new AppointmentAdapter(appointmentUsecase)
-export { appointmentAdapter }
+const appointmentController = new AppointmentController(appointmentUsecase)
+export { appointmentController }

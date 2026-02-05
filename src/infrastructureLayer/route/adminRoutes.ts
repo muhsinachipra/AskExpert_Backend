@@ -1,8 +1,8 @@
 // backend\src\infrastructureLayer\route\adminRoutes.ts
 
 import express, { NextFunction, Request, Response } from 'express';
-import { adminAdapter } from './injections/adminInjection';
-import { appointmentAdapter } from './injections/appointmentInjection';
+import { adminController } from './injections/adminInjection';
+import { appointmentController } from './injections/appointmentInjection';
 import loginRateLimiter from '../middleware/rateLimiter';
 import AuthMiddleware from '../middleware/AuthMiddleware'
 
@@ -13,7 +13,7 @@ router.post(
     "/login",
     loginRateLimiter, // Apply rate limiter to the login route
     (req: Request, res: Response, next: NextFunction) =>
-        adminAdapter.loginAdmin(req, res, next)
+        adminController.loginAdmin(req, res, next)
 )
 
 // Protect routes with admin authentication middleware
@@ -23,103 +23,103 @@ router.use(AuthMiddleware.authenticateAdmin);
 router.get(
     "/expertData",
     (req: Request, res: Response, next: NextFunction) =>
-        adminAdapter.getExpertData(req, res, next)
+        adminController.getExpertData(req, res, next)
 )
 
 router.get(
     "/expertDataReport",
     (req: Request, res: Response, next: NextFunction) =>
-        adminAdapter.getExpertDataSortByReport(req, res, next)
+        adminController.getExpertDataSortByReport(req, res, next)
 )
 
 router.post(
     "/logout",
     (req: Request, res: Response, next: NextFunction) =>
-        adminAdapter.logoutAdmin(req, res, next)
+        adminController.logoutAdmin(req, res, next)
 )
 
 router.patch(
     '/verifyExpert/:id',
     (req: Request, res: Response, next: NextFunction) =>
-        adminAdapter.updateExpertVerification(req, res, next)
+        adminController.updateExpertVerification(req, res, next)
 )
 
 router.post(
     '/sendVerifiedEmail/:id',
     (req: Request, res: Response, next: NextFunction) =>
-        adminAdapter.sendVerifiedEmail(req, res, next)
+        adminController.sendVerifiedEmail(req, res, next)
 )
 
 router.post(
     '/addCategory',
     (req: Request, res: Response, next: NextFunction) =>
-        adminAdapter.addCategory(req, res, next)
+        adminController.addCategory(req, res, next)
 )
 
 router.patch(
     '/editCategory',
     (req: Request, res: Response, next: NextFunction) =>
-        adminAdapter.editCategory(req, res, next)
+        adminController.editCategory(req, res, next)
 )
 
 router.get(
     "/categories",
     (req: Request, res: Response, next: NextFunction) =>
-        adminAdapter.getCategories(req, res, next)
+        adminController.getCategories(req, res, next)
 )
 
 router.get(
     "/userData",
     (req: Request, res: Response, next: NextFunction) =>
-        adminAdapter.getUserData(req, res, next)
+        adminController.getUserData(req, res, next)
 )
 
 router.patch(
     '/userBlockedStatus/:id',
     (req: Request, res: Response, next: NextFunction) =>
-        adminAdapter.updateUserBlockedStatus(req, res, next)
+        adminController.updateUserBlockedStatus(req, res, next)
 )
 
 router.get(
     "/getAdminData",
     (req: Request, res: Response, next: NextFunction) =>
-        adminAdapter.getAdminData(req, res, next)
+        adminController.getAdminData(req, res, next)
 )
 
 router.patch(
     '/expertBlockedStatus/:id',
     (req: Request, res: Response, next: NextFunction) =>
-        adminAdapter.updateExpertBlockedStatus(req, res, next)
+        adminController.updateExpertBlockedStatus(req, res, next)
 )
 
 router.get(
     "/appointmentData",
     (req: Request, res: Response, next: NextFunction) =>
-        appointmentAdapter.allAppointmentsData(req, res, next)
+        appointmentController.allAppointmentsData(req, res, next)
 )
 
 router.get(
     "/report/:expertId",
     (req: Request, res: Response, next: NextFunction) =>
-        appointmentAdapter.reportByExpertId(req, res, next)
+        appointmentController.reportByExpertId(req, res, next)
 )
 
 router.get(
     "/dashboard",
     (req: Request, res: Response, next: NextFunction) =>
-        adminAdapter.getDashboardData(req, res, next)
+        adminController.getDashboardData(req, res, next)
 )
 
 router.get(
     "/expertsByCategory",
     (req: Request, res: Response, next: NextFunction) =>
-        adminAdapter.expertsByCategory(req, res, next)
+        adminController.expertsByCategory(req, res, next)
 )
 
 router.get(
     "/userCount",
     (req: Request, res: Response, next: NextFunction) =>
-        adminAdapter.userCount(req, res, next)
+        adminController.userCount(req, res, next)
 )
 
 export default router
