@@ -3,7 +3,7 @@
 import ErrorResponse from "../../handler/errorResponse";
 import { IUserRepository } from "../../interface/repository/IUserRepository";
 import { IRequestValidator } from "../../interface/repository/IValidateRepository";
-import { IResponse } from "../../interface/services/IResponse";
+import { IResponse, IUseCaseResponse } from "../../interface/services/IResponse";
 
 
 export const updateProfile = async (
@@ -13,7 +13,7 @@ export const updateProfile = async (
   name: string,
   mobile: string,
   profilePic: string,
-): Promise<IResponse> => {
+): Promise<IUseCaseResponse> => {
   try {
 
     const validation = requestValidator.validateRequiredFields(
@@ -36,7 +36,6 @@ export const updateProfile = async (
     const updatedUser = await userRepository.updateProfile(data);
 
     return {
-      status: 200,
       success: true,
       message: `Successfully Uploaded Profile `,
       data: updatedUser

@@ -3,10 +3,10 @@
 import ErrorResponse from "../../handler/errorResponse";
 import { IUserRepository } from "../../interface/repository/IUserRepository";
 import IJwt from "../../interface/services/IJwt";
-import { IResponse } from "../../interface/services/IResponse";
+import { IResponse, IUseCaseResponse } from "../../interface/services/IResponse";
 
 export const validateAccessToken = async (userRepository: IUserRepository, token: string, jwt: IJwt,
-): Promise<IResponse> => {
+): Promise<IUseCaseResponse> => {
     try {
         console.log('--> usecaseLayerusecase/user/validateAccessToken.ts')
 
@@ -15,7 +15,6 @@ export const validateAccessToken = async (userRepository: IUserRepository, token
 
         if (user) {
             return {
-                status: 200,
                 success: true,
                 message: "Token verified",
                 data: user._id

@@ -4,7 +4,7 @@ import ErrorResponse from '../../handler/errorResponse'
 import { IUserRepository } from "../../interface/repository/IUserRepository"
 import { IRequestValidator } from '../../interface/repository/IValidateRepository'
 import IHashpassword from '../../interface/services/IBcrypt'
-import { IResponse } from "../../interface/services/IResponse"
+import { IResponse, IUseCaseResponse } from "../../interface/services/IResponse"
 
 export const createUser = async (
     requestValidator: IRequestValidator,
@@ -15,7 +15,7 @@ export const createUser = async (
     profilePic: string,
     email: string,
     password: string
-): Promise<IResponse> => {
+): Promise<IUseCaseResponse> => {
     try {
 
         const validation = requestValidator.validateRequiredFields(
@@ -39,7 +39,6 @@ export const createUser = async (
             }
             const createNewUser = await userRepository.createUser(newUser)
             return {
-                status: 200,
                 success: true,
                 message: "Successfully created"
             }

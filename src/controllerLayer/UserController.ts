@@ -20,7 +20,7 @@ export class UserController {
         try {
             const newUser = await this.userUsecase.createUser(req.body);
             if (newUser) {
-                return res.status(newUser.status).json({
+                return res.status(201).json({
                     success: newUser.success,
                     message: newUser.message,
                 });
@@ -47,7 +47,7 @@ export class UserController {
                 });
                 console.log(user.data)
 
-                return res.status(user.status).json({
+                return res.status(200).json({
                     success: user.success,
                     data: user.data,
                     message: user.message,
@@ -76,7 +76,7 @@ export class UserController {
                 secure: true,
             });
 
-            return res.status(user.status).json({
+            return res.status(200).json({
                 success: user.success,
                 data: user.data,
                 message: user.message,
@@ -94,7 +94,7 @@ export class UserController {
 
         try {
             const user = await this.userUsecase.sendOTP(req.body);
-            res.status(user.status).json({
+            res.status(200).json({
                 success: user.success,
                 message: user.message,
             });
@@ -110,7 +110,7 @@ export class UserController {
         try {
             const user = await this.userUsecase.emailVerification(req.body);
             user &&
-                res.status(user.status).json({
+                res.status(200).json({
                     success: user.success,
                     // data: user.data,
                     message: user.message,
@@ -135,7 +135,7 @@ export class UserController {
                     secure: true,
                 });
 
-            res.status(newUser.status).json({
+            res.status(200).json({
                 success: newUser.success,
                 message: newUser.message,
                 user: newUser.data,
@@ -156,7 +156,7 @@ export class UserController {
                     maxAge: 30 * 24 * 60 * 60 * 1000,
                     secure: true
                 });
-            res.status(newUser.status).json({
+            res.status(200).json({
                 success: newUser.success,
                 message: newUser.message,
                 user: newUser.data,
@@ -176,7 +176,7 @@ export class UserController {
                     maxAge: 30 * 24 * 60 * 60 * 1000,
                     secure: true
                 });
-            res.status(newUser.status).json({
+            res.status(200).json({
                 success: newUser.success,
                 message: newUser.message,
                 user: newUser.data,
@@ -209,7 +209,7 @@ export class UserController {
             const user = await this.userUsecase.updateProfile(req.body);
             console.log('user from updateProfile userAdapter............ : ', user)
             user &&
-                res.status(user.status).json({
+                res.status(200).json({
                     success: user.success,
                     message: user.message,
                     user: user.data,
@@ -252,7 +252,7 @@ export class UserController {
             const experts = await this.userUsecase.getExpertsByCategory(categoryName);
             // console.log('experts in getExpertsByCategory : ', experts)
             if (experts) {
-                return res.status(experts.status).json({
+                return res.status(200).json({
                     success: experts.success,
                     data: experts.data,
                     message: experts.message,
@@ -271,7 +271,7 @@ export class UserController {
             const expertId = req.params.expertId;
             const expert = await this.userUsecase.userGetExpertData(expertId);
             if (expert) {
-                return res.status(expert.status).json({
+                return res.status(200).json({
                     success: expert.success,
                     data: expert.data,
                     message: expert.message,
@@ -290,7 +290,7 @@ export class UserController {
             const page = parseInt(req.query.page as string) || 1;
             const limit = parseInt(req.query.limit as string) || 6;
             const categories = await this.userUsecase.getCategories(page, limit);
-            return res.status(categories.status).json({
+            return res.status(200).json({
                 success: categories.success,
                 data: categories.data,
                 total: categories.total,

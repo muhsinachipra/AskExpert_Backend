@@ -3,11 +3,11 @@
 import ErrorResponse from "../../handler/errorResponse";
 import { IExpertRepository } from "../../interface/repository/IExpertRepository";
 import { IRequestValidator } from "../../interface/repository/IValidateRepository";
-import { IResponse } from "../../interface/services/IResponse";
+import { IResponse, IUseCaseResponse } from "../../interface/services/IResponse";
 
 export const getExpertsByCategory = async (
     categoryName: string, requestValidator: IRequestValidator, expertRepository: IExpertRepository
-): Promise<IResponse> => {
+): Promise<IUseCaseResponse> => {
     try {
 
         const validation = requestValidator.validateRequiredFields(
@@ -26,14 +26,8 @@ export const getExpertsByCategory = async (
             data,
             total,
             message: 'Expert data retrieved successfully',
-            status: 200,
         };
     } catch (error) {
-        return {
-            success: false,
-            data: null,
-            message: 'Failed to retrieve expert data',
-            status: 500,
-        };
+        throw error;
     }
 }

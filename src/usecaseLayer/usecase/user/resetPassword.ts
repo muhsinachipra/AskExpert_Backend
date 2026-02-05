@@ -4,7 +4,7 @@ import ErrorResponse from "../../handler/errorResponse";
 import { IUserRepository } from "../../interface/repository/IUserRepository";
 import { IRequestValidator } from "../../interface/repository/IValidateRepository";
 import IBcrypt from "../../interface/services/IBcrypt";
-import { IResponse } from "../../interface/services/IResponse";
+import { IResponse, IUseCaseResponse } from "../../interface/services/IResponse";
 
 
 export const resetPassword = async (
@@ -13,7 +13,7 @@ export const resetPassword = async (
     bcrypt: IBcrypt,
     id: string,
     password: string
-): Promise<IResponse> => {
+): Promise<IUseCaseResponse> => {
     try {
         const validation = requestValidator.validateRequiredFields(
             { password },
@@ -33,7 +33,6 @@ export const resetPassword = async (
         const newPassword = await userRepository.resetPassword(nPassword)
 
         return {
-            status: 200,
             success: true,
             message: "Successfully created",
         };

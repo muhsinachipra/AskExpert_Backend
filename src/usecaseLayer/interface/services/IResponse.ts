@@ -16,6 +16,9 @@ export interface IResponse<T = IUser | IUser[] | IAdmin | IAdmin[] | IExpert | I
     token?: string
 }
 
+export type IUseCaseResponse<T = IUser | IUser[] | IAdmin | IAdmin[] | IExpert | IExpert[] | ICategory | ICategory[] | IAppointment | IAppointment[] | Record<string, any> | string | null> = Omit<IResponse<T>, 'status'>
+
+
 export interface IResetPassword {
     id: string
     password: string;

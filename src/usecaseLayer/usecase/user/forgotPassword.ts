@@ -5,12 +5,12 @@ import { IUserRepository } from "../../interface/repository/IUserRepository";
 import { IRequestValidator } from "../../interface/repository/IValidateRepository";
 import INodemailer from "../../interface/services/INodemailer";
 import IJwt from "../../interface/services/IJwt";
-import { IResponse } from "../../interface/services/IResponse";
+import { IResponse, IUseCaseResponse } from "../../interface/services/IResponse";
 
 
 export const forgotPassword = async (
     requestValidator: IRequestValidator, userRepository: IUserRepository, jwt: IJwt, nodemailer: INodemailer, email: string, name: string, token: string,
-): Promise<IResponse> => {
+): Promise<IUseCaseResponse> => {
     try {
         const user = await userRepository.findUser(email);
         if (!user) {
@@ -35,7 +35,6 @@ export const forgotPassword = async (
         const sendForgotPasswordEmail = await nodemailer.sendForgotPasswordEmail(userRoute, user.email, user.name, token);
 
         return {
-            status: 200,
             success: true,
             message: sendForgotPasswordEmail
         }

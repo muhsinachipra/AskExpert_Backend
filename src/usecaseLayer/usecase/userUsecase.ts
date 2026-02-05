@@ -171,15 +171,9 @@ export class UserUsecase {
                 success: true,
                 data,
                 message: 'Expert data retrieved successfully',
-                status: 200,
             };
         } catch (error) {
-            return {
-                success: false,
-                data: null,
-                message: 'Failed to retrieve expert data',
-                status: 500,
-            };
+            throw error;
         }
     }
 

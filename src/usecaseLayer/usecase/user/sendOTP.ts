@@ -4,7 +4,7 @@ import ErrorResponse from "../../handler/errorResponse";
 import { IUserRepository } from "../../interface/repository/IUserRepository";
 import { IRequestValidator } from "../../interface/repository/IValidateRepository";
 import INodemailer from "../../interface/services/INodemailer";
-import { IResponse } from "../../interface/services/IResponse";
+import { IResponse, IUseCaseResponse } from "../../interface/services/IResponse";
 
 
 export const sendOTP = async (
@@ -13,7 +13,7 @@ export const sendOTP = async (
     nodemailer: INodemailer,
     email: string,
     name: string
-): Promise<IResponse> => {
+): Promise<IUseCaseResponse> => {
     try {
         // Validate required parameters
         const validation = requestValidator.validateRequiredFields(
@@ -28,7 +28,6 @@ export const sendOTP = async (
         const verify = await nodemailer.sendEmailVerification(email, name);
 
         return {
-            status: 200,
             success: true,
             message: verify,
         };

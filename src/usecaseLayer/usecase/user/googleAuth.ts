@@ -5,7 +5,7 @@ import { IUserRepository } from "../../interface/repository/IUserRepository";
 import { IRequestValidator } from "../../interface/repository/IValidateRepository";
 import IHashpassword from "../../interface/services/IBcrypt";
 import Ijwt from "../../interface/services/IJwt";
-import { IResponse, } from "../../interface/services/IResponse";
+import { IResponse, IUseCaseResponse } from "../../interface/services/IResponse";
 
 
 export const googleAuth = async (
@@ -17,7 +17,7 @@ export const googleAuth = async (
     email: string,
     password: string,
     profilePic: string,
-): Promise<IResponse> => {
+): Promise<IUseCaseResponse> => {
     try {
         // Validate required parameters
         const validation = requestValidator.validateRequiredFields(
@@ -43,7 +43,6 @@ export const googleAuth = async (
             const token = jwt.createJWT(createnewUser._id as string, createnewUser.email, "user", createnewUser.name);
 
             return {
-                status: 200,
                 success: true,
                 message: `Register Successful, Welcome ${createnewUser.name}`,
                 token: token,
@@ -60,7 +59,6 @@ export const googleAuth = async (
             user.password = ""
 
             return {
-                status: 200,
                 success: true,
                 token: token,
                 data: user,
